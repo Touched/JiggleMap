@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "required": ["maps"],
+  "additionalProperties": false,
+  "properties": {
+    "maps": {
+      "type": "array",
+      "items": {
+        "$ref": "http://example.com/schema/entity/types/reference/id/map"
+      }
+    }
+  }
+}

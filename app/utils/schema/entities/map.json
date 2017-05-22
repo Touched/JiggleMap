@@ -1,0 +1,358 @@
+{
+  "id": "http://example.com/schema/entity/data/map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["connections", "entities", "scripts"],
+  "properties": {
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["direction", "offset", "map"],
+        "properties": {
+          "direction": {
+            "type": "string",
+            "enum": ["up", "down", "left", "right", "dive", "emerge"]
+          },
+          "offset": {
+            "type": "integer"
+          },
+          "map": {
+            "$ref": "http://example.com/schema/entity/types/reference/id/map"
+          }
+        }
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "type", "data", "x", "y", "z"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][-a-z0-9]*$"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["object", "warp", "interactable", "trigger"]
+          },
+          "x": {
+            "type": "integer"
+          },
+          "y": {
+            "type": "integer"
+          },
+          "z": {
+            "type": "integer"
+          },
+          "data" : {
+            "type": "object",
+            "select": {
+              "$data": "1/type"
+            },
+            "selectCases": {
+              "object": {
+                "$ref": "http://example.com/schema/entity/data/map#/definitions/objectEntity"
+              },
+              "warp": {
+                "$ref": "http://example.com/schema/entity/data/map#/definitions/warpEntity"
+              },
+              "interactable": {
+                "$ref": "http://example.com/schema/entity/data/map#/definitions/interactableEntity"
+              },
+              "trigger": {
+                "$ref": "http://example.com/schema/entity/data/map#/definitions/triggerEntity"
+              }
+            }
+          }
+        }
+      }
+    },
+    "blocksets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "secondary"],
+      "properties": {
+        "primary": {
+          "$ref": "http://example.com/schema/entity/types/reference/id/blockset"
+        },
+        "secondary": {
+          "$ref": "http://example.com/schema/entity/types/reference/id/blockset"
+        }
+      }
+    },
+    "scripts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "setmaptile",
+              "handler_env1",
+              "onmapenter",
+              "handler_env2",
+              "closemenu1",
+              "closemenu2",
+              "unknown"
+            ]
+          },
+          "scripts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["variable", "value", "script"],
+              "properties": {
+                "variable": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": "integer"
+                },
+                "script": {
+                  "$ref": "http://example.com/schema/entity/types/reference/script"
+                }
+              }
+            }
+          },
+          "script": {
+            "$ref": "http://example.com/schema/entity/types/reference/script"
+          }
+        },
+        "select": {
+          "$data": "0/type"
+        },
+        "selectCases": {
+          "handler_env1": {
+            "required": ["scripts"],
+            "prohibited": ["script"]
+          },
+          "handler_env2": {
+            "required": ["scripts"],
+            "prohibited": ["script"]
+          }
+        },
+        "selectDefault": {
+          "required": ["script"],
+          "prohibited": ["scripts"]
+        }
+      }
+    },
+    "border": {
+      "$ref": "#/definitions/blockGrid"
+    },
+    "map": {
+      "$ref": "#/definitions/blockGrid"
+    },
+    "linked": {
+      "$ref": "http://example.com/schema/entity/types/reference/id/map"
+    }
+  },
+  "oneOf": [{
+    "required": ["map", "border", "blocksets"],
+    "prohibited": ["linked"]
+  }, {
+    "required": ["linked"],
+    "prohibited": ["map", "border", "blocksets"]
+  }],
+  "definitions": {
+    "objectEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sprite",
+        "replacement",
+        "behavior",
+        "boundary",
+        "property",
+        "viewRadius",
+        "script",
+        "flag"
+      ],
+      "properties": {
+        "sprite": {
+          "type": "integer"
+        },
+        "replacement": {
+          "type": "integer"
+        },
+        "behavior": {
+          "type": "integer"
+        },
+        "boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["x", "y"],
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            }
+          }
+        },
+        "property": {
+          "type": "integer"
+        },
+        "viewRadius": {
+          "type": "integer"
+        },
+        "script": {
+          "$ref": "http://example.com/schema/entity/types/reference/script"
+        },
+        "flag": {
+          "type": "integer"
+        }
+      }
+    },
+    "warpEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target"],
+      "properties": {
+        "target": {
+          "type": "object",
+          "required": ["warp", "map"],
+          "properties": {
+            "warp": {
+              "oneOf": [{
+                "type": "integer"
+              }, {
+                "type": "string",
+                "pattern": "^[a-z][-a-z0-9]*$"
+              }]
+            },
+            "map": {
+              "oneOf": [{
+                "additionalProperties": false,
+                "properties": {
+                  "map": {
+                    "type": "integer"
+                  },
+                  "bank": {
+                    "type": "integer"
+                  }
+                }
+              }, {
+                "$ref": "http://example.com/schema/entity/types/reference/id/map"
+              }]
+            }
+          }
+        }
+      }
+    },
+    "interactableEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["script", "hiddenItem", "secretBase"]
+        },
+        "script": {
+          "$ref": "http://example.com/schema/entity/types/reference/script"
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["up", "down", "left", "right"]
+        },
+        "item": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "itemfinderOnly": {
+          "type": "boolean"
+        },
+        "hiddenItemId": {
+          "type": "integer"
+        },
+        "secretBaseId": {
+          "type": "integer"
+        }
+      },
+      "select": {
+        "$data": "0/type"
+      },
+      "selectCases": {
+        "script": {
+          "required": ["script"],
+          "prohibited": ["item", "quantity", "itemfinderOnly", "hiddenItemId", "secretBaseId"]
+        },
+        "hiddenItem": {
+          "required": ["item", "quantity", "hiddenItemId"],
+          "prohibited": ["script", "direction", "secretBaseId"]
+        },
+        "secretBase": {
+          "required": ["secretBaseId"],
+          "prohibited": ["script", "direction", "item", "quantity", "itemfinderOnly", "hiddenItemId"]
+        }
+      }
+    },
+    "triggerEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variable", "value", "script"],
+      "properties": {
+        "variable": {
+          "type": "integer"
+        },
+        "value": {
+          "type": "integer"
+        },
+        "script": {
+          "$ref": "http://example.com/schema/entity/types/reference/script"
+        }
+      }
+    },
+    "blockGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "data"],
+      "properties": {
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["block", "collision", "height"],
+          "properties": {
+            "block": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "collision": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "height": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

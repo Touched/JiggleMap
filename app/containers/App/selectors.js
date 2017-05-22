@@ -15,6 +15,13 @@ const makeSelectLocationState = () => {
   };
 };
 
+const makeSelectSidebarItem = () => (state) => state.get('project').get('sidebarItem');
+
+const makeSelectEntities = (type) =>
+  (state) => state.getIn(['project', 'entities', type], []).valueSeq();
+
 export {
+  makeSelectEntities,
   makeSelectLocationState,
+  makeSelectSidebarItem,
 };

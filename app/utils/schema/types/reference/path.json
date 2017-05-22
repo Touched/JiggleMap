@@ -1,0 +1,11 @@
+{
+  "id": "http://example.com/schema/entity/types/reference/path",
+  "type": "object",
+  "required": ["path"],
+  "additionalProperties": false,
+  "properties": {
+    "path": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "http://example.com/schema/entity/types/reference/script",
+  "type": "object",
+  "required": ["path", "symbol"],
+  "additionalProperties": false,
+  "properties": {
+    "path": {
+      "type": "string"
+    },
+    "symbol": {
+      "type": "string"
+    }
+  }
+}

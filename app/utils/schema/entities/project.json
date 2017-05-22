@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "required": ["banks"],
+  "additionalProperties": false,
+  "properties": {
+    "banks": {
+      "type": "array",
+      "items": {
+        "$ref": "http://example.com/schema/entity/types/reference/id/bank"
+      }
+    }
+  }
+}

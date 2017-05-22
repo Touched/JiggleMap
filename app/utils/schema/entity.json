@@ -1,0 +1,41 @@
+{
+  "id": "http://example.com/schema/entity",
+  "type": "object",
+  "required": ["meta", "data"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["format", "id"],
+      "properties": {
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "version"],
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string",
+              "const": "1.0.0"
+            }
+          }
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][-a-z0-9]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "data": {
+      "type": "object"
+    }
+  }
+}

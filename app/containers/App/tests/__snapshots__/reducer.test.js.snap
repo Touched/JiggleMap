@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`projectReducer returns the initial state 1`] = `
+Object {
+  "entities": Object {},
+  "error": false,
+  "loading": false,
+  "sidebarItem": null,
+}
+`;

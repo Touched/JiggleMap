@@ -1,0 +1,16 @@
+{
+  "id": "http://example.com/schema/entity/types/reference/id/blockset",
+  "type": "object",
+  "required": ["type", "id"],
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "blockset"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][-a-z0-9]*$"
+    }
+  }
+}
