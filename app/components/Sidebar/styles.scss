@@ -1,0 +1,31 @@
+$sidebarItemSize: 42px;
+$sidebarSize: 64px;
+
+.Sidebar {
+  background: #eee;
+  display: flex;
+
+  .Sidebar__bar {
+    background: #ccc;
+    width: $sidebarSize;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .Sidebar__item {
+    padding: ($sidebarSize - $sidebarItemSize) / 2;
+
+    .mdi-icon {
+      width: $sidebarItemSize;
+      height: $sidebarItemSize;
+    }
+
+    .Sidebar__item--active {
+
+    }
+  }
+}

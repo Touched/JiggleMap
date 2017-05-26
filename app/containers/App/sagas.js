@@ -59,6 +59,7 @@ export function* loadProjectEntities(projectPath) {
     // yield call(loadSingletonEntity, 'banks', projectRoot);
 
     yield call(loadEntities, 'map', 'maps', projectRoot);
+    yield call(loadEntities, 'blockset', 'blocksets', projectRoot);
 
     yield put(loadProjectSuccess());
   } catch (err) {

@@ -1,27 +1,39 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { loadTab } from 'containers/EditorTabs/actions';
 
 import { makeSelectEntities } from 'containers/App/selectors';
 
-function EntityLink({ type, id, icon, name, description }) {
+function EntityLink({ entity, onClick }) {
   return (
-    <Link to={`${type}/${id}`}>
-      <div>{icon}</div>
-      <div>{id}</div> {/* Display id muted */}
-      <div>{name}</div>
-      <div>{description}</div>
-    </Link>
+    <button onClick={() => onClick(entity)}>
+      <div>{entity.icon}</div>
+      <div>{entity.id}</div> {/* Display id muted */}
+      <div>{entity.name}</div>
+      <div>{entity.description}</div>
+    </button>
   );
 }
 
 EntityLink.propTypes = {
-  id: PropTypes.string,
-  type: PropTypes.string,
-  icon: PropTypes.string,
-  name: PropTypes.string,
-  description: PropTypes.string,
+  entity: PropTypes.shape({
+    id: PropTypes.string,
+    type: PropTypes.string,
+    icon: PropTypes.string,
+    name: PropTypes.string,
+    description: PropTypes.string,
+  }).isRequired,
+  onClick: PropTypes.func,
+};
+
+EntityLink.defaultProps = {
+  id: '',
+  type: '',
+  icon: null,
+  name: '',
+  description: '',
+  onClick: null,
 };
 
 export class EntityDrawer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -33,12 +45,22 @@ export class EntityDrawer extends React.PureComponent { // eslint-disable-line r
       name: PropTypes.string,
       description: PropTypes.string,
     })),
+    openEntity: PropTypes.func,
+  };
+
+  static defaultProps = {
+    entities: [],
+    openEntity: null,
   };
 
   render() {
     return (
       <ul>
-        {this.props.entities.map((entity) => <li key={entity.id}><EntityLink {...entity} /></li>)}
+        {this.props.entities.map((entity) => (
+          <li key={entity.id}>
+            <EntityLink entity={entity} onClick={this.props.openEntity} />
+          </li>
+        ))}
       </ul>
     );
   }
@@ -48,4 +70,18 @@ const mapStateToProps = (state, { type }) => createStructuredSelector({
   entities: makeSelectEntities(type),
 })(state);
 
-export default connect(mapStateToProps, null)(EntityDrawer);
+function mapDispatchToProps(dispatch) {
+  return {
+    openEntity({ id, type, name }) {
+      dispatch(loadTab(type, {
+        title: name,
+        meta: {
+          type,
+          id,
+        },
+      }));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EntityDrawer);

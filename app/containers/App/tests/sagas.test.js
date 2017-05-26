@@ -142,6 +142,7 @@ describe('loadProjectEntities', () => {
   it('loads all the correct entities and dispatches a success action', () => {
     expect(generator.next().value).toEqual(call(loadProjectEntity, '/test/project.json'));
     expect(generator.next().value).toEqual(call(loadEntities, 'map', 'maps', '/test'));
+    expect(generator.next().value).toEqual(call(loadEntities, 'blockset', 'blocksets', '/test'));
     expect(generator.next().value).toEqual(put(loadProjectSuccess()));
   });
 

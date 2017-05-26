@@ -27,7 +27,6 @@ describe('<Sidebar />', () => {
   it('renders the sidebar items', () => {
     const item = {
       id: 'item',
-      route: '/item',
       icon: 'Icon',
     };
     const component = shallow(<Sidebar items={[item]} />);
