@@ -1,3 +1,5 @@
+/* @flow */
+
 /*
  *
  * EditorTabs actions
@@ -20,28 +22,28 @@ export function newTab() {
   };
 }
 
-export function reorderTabs(order) {
+export function reorderTabs(order: Array<string>) {
   return {
     type: REORDER_TABS,
     order,
   };
 }
 
-export function switchTab(id) {
+export function switchTab(id: string) {
   return {
     type: SWITCH_TAB,
     id,
   };
 }
 
-export function closeTab(id) {
+export function closeTab(id: string) {
   return {
     type: CLOSE_TAB,
     id,
   };
 }
 
-export function relayActionToTab(id, action) {
+export function relayActionToTab(id: string, action: { type: string }) {
   return {
     type: RELAY_ACTION_TO_TAB,
     id,
@@ -53,11 +55,13 @@ export function relayActionToTab(id, action) {
  * Load something in the active tab or create a new tab
  */
 export function loadTab(
-  kind,
-  { title = '', icon = null, meta = {} } = {},
-  forceNewTab = false,
-  focusTab = false,
+  kind: string,
+  options: { title?: string, icon?: string, meta?: Object } = {},
+  forceNewTab: boolean = false,
+  focusTab: boolean = false,
 ) {
+  const { title = '', icon = null, meta = {} } = options;
+
   return {
     type: LOAD_TAB,
     kind,
@@ -72,7 +76,7 @@ export function loadTab(
 /**
  * The loading event
  */
-export function load(kind, meta) {
+export function load(kind: string, meta: Object) {
   return {
     type: LOAD,
     kind,

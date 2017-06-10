@@ -1,10 +1,12 @@
+/* @flow */
+
 /*
  *
  * EditorTabs
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { createStructuredSelector } from 'reselect';
@@ -20,7 +22,7 @@ import './styles.scss';
 const TRANSITION_ENTER_TIMEOUT = 100;
 const TRANSITION_LEAVE_TIMEOUT = 100;
 
-export function reorderElement(list, element, shift) {
+export function reorderElement<T>(list: Array<T>, element: T, shift: number) {
   const index = list.indexOf(element);
 
   if (index < 0) {
@@ -32,21 +34,14 @@ export function reorderElement(list, element, shift) {
   return fromJS(list).delete(index).insert(newIndex, element).toJS();
 }
 
-export class EditorTabsBar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  static propTypes = {
-    onCloseTab: PropTypes.func,
-    onNewTab: PropTypes.func,
-    onSwitchTab: PropTypes.func,
-    onReorder: PropTypes.func,
-    tabs: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      icon: PropTypes.string,
-      dirty: PropTypes.bool,
-    })).isRequired,
-    activeTab: PropTypes.string,
-  };
+type Tab = {
+  id: string,
+  title: string,
+  icon: ?string,
+  dirty: bool,
+};
 
+export class EditorTabsBar extends React.PureComponent {
   static defaultProps = {
     onCloseTab: null,
     onNewTab: null,
@@ -55,7 +50,7 @@ export class EditorTabsBar extends React.PureComponent { // eslint-disable-line 
     activeTab: null,
   };
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       dragging: null,
@@ -63,7 +58,37 @@ export class EditorTabsBar extends React.PureComponent { // eslint-disable-line 
     };
   }
 
-  handleClose = (event, id) => {
+  state: {
+    dragging: ?{
+      id: string,
+      rect: {
+        left: number,
+        right: number,
+        width: number,
+      },
+      x: number,
+      translate: number,
+      order: Array<string>,
+      moved: boolean,
+    },
+    closing: ?{
+      width: number,
+    },
+  };
+
+  props: {
+    onCloseTab: (string) => void,
+    onNewTab: () => void,
+    onSwitchTab: (string) => void,
+    onReorder: (Array<string>) => void,
+    tabs: Array<Tab>,
+    activeTab: string,
+  }
+
+  tabRef: HTMLElement;
+  ref: HTMLElement;
+
+  handleClose = (event: Event, id: string) => {
     this.props.onCloseTab(id);
     const { width } = this.tabRef.getBoundingClientRect();
 
@@ -75,7 +100,8 @@ export class EditorTabsBar extends React.PureComponent { // eslint-disable-line 
     }));
   };
 
-  handleDragStart = ({ currentTarget, clientX }, id) => {
+  handleDragStart = (event: MouseEvent & { currentTarget: HTMLElement }, id: string) => {
+    const { currentTarget, clientX } = event;
     const rect = currentTarget.getBoundingClientRect();
     const order = this.props.tabs.map(({ id: tabId }) => tabId);
 
@@ -92,7 +118,7 @@ export class EditorTabsBar extends React.PureComponent { // eslint-disable-line 
     }));
   };
 
-  handleDragMove = (event) => {
+  handleDragMove = (event: MouseEvent) => {
     if (this.state.closing) {
       this.setState((state) => ({
         ...state,
@@ -100,8 +126,9 @@ export class EditorTabsBar extends React.PureComponent { // eslint-disable-line 
       }));
     }
 
-    if (this.state.dragging !== null) {
-      const { dragging } = this.state;
+    const { dragging } = this.state;
+
+    if (dragging) {
       const { clientX } = event;
       const { left, right } = this.ref.getBoundingClientRect();
 
@@ -130,7 +157,7 @@ export class EditorTabsBar extends React.PureComponent { // eslint-disable-line 
           }));
         }
 
-        const translate = clientX - this.state.dragging.x;
+        const translate = clientX - dragging.x;
 
         this.setState((state) => ({
           ...state,
@@ -179,21 +206,18 @@ export class EditorTabsBar extends React.PureComponent { // eslint-disable-line 
           className={classNames('EditorTabsBar', classes)}
         >
           {tabs.map(({ id, ...props }) => {
-            const isDragging = this.state.dragging;
-            const isClosing = this.state.closing;
-            const isDraggingTab = isDragging && this.state.dragging.id === id;
-
+            const { closing, dragging } = this.state;
             const styles = {};
 
-            if (isClosing) {
-              styles.maxWidth = `${this.state.closing.width}px`;
-            } else if (isDraggingTab) {
-              styles.transform = `translate(${this.state.dragging.translate}px)`;
-            } else if (isDragging) {
-              const index = this.state.dragging.order.indexOf(id);
+            if (closing) {
+              styles.maxWidth = `${closing.width}px`;
+            } else if (dragging && dragging.id === id) {
+              styles.transform = `translate(${dragging.translate}px)`;
+            } else if (dragging) {
+              const index = dragging.order.indexOf(id);
               const originalIndex = this.props.tabs.map(({ id: tabId }) => tabId).indexOf(id);
               const distance = index - originalIndex;
-              styles.transform = `translate(${distance * this.state.dragging.rect.width}px)`;
+              styles.transform = `translate(${distance * dragging.rect.width}px)`;
             }
 
             return (
@@ -223,18 +247,18 @@ export const mapStateToProps = createStructuredSelector({
   activeTab: makeSelectEditorTabsActiveIndex(),
 });
 
-export function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch: Function) {
   return {
     onNewTab() {
       dispatch(newTab());
     },
-    onCloseTab(id) {
+    onCloseTab(id: string) {
       dispatch(closeTab(id));
     },
-    onSwitchTab(id) {
+    onSwitchTab(id: string) {
       dispatch(switchTab(id));
     },
-    onReorder(order) {
+    onReorder(order: Array<string>) {
       dispatch(reorderTabs(order));
     },
   };

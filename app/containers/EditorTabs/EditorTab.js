@@ -1,36 +1,40 @@
-import React, { PropTypes } from 'react';
+/* @flow */
+
+import React from 'react';
 import classNames from 'classnames';
 import CloseIcon from 'mdi-react/CloseIcon';
 import AsteriskIcon from 'mdi-react/AsteriskIcon';
 
-export default class EditorTab extends React.PureComponent {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    onClose: PropTypes.func,
-    onSelect: PropTypes.func,
-    onMouseDown: PropTypes.func,
-    tabRef: PropTypes.func,
-    active: PropTypes.bool,
-    dirty: PropTypes.bool,
-    style: PropTypes.object,
-  };
+import nop from 'utils/nop';
 
+export default class EditorTab extends React.PureComponent {
   static defaultProps = {
-    onClose: null,
-    onSelect: null,
-    onMouseDown: null,
-    tabRef: null,
+    onClose: nop,
+    onSelect: nop,
+    onMouseDown: nop,
+    tabRef: nop,
     active: false,
     dirty: false,
     style: {},
   };
 
-  handleClose = (event) => {
+  props: {
+    title: string,
+    tabRef: (HTMLElement) => void,
+    onClose: (Event) => void,
+    onSelect: (Event) => void,
+    onMouseDown: (MouseEvent) => void,
+    active: boolean,
+    dirty: boolean,
+    style: Object,
+  };
+
+  handleClose = (event: Event) => {
     this.props.onClose(event);
     event.stopPropagation();
   };
 
-  handleMouseDown = (event) => {
+  handleMouseDown = (event: MouseEvent) => {
     this.props.onSelect(event);
     this.props.onMouseDown(event);
   };

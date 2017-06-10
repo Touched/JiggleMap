@@ -29,6 +29,7 @@
     "build:electron": "npm run build:native && npm run build:electron:main && npm run build:electron:renderer",
     "build:electron:main": "cross-env APPLICATION=electron NODE_ENV=production webpack --config internals/webpack/webpack.electron.babel.js --color -p --progress",
     "build:electron:renderer": "cross-env APPLICATION=electron NODE_ENV=production webpack --config internals/webpack/webpack.prod.babel.js --color -p --progress",
+    "check": "flow check",
     "start": "cross-env NODE_ENV=development node server",
     "start:electron": "cross-env APPLICATION=electron NODE_ENV=development node server --electron",
     "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true node server",
@@ -44,7 +45,7 @@
     "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts",
     "lint:js": "npm run lint:eslint -- . ",
     "lint:staged": "lint-staged",
-    "pretest": "npm run test:clean && npm run lint",
+    "pretest": "npm run test:clean && npm run lint && npm run check",
     "test:clean": "rimraf ./coverage",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:update-snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
@@ -138,7 +139,8 @@
     "plugins": [
       "redux-saga",
       "react",
-      "jsx-a11y"
+      "jsx-a11y",
+      "flowtype"
     ],
     "parserOptions": {
       "ecmaVersion": 6,
@@ -200,7 +202,26 @@
       "redux-saga/no-yield-in-race": 2,
       "redux-saga/yield-effects": 2,
       "require-yield": 0,
-      "import/no-webpack-loader-syntax": 0
+      "import/no-webpack-loader-syntax": 0,
+      "flowtype/space-after-type-colon": [
+        2,
+        "always"
+      ],
+      "flowtype/space-before-type-colon": [
+        2,
+        "never"
+      ],
+      "flowtype/space-before-generic-bracket": [
+        2,
+        "never"
+      ],
+      "flowtype/union-intersection-spacing": [
+        2,
+        "always"
+      ],
+      "flowtype/define-flow-type": 2,
+      "flowtype/use-flow-type": 2,
+      "flowtype/semi": 2
     },
     "settings": {
       "import/resolver": {
@@ -312,6 +333,7 @@
     "eslint-config-airbnb": "^15.0.1",
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-import-resolver-webpack": "0.8.0",
+    "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
@@ -319,6 +341,7 @@
     "eventsource-polyfill": "0.9.6",
     "exports-loader": "0.6.3",
     "file-loader": "0.9.0",
+    "flow-bin": "^0.47.0",
     "html-loader": "0.4.4",
     "html-webpack-plugin": "2.24.1",
     "image-webpack-loader": "2.0.0",

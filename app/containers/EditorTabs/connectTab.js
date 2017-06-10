@@ -1,3 +1,5 @@
+/* @flow */
+
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
@@ -11,6 +13,10 @@ function tryCallMapper(mapper, ...args) {
 
   return {};
 }
+
+type Dispatch = ({ type: string }) => void;
+type MapStateToProps = (any, Object, string) => Object;
+type MapDispatchToProps = (Dispatch, Object, string) => Object;
 
 /**
  * Connect a component to the Redux store, passing the `tabId` down in its React context to the
@@ -42,12 +48,12 @@ function tryCallMapper(mapper, ...args) {
  * Any of these mapping functions can be omitted, as in the regular `connect` from `react-redux`.
  */
 export default function connectTab(
-  mapStateToProps,
-  mapTabStateToProps,
-  mapDispatchToProps,
-  mapTabDispatchToProps,
+  mapStateToProps: ?MapStateToProps,
+  mapTabStateToProps: ?MapStateToProps,
+  mapDispatchToProps: ?MapDispatchToProps,
+  mapTabDispatchToProps: ?MapDispatchToProps,
 ) {
-  function wrappedMapStateToProps(state, { tabId, ...ownProps }) {
+  function wrappedMapStateToProps(state: any, { tabId, ...ownProps }: { tabId: string }) {
     const selector = makeSelectEditorTabsTabStateDomain(tabId);
 
     const stateProps = tryCallMapper(mapStateToProps, state, ownProps, tabId);
@@ -83,7 +89,7 @@ export default function connectTab(
 
   const connectComponent = connect(wrappedMapStateToProps, wrappedMapDispatchToProps, mergeProps);
 
-  return (WrappedComponent) => {
+  return (WrappedComponent: Class<React$Component<*, *, *>>) => {
     const wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
     const ConnectedComponent = connectComponent(WrappedComponent);

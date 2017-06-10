@@ -1,3 +1,5 @@
+/* @flow */
+
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -8,13 +10,6 @@ import WelcomeTab from 'components/WelcomeTab';
 import { makeSelectEditorTabsActive } from './selectors';
 
 export class EditorTabs extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  static propTypes = {
-    routes: PropTypes.objectOf(PropTypes.func).isRequired,
-    activeTab: PropTypes.shape({
-      kind: PropTypes.string,
-    }),
-  };
-
   static defaultProps = {
     activeTab: null,
   };
@@ -31,10 +26,18 @@ export class EditorTabs extends React.Component { // eslint-disable-line react/p
     };
   }
 
+  props: {
+    routes: { [string]: Class<React$Component<*, *, *>> },
+    activeTab: ?{
+      id: string,
+      kind: string,
+    },
+  }
+
   render() {
     const { activeTab, routes } = this.props;
 
-    if (activeTab === null) {
+    if (!activeTab) {
       return <WelcomeTab />;
     }
 
