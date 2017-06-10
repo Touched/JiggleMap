@@ -286,9 +286,9 @@
   },
   "devDependencies": {
     "babel-cli": "6.18.0",
-    "babel-core": "6.21.0",
+    "babel-core": "^6.25.0",
     "babel-eslint": "7.1.1",
-    "babel-loader": "6.2.10",
+    "babel-loader": "^7.0.0",
     "babel-plugin-dynamic-import-node": "1.0.0",
     "babel-plugin-react-intl": "2.2.0",
     "babel-plugin-react-transform": "2.0.2",
@@ -344,7 +344,7 @@
     "sinon": "2.0.0-pre",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
-    "webpack": "2.2.0-rc.3",
+    "webpack": "^2.6.1",
     "webpack-dev-middleware": "1.9.0",
     "webpack-hot-middleware": "2.15.0"
   }
