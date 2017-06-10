@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapEditorReducer returns the initial state 1`] = `
+Immutable.Map {
+  loading: false,
+  linked: false,
+  border: Immutable.Map {
+    dimensions: Immutable.List [
+      0,
+      0,
+    ],
+    height: Immutable.List [
+    ],
+    collision: Immutable.List [
+    ],
+    block: Immutable.List [
+    ],
+  },
+  map: Immutable.Map {
+    dimensions: Immutable.List [
+      0,
+      0,
+    ],
+    height: Immutable.List [
+    ],
+    collision: Immutable.List [
+    ],
+    block: Immutable.List [
+    ],
+  },
+  blocksets: Immutable.Map {
+    primary: Immutable.Map {
+      id: null,
+      palette: Immutable.List [
+      ],
+      blocks: Immutable.List [
+      ],
+    },
+    secondary: Immutable.Map {
+      id: null,
+      palette: Immutable.List [
+      ],
+      blocks: Immutable.List [
+      ],
+    },
+  },
+  scripts: Immutable.List [
+  ],
+  connections: Immutable.List [
+  ],
+  entities: Immutable.List [
+  ],
+}
+`;

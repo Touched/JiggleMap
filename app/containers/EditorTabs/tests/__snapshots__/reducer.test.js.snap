@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`combinedTabsReducers returns the initial state 1`] = `
+Immutable.Map {
+  active: "0",
+  nextId: "1",
+  tabs: Immutable.List [
+    "0",
+  ],
+  byId: Immutable.Map {
+    0: Immutable.Map {
+      icon: null,
+      title: "New Tab",
+      kind: null,
+      state: null,
+      dirty: false,
+    },
+  },
+}
+`;

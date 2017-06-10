@@ -6,9 +6,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
+
+import rootSagas from 'containers/App/sagas';
+import { buildTabMiddleware } from './tabs';
 import createReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
+const tabMiddleware = buildTabMiddleware();
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
@@ -16,6 +20,7 @@ export default function configureStore(initialState = {}, history) {
   // 2. routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
     sagaMiddleware,
+    tabMiddleware((...args) => sagaMiddleware.run(...args)),
     routerMiddleware(history),
   ];
 
@@ -40,7 +45,10 @@ export default function configureStore(initialState = {}, history) {
 
   // Extensions
   store.runSaga = sagaMiddleware.run;
+
   store.asyncReducers = {}; // Async reducer registry
+
+  [...rootSagas].map(store.runSaga);
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */

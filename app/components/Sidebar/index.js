@@ -5,12 +5,18 @@
 */
 
 import React, { PropTypes } from 'react';
-// import styled from 'styled-components';
+import classNames from 'classnames';
+
+import './styles.scss';
 
 function SidebarButton({ onClick, active, icon }) {
+  const classes = {
+    'Sidebar__item--active': active,
+  };
+
   return (
     <li>
-      <button onClick={onClick}>{active ? '*' : ''}{icon}</button>
+      <button className={classNames('Sidebar__item', classes)} onClick={onClick}>{icon}</button>
     </li>
   );
 }
@@ -21,13 +27,18 @@ SidebarButton.propTypes = {
   icon: PropTypes.node,
 };
 
-class Sidebar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+SidebarButton.defaultProps = {
+  active: false,
+  icon: null,
+};
+
+class Sidebar extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { active, setActiveItem, items } = this.props;
 
     return (
-      <div>
-        <ul>
+      <div className="Sidebar">
+        <ul className="Sidebar__bar">
           {items.map(({ id, icon }) => (
             <SidebarButton
               key={id}
@@ -55,6 +66,8 @@ Sidebar.propTypes = {
 
 Sidebar.defaultProps = {
   items: [],
+  active: null,
+  setActiveItem: () => null,
 };
 
 export default Sidebar;

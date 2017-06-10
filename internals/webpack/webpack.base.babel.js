@@ -62,6 +62,9 @@ module.exports = (options) => ({
       query: {
         limit: 10000,
       },
+    }, {
+      test: /\.node$/,
+      loader: 'node-loader',
     }],
   },
   plugins: options.plugins.concat([

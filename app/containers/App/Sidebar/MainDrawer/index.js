@@ -5,7 +5,7 @@ import { loadProject } from 'containers/App/actions';
 
 export class MainDrawer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
-    loadProject: PropTypes.func,
+    loadProject: PropTypes.func.isRequired,
   };
 
   render() {

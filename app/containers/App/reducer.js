@@ -4,7 +4,7 @@
  *
  */
 
-import { Record, Map } from 'immutable';
+import { Record, Map, fromJS } from 'immutable';
 
 import {
   LOAD_PROJECT,
@@ -38,7 +38,7 @@ function projectReducer(state = new ProjectState(), action) {
         entities: Map(),
       });
     case ADD_ENTITY:
-      return state.setIn(['entities', action.entity.type, action.entity.id], action.entity);
+      return state.setIn(['entities', action.entity.type, action.entity.id], fromJS(action.entity));
     case SET_SIDEBAR_ITEM:
       return state.set('sidebarItem', action.item);
     default:
