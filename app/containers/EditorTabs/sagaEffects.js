@@ -21,8 +21,8 @@ export function throttleRelayed(ms, idPattern, pattern, saga, ...args) {
   return throttle(ms, relayedMatcher(idPattern, pattern), saga, ...args);
 }
 
-export function putRelayed(action) {
-  return put(relayActionToTab(action));
+export function putRelayed(id, action) {
+  return put(relayActionToTab(id, action));
 }
 
-putRelayed.resolve = (action) => put.resolve(relayActionToTab(action));
+putRelayed.resolve = (id, action) => put.resolve(relayActionToTab(id, action));
