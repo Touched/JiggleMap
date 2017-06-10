@@ -4,7 +4,6 @@
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import Immutable, { fromJS } from 'immutable';
-import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
 import rootSagas from 'containers/App/sagas';
@@ -14,14 +13,13 @@ import createReducer from './reducers';
 const sagaMiddleware = createSagaMiddleware();
 const tabMiddleware = buildTabMiddleware();
 
-export default function configureStore(initialState = {}, history) {
+export default function configureStore(initialState = {}) {
   // Create the store with two middlewares
   // 1. sagaMiddleware: Makes redux-sagas work
   // 2. routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
     sagaMiddleware,
     tabMiddleware((...args) => sagaMiddleware.run(...args)),
-    routerMiddleware(history),
   ];
 
   const enhancers = [

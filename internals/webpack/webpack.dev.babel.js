@@ -29,6 +29,7 @@ module.exports = require('./webpack.base.babel')({
   // Add hot reloading in development
   entry: [
     'eventsource-polyfill', // Necessary for hot reloading with IE
+    'react-hot-loader/patch',
     'webpack-hot-middleware/client?reload=true',
     path.join(process.cwd(), 'app/app.js'), // Start with js/app.js
   ],
@@ -48,7 +49,8 @@ module.exports = require('./webpack.base.babel')({
     // locally linked packages. This is an issue with babel and webpack.
     // See https://github.com/babel/babel-loader/issues/149 and
     // https://github.com/webpack/webpack/issues/1866
-    presets: ['babel-preset-react-hmre'].map(require.resolve),
+    // presets: ['babel-preset-react-hmre'].map(require.resolve),
+    plugins: ['react-hot-loader/babel'].map(require.resolve),
   },
 
   // Emit a source map for easier debugging

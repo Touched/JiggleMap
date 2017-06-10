@@ -12,16 +12,11 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyRouterMiddleware, Router, browserHistory, hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { useScroll } from 'react-router-scroll';
+import { AppContainer } from 'react-hot-loader';
 import 'sanitize.css/sanitize.css';
 
 // Import root app
-import App from 'containers/App';
-
-// Import selector for `syncHistoryWithStore`
-import { makeSelectLocationState } from 'containers/App/selectors';
+import HomePage from 'containers/HomePage';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
@@ -41,51 +36,23 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 import './global-styles';
 
-// Import root routes
-import createRoutes from './routes';
-
-// hashHistory manages the routing history with the hash (fragment) portion of the url.
-// When Electron is in production mode, it is packaged with the app pointing at a file://
-// protocol HTML page (i.e. index.html). Since this results in a path like
-// file:///path/to/app/index.html, React router will complaining about being unable to match
-// routes if using regular browserHistory.
-const routerHistory = process.env.APPLICATION === 'electron' ? hashHistory : browserHistory;
-
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
 const initialState = {};
-const store = configureStore(initialState, routerHistory);
-
-// Sync history and store, as the react-router-redux reducer
-// is under the non-default key ("routing"), selectLocationState
-// must be provided for resolving how to retrieve the "route" in the state
-const history = syncHistoryWithStore(routerHistory, store, {
-  selectLocationState: makeSelectLocationState(),
-});
-
-// Set up the router, wrapping all Routes in the App component
-const rootRoute = {
-  component: App,
-  childRoutes: createRoutes(store),
-};
+const store = configureStore(initialState);
 
 const render = (messages) => {
   ReactDOM.render(
-    <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <Router
-          history={history}
-          routes={rootRoute}
-          render={
-            // Scroll to top when going to a new page, imitating default browser
-            // behaviour
-            applyRouterMiddleware(useScroll())
-          }
-        />
-      </LanguageProvider>
-    </Provider>,
+    <AppContainer>
+      <Provider store={store}>
+        <LanguageProvider messages={messages}>
+          <HomePage />
+        </LanguageProvider>
+      </Provider>
+    </AppContainer>
+    ,
     document.getElementById('app')
   );
 };
@@ -95,6 +62,10 @@ if (module.hot) {
   // modules.hot.accept does not accept dynamic dependencies,
   // have to be constants at compile-time
   module.hot.accept('./i18n', () => {
+    render(translationMessages);
+  });
+
+  module.hot.accept('containers/HomePage', () => {
     render(translationMessages);
   });
 }
