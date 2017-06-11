@@ -20,8 +20,9 @@ const installExtensions = async () => {
   const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
 
   const extensions = [
-    'REACT_DEVELOPER_TOOLS',
-    'REDUX_DEVTOOLS',
+    installer.REACT_DEVELOPER_TOOLS,
+    installer.REDUX_DEVTOOLS,
+    'djdcbmfacaaocoomokenoalbomllhnko',
   ];
 
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
@@ -30,7 +31,7 @@ const installExtensions = async () => {
   //       Waiting on https://github.com/tc39/proposal-async-iteration
   //       Promises will fail silently, which isn't what we want in development
   return Promise
-      .all(extensions.map((name) => installer.default(installer[name], forceDownload)))
+      .all(extensions.map((extension) => installer.default(extension, forceDownload)))
       .catch(console.log); // eslint-disable-line no-console
 };
 
