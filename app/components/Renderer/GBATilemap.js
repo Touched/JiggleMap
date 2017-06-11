@@ -203,7 +203,6 @@ export default class GBATilemap extends React.PureComponent {
 
     const { container } = this.context;
 
-    // TODO: Calculate size and position dynamically
     const boundingRectangle = calculateBoundingRectangle(
       container.width,
       container.height,

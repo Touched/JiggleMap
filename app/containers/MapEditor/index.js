@@ -7,7 +7,7 @@
 import React from 'react';
 import { createStructuredSelector } from 'reselect';
 
-import { GBATilemap, Renderer } from 'components/Renderer';
+import { Area, GBATilemap, Renderer } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import { makeSelectMapPalette, makeSelectMapTileset, makeSelectMapTilemap } from './selectors';
@@ -52,6 +52,13 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
             tilemap={this.props.tilemap[1]}
             palette={this.props.palette}
             transparent
+          />
+          <Area
+            x={0}
+            y={0}
+            width={11 * 16}
+            height={17 * 16}
+            onMouseMove={console.log}
           />
         </Renderer>
       </div>
