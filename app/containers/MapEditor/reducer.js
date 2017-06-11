@@ -22,6 +22,7 @@ const blocksetData = {
   id: null,
   palette: [],
   blocks: [],
+  tiles: [],
 };
 
 const initialState = fromJS({
@@ -38,6 +39,21 @@ const initialState = fromJS({
   entities: [],
 });
 
+function loadMapData(data) {
+  const {
+    width: dataWidth,
+    height: dataHeight,
+    data: { block, collision, height },
+  } = data;
+
+  return {
+    dimensions: [dataWidth, dataHeight],
+    block,
+    collision,
+    height,
+  };
+}
+
 function mapEditorReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_MAP_BLOCKSET:
@@ -48,7 +64,7 @@ function mapEditorReducer(state = initialState, action) {
         tiles: fromJS(action.tiles),
       });
     case LOAD_MAP_DATA:
-      return state;
+      return state.mergeIn(['map'], loadMapData(action.entity.data.map));
     default:
       return state;
   }

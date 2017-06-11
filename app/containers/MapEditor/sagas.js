@@ -8,7 +8,7 @@ import { takeLatestRelayed, putRelayed } from 'containers/EditorTabs/sagaEffects
 import { LOAD } from 'containers/EditorTabs/constants';
 import { makeSelectEntity } from 'containers/App/selectors';
 import { parseEntity } from 'containers/App/sagas';
-import { loadMapBlockset } from './actions';
+import { loadMapBlockset, loadMapData } from './actions';
 
 export function* loadBlockset(tabId, primary, { id, type }) {
   invariant(
@@ -30,7 +30,7 @@ export function* loadBlockset(tabId, primary, { id, type }) {
   yield putRelayed(tabId, loadMapBlockset(primary, entity, Array.from(tilesData.pixels)));
 }
 
-export function* loadMapData({ id, type }) {
+export function* loadData({ id, type }) {
   invariant(
     type === 'map',
     `loadMapData can only load map entities, but it receieved a '${type}'`,
@@ -41,9 +41,10 @@ export function* loadMapData({ id, type }) {
 }
 
 export function* loadMap({ id, action: { meta } }) {
-  const entity = yield call(loadMapData, meta);
+  const entity = yield call(loadData, meta);
 
   // TODO: Set map data
+  yield putRelayed(id, loadMapData(entity));
 
   // Load blockset assets
   // TODO: Make parallel
