@@ -9,6 +9,7 @@ import { fromJS } from 'immutable';
 import {
   LOAD_MAP_BLOCKSET,
   LOAD_MAP_DATA,
+  EDIT_MAP,
 } from './constants';
 
 const mapData = {
@@ -54,6 +55,31 @@ function loadMapData(data) {
   };
 }
 
+function editMap(data, start, end) {
+  const patch = [{
+    x: start.x,
+    y: start.y,
+    block: 0,
+  }, {
+    x: end.x,
+    y: end.y,
+    block: 0,
+  }];
+
+  const mutableBlock = data.get('block').asMutable();
+  const [width] = data.get('dimensions');
+
+  patch.forEach(({ x, y, block }) => {
+    const index = x + (y * width);
+
+    if (block !== undefined) {
+      mutableBlock.set(index, block);
+    }
+  });
+
+  return data.set('block', mutableBlock.asImmutable());
+}
+
 function mapEditorReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_MAP_BLOCKSET:
@@ -65,6 +91,8 @@ function mapEditorReducer(state = initialState, action) {
       });
     case LOAD_MAP_DATA:
       return state.mergeIn(['map'], loadMapData(action.entity.data.map));
+    case EDIT_MAP:
+      return state.update('map', (map) => editMap(map, action.start, action.end, action.modifiers));
     default:
       return state;
   }

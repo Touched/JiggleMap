@@ -3,6 +3,7 @@
 import React from 'react';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
+import nop from 'utils/nop';
 
 import { containerShape } from './ContainerProvider';
 import { calculateBoundingRectangle } from './utils';
@@ -68,6 +69,10 @@ export default class Area extends React.PureComponent {
     y: 0,
     z: Infinity,
     name: '',
+    onClick: nop,
+    onMouseDown: nop,
+    onMouseMove: nop,
+    onMouseUp: nop,
   };
 
   componentDidMount() {

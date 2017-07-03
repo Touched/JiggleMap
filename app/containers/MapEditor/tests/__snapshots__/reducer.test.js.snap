@@ -35,12 +35,16 @@ Immutable.Map {
       ],
       blocks: Immutable.List [
       ],
+      tiles: Immutable.List [
+      ],
     },
     secondary: Immutable.Map {
       id: null,
       palette: Immutable.List [
       ],
       blocks: Immutable.List [
+      ],
+      tiles: Immutable.List [
       ],
     },
   },
