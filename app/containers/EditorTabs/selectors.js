@@ -3,11 +3,11 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the editorTabs state domain
  */
-const selectEditorTabsDomain = () => (state) => state.get('editorTabs');
+const selectEditorTabsDomain = () => (state) => state.editorTabs;
 
 const makeSelectEditorTabsTabStateDomain = (id) => createSelector(
   selectEditorTabsDomain(),
-  (substate) => substate.getIn(['byId', id, 'state']),
+  (substate) => substate.byId[id].state,
 );
 
 /**
@@ -15,30 +15,36 @@ const makeSelectEditorTabsTabStateDomain = (id) => createSelector(
  */
 const makeSelectEditorTabsActiveIndex = () => createSelector(
   selectEditorTabsDomain(),
-  (substate) => substate.get('active'),
+  (substate) => substate.active,
 );
 
 const makeSelectEditorTabsNextId = () => createSelector(
   selectEditorTabsDomain(),
-  (substate) => substate.get('nextId'),
+  (substate) => substate.nextId,
 );
 
 const makeSelectEditorTabsActive = () => (state) => {
   const substate = selectEditorTabsDomain()(state);
-  const active = substate.get('active');
+  const active = substate.active;
 
   if (!active) {
     return null;
   }
 
-  const activeTab = substate.getIn(['byId', active]);
+  const activeTab = substate.byId[active];
 
-  return activeTab.set('id', active).toJS();
+  return {
+    ...activeTab,
+    id: active,
+  };
 };
 
 const makeSelectEditorTabsTab = (id) => createSelector(
   selectEditorTabsDomain(),
-  (substate) => substate.getIn(['byId', id]).set('id', id).toJS(),
+  (substate) => ({
+    ...substate.byId[id],
+    id,
+  }),
 );
 
 /**
@@ -46,9 +52,13 @@ const makeSelectEditorTabsTab = (id) => createSelector(
  */
 const makeSelectEditorTabs = () => createSelector(
   selectEditorTabsDomain(),
-  (substate) => substate.get('tabs').map(
-    (id) => substate.getIn(['byId', id]).set('id', id),
-  ).toJS(),
+  /* (substate) => substate.get('tabs').map(
+     (id) => substate.getIn(['byId', id]).set('id', id),
+     ).toJS(), */
+  (substate) => substate.tabs.map((id) => ({
+    ...substate.byId[id],
+    id,
+  })),
 );
 
 export default makeSelectEditorTabs;

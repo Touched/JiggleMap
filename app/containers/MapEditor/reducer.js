@@ -4,8 +4,6 @@
  *
  */
 
-import { fromJS } from 'immutable';
-
 import {
   LOAD_MAP_BLOCKSET,
   LOAD_MAP_DATA,
@@ -26,7 +24,7 @@ const blocksetData = {
   tiles: [],
 };
 
-const initialState = fromJS({
+const initialState = {
   loading: false,
   linked: false,
   border: mapData,
@@ -38,7 +36,7 @@ const initialState = fromJS({
   scripts: [],
   connections: [],
   entities: [],
-});
+};
 
 function loadMapData(data) {
   const {
@@ -55,6 +53,16 @@ function loadMapData(data) {
   };
 }
 
+function setMapDataValue(oldData, newData, index, value) {
+  if (value === undefined || oldData[index] === value) {
+    return newData;
+  }
+
+  const dataCopy = newData || oldData.slice();
+  dataCopy[index] = value;
+  return dataCopy;
+}
+
 function editMap(data, start, end) {
   const patch = [{
     x: start.x,
@@ -66,33 +74,49 @@ function editMap(data, start, end) {
     block: 0,
   }];
 
-  const mutableBlock = data.get('block').asMutable();
-  const [width] = data.get('dimensions');
+  let mapBlockData = null; // data.block.slice();
+  const [width] = data.dimensions;
 
   patch.forEach(({ x, y, block }) => {
     const index = x + (y * width);
-
-    if (block !== undefined) {
-      mutableBlock.set(index, block);
-    }
+    mapBlockData = setMapDataValue(data.block, mapBlockData, index, block);
   });
 
-  return data.set('block', mutableBlock.asImmutable());
+  if (mapBlockData) {
+    return {
+      ...data,
+      block: mapBlockData,
+    };
+  }
+
+  return data;
 }
 
 function mapEditorReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_MAP_BLOCKSET:
-      return state.mergeIn(['blocksets', action.primary ? 'primary' : 'secondary'], {
-        id: action.entity.meta.id,
-        palette: fromJS(action.entity.data.palette),
-        blocks: fromJS(action.entity.data.blocks),
-        tiles: fromJS(action.tiles),
-      });
+      return {
+        ...state,
+        blocksets: {
+          ...state.blocksets,
+          [action.primary ? 'primary' : 'secondary']: {
+            id: action.entity.meta.id,
+            palette: action.entity.data.palette,
+            blocks: action.entity.data.blocks,
+            tiles: action.tiles,
+          },
+        },
+      };
     case LOAD_MAP_DATA:
-      return state.mergeIn(['map'], loadMapData(action.entity.data.map));
+      return {
+        ...state,
+        map: loadMapData(action.entity.data.map),
+      };
     case EDIT_MAP:
-      return state.update('map', (map) => editMap(map, action.start, action.end, action.modifiers));
+      return {
+        ...state,
+        map: editMap(state.map, action.start, action.end, action.modifiers),
+      };
     default:
       return state;
   }

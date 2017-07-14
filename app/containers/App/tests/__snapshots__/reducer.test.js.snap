@@ -5,6 +5,7 @@ Object {
   "entities": Object {},
   "error": false,
   "loading": false,
+  "path": null,
   "sidebarItem": null,
 }
 `;

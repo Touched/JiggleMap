@@ -10,7 +10,12 @@ import { createStructuredSelector } from 'reselect';
 import { GridArea, GBATilemap, Renderer } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
-import { makeSelectMapPalette, makeSelectMapTileset, makeSelectMapTilemap } from './selectors';
+import {
+  selectMapDimensions,
+  makeSelectMapPalette,
+  makeSelectMapTileset,
+  makeSelectMapTilemap,
+} from './selectors';
 import { editMap } from './actions';
 
 export class MapEditor extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -19,10 +24,12 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     tileset: Uint8Array,
     tilemap: Uint8Array,
     editMap: Function,
+    dimensions: [number, number],
   }
 
   render() {
     const z = 0.5;
+    const { dimensions: [width, height] } = this.props;
 
     return (
       <div>
@@ -39,8 +46,8 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
             x={0}
             y={0}
             z={0}
-            width={11 * 16}
-            height={17 * 16}
+            width={width * 16}
+            height={height * 16}
             tileset={this.props.tileset}
             tilemap={this.props.tilemap[0]}
             palette={this.props.palette}
@@ -50,8 +57,8 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
             x={0}
             y={0}
             z={0}
-            width={11 * 16}
-            height={17 * 16}
+            width={width * 16}
+            height={height * 16}
             tileset={this.props.tileset}
             tilemap={this.props.tilemap[1]}
             palette={this.props.palette}
@@ -60,8 +67,8 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
           <GridArea
             x={0}
             y={0}
-            width={11 * 16}
-            height={17 * 16}
+            width={width * 16}
+            height={height * 16}
             onMouseMove={this.props.editMap}
           />
         </Renderer>
@@ -71,6 +78,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
 }
 
 const mapTabStateToProps = createStructuredSelector({
+  dimensions: selectMapDimensions(),
   palette: makeSelectMapPalette(),
   tileset: makeSelectMapTileset(),
   tilemap: makeSelectMapTilemap(),

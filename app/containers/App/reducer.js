@@ -4,8 +4,6 @@
  *
  */
 
-import { Record, Map, fromJS } from 'immutable';
-
 import {
   LOAD_PROJECT,
   LOAD_PROJECT_SUCCESS,
@@ -14,33 +12,52 @@ import {
   SET_SIDEBAR_ITEM,
 } from './constants';
 
-export const ProjectState = Record({
+const initialState = {
   loading: false,
   error: false,
-  entities: Map(),
+  entities: {},
   sidebarItem: null,
-});
+  path: null,
+};
 
-function projectReducer(state = new ProjectState(), action) {
+function projectReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_PROJECT:
-      return state.merge({
+      return {
+        ...state,
         error: false,
         loading: true,
-        entities: Map(),
-      });
+        entities: {},
+      };
     case LOAD_PROJECT_SUCCESS:
-      return state.set('loading', false);
+      return {
+        ...state,
+        loading: false,
+      };
     case LOAD_PROJECT_ERROR:
-      return state.merge({
+      return {
+        ...state,
         loading: false,
         error: true,
-        entities: Map(),
-      });
+        path: null,
+        entities: {},
+      };
     case ADD_ENTITY:
-      return state.setIn(['entities', action.entity.type, action.entity.id], fromJS(action.entity));
+      return {
+        ...state,
+        entities: {
+          ...state.entities,
+          [action.entity.type]: {
+            ...state.entities[action.entity.type],
+            [action.entity.id]: action.entity,
+          },
+        },
+      };
     case SET_SIDEBAR_ITEM:
-      return state.set('sidebarItem', action.item);
+      return {
+        ...state,
+        sidebarItem: action.item,
+      };
     default:
       return state;
   }

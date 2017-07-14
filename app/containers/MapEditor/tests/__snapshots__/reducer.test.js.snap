@@ -1,58 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`mapEditorReducer returns the initial state 1`] = `
-Immutable.Map {
-  loading: false,
-  linked: false,
-  border: Immutable.Map {
-    dimensions: Immutable.List [
-      0,
-      0,
-    ],
-    height: Immutable.List [
-    ],
-    collision: Immutable.List [
-    ],
-    block: Immutable.List [
-    ],
-  },
-  map: Immutable.Map {
-    dimensions: Immutable.List [
-      0,
-      0,
-    ],
-    height: Immutable.List [
-    ],
-    collision: Immutable.List [
-    ],
-    block: Immutable.List [
-    ],
-  },
-  blocksets: Immutable.Map {
-    primary: Immutable.Map {
-      id: null,
-      palette: Immutable.List [
-      ],
-      blocks: Immutable.List [
-      ],
-      tiles: Immutable.List [
-      ],
+Object {
+  "blocksets": Object {
+    "primary": Object {
+      "blocks": Array [],
+      "id": null,
+      "palette": Array [],
+      "tiles": Array [],
     },
-    secondary: Immutable.Map {
-      id: null,
-      palette: Immutable.List [
-      ],
-      blocks: Immutable.List [
-      ],
-      tiles: Immutable.List [
-      ],
+    "secondary": Object {
+      "blocks": Array [],
+      "id": null,
+      "palette": Array [],
+      "tiles": Array [],
     },
   },
-  scripts: Immutable.List [
-  ],
-  connections: Immutable.List [
-  ],
-  entities: Immutable.List [
-  ],
+  "border": Object {
+    "block": Array [],
+    "collision": Array [],
+    "dimensions": Array [
+      0,
+      0,
+    ],
+    "height": Array [],
+  },
+  "connections": Array [],
+  "entities": Array [],
+  "linked": false,
+  "loading": false,
+  "map": Object {
+    "block": Array [],
+    "collision": Array [],
+    "dimensions": Array [
+      0,
+      0,
+    ],
+    "height": Array [],
+  },
+  "scripts": Array [],
 }
 `;

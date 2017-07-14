@@ -1,11 +1,12 @@
 import { createSelector } from 'reselect';
+import R from 'ramda';
 
-const selectMapBlocksetPalette = (type) => (state) => state.getIn(['blocksets', type, 'palette']);
-const selectMapBlocksetBlocks = (type) => (state) => state.getIn(['blocksets', type, 'blocks']);
-const selectMapBlocksetTileset = (type) => (state) => state.getIn(['blocksets', type, 'tiles']);
+const selectMapBlocksetPalette = (type) => (state) => state.blocksets[type].palette;
+const selectMapBlocksetBlocks = (type) => (state) => state.blocksets[type].blocks;
+const selectMapBlocksetTileset = (type) => (state) => state.blocksets[type].tiles;
 
-const selectMapBlockData = () => (state) => state.getIn(['map', 'block']);
-const selectMapDimensions = () => (state) => state.getIn(['map', 'dimensions']);
+const selectMapBlockData = () => (state) => state.map.block;
+const selectMapDimensions = () => (state) => state.map.dimensions;
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -14,7 +15,7 @@ const makeSelectMapPalette = () => createSelector(
   selectMapBlocksetPalette('primary'),
   selectMapBlocksetPalette('secondary'),
   (primary, secondary) => Uint8Array.from(
-    primary.slice(0, 7).concat(secondary.slice(7, 16)).flatten(),
+    R.flatten(R.concat(primary.slice(0, 7), secondary.slice(7, 16))),
   ),
 );
 
@@ -33,9 +34,10 @@ const makeSelectMapTileset = () => createSelector(
 const makeSelectMapBlocks = () => createSelector(
   selectMapBlocksetBlocks('primary'),
   selectMapBlocksetBlocks('secondary'),
-  (primary, secondary) => primary.map((block) => block.get('tiles')).concat(
-    secondary.map((block) => block.get('tiles')),
-  ).toJS(),
+  (primary, secondary) => {
+    const allTiles = R.map(R.prop('tiles'));
+    return R.concat(allTiles(primary), allTiles(secondary));
+  },
 );
 
 function translate({ tile, flipX, flipY, palette }) {
@@ -47,6 +49,15 @@ function translate({ tile, flipX, flipY, palette }) {
   ];
 }
 
+const defaultTile = {
+  flipX: false,
+  flipY: false,
+  palette: 0,
+  tile: 0,
+};
+
+const defaultBlock = R.repeat(defaultTile, 8);
+
 function buildLayersForMap(data, [width, height], blocks) {
   const layers = [
     Array(width * height * 4),
@@ -54,14 +65,13 @@ function buildLayersForMap(data, [width, height], blocks) {
   ];
 
   const stride = width * 2;
-
-  const mapBlocks = data.toJS();
+  const mapBlocks = data;
 
   for (let y = 0; y < height; y++) { // eslint-disable-line no-plusplus
     for (let x = 0; x < width; x++) { // eslint-disable-line no-plusplus
       const index = (y * stride * 2) + (x * 2);
       const block = mapBlocks[(y * width) + x];
-      const blockTiles = blocks[block];
+      const blockTiles = blocks[block] || defaultBlock;
 
       layers[0][index] = translate(blockTiles[0]);
       layers[0][index + 1] = translate(blockTiles[1]);
@@ -92,6 +102,7 @@ const makeSelectMapTilemap = () => createSelector(
 );
 
 export {
+  selectMapDimensions,
   makeSelectMapPalette,
   makeSelectMapTileset,
   makeSelectMapBlocks,

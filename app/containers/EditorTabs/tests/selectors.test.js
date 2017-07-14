@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import makeSelectEditorTabs, {
   makeSelectEditorTabsActiveIndex,
   makeSelectEditorTabsActive,
@@ -9,7 +8,7 @@ describe('makeSelectEditorTabsActiveIndex', () => {
   const selector = makeSelectEditorTabsActiveIndex();
 
   it('returns the active tab index', () => {
-    expect(selector(fromJS({ editorTabs: { active: '10' } }))).toEqual('10');
+    expect(selector({ editorTabs: { active: '10' } })).toEqual('10');
   });
 });
 
@@ -31,7 +30,7 @@ describe('makeSelectEditorTabsActive', () => {
       },
     };
 
-    expect(selector(fromJS(state))).toEqual({
+    expect(selector(state)).toEqual({
       id: '5',
       kind: 'tab',
       state: 'data',
@@ -43,7 +42,7 @@ describe('makeSelectEditorTabsActive', () => {
       editorTabs: { active: null },
     };
 
-    expect(selector(fromJS(state))).toEqual(null);
+    expect(selector(state)).toEqual(null);
   });
 });
 
@@ -62,7 +61,7 @@ describe('makeSelectEditorTabsTab', () => {
   };
 
   it('returns a tab with specified with the id populated', () => {
-    expect(selector(fromJS(state))).toEqual({
+    expect(selector(state)).toEqual({
       id: '5',
       kind: 'tab',
       state: 'data',
@@ -99,7 +98,7 @@ describe('makeSelectEditorTabs', () => {
       state: null,
     }];
 
-    expect(selector(fromJS({ editorTabs: state }))).toEqual(expected);
+    expect(selector({ editorTabs: state })).toEqual(expected);
   });
 
   it('returns an empty array if there are no tabs', () => {
@@ -109,6 +108,6 @@ describe('makeSelectEditorTabs', () => {
       byId: {},
     };
 
-    expect(selector(fromJS({ editorTabs: state }))).toEqual([]);
+    expect(selector({ editorTabs: state })).toEqual([]);
   });
 });

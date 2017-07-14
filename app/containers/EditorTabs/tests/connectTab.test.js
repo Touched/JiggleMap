@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { fromJS } from 'immutable';
 
 import connectTab from '../connectTab';
 import { relayActionToTab } from '../actions';
@@ -22,7 +21,7 @@ describe('connectTab', () => {
 
   const tabState = 'state';
 
-  const state = fromJS({
+  const state = {
     a: '1',
     b: '2',
     c: '3',
@@ -33,7 +32,7 @@ describe('connectTab', () => {
         },
       },
     },
-  });
+  };
 
   const store = {
     getState() {

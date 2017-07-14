@@ -1,5 +1,3 @@
-import { fromJS } from 'immutable';
-
 import createTabMiddleware from '../sagaMiddleware';
 import { relayActionToTab, load, loadTab, closeTab } from '../actions';
 
@@ -15,7 +13,7 @@ describe('createTabMiddleware', () => {
   const activeTabId = '9';
   const nextTabId = '11';
 
-  const state = fromJS({
+  const state = {
     editorTabs: {
       active: activeTabId,
       nextId: nextTabId,
@@ -23,7 +21,7 @@ describe('createTabMiddleware', () => {
         9: {},
       },
     },
-  });
+  };
 
   const runSaga = jest.fn();
 
@@ -62,12 +60,12 @@ describe('createTabMiddleware', () => {
   });
 
   it('registers sagas when the tab type and there is no active tab', () => {
-    const noTabState = fromJS({
+    const noTabState = {
       editorTabs: {
         active: null,
         nextId: nextTabId,
       },
-    });
+    };
 
     store.getState.mockImplementationOnce(() => noTabState);
 

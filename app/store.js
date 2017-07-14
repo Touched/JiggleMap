@@ -3,7 +3,6 @@
  */
 
 import { createStore, applyMiddleware, compose } from 'redux';
-import Immutable, { fromJS } from 'immutable';
 import createSagaMiddleware from 'redux-saga';
 
 import rootSagas from 'containers/App/sagas';
@@ -32,16 +31,12 @@ export default function configureStore(initialState = {}) {
     process.env.NODE_ENV !== 'production' &&
     typeof window === 'object' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      serialize: {
-        immutable: Immutable,
-      },
-    }) : compose;
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
   /* eslint-enable */
 
   const store = createStore(
     createReducer(),
-    fromJS(initialState),
+    initialState,
     composeEnhancers(...enhancers)
   );
 

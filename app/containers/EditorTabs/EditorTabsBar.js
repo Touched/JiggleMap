@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
-import { fromJS } from 'immutable';
 import TabPlusIcon from 'mdi-react/TabPlusIcon';
 
 import { newTab, closeTab, switchTab, reorderTabs } from './actions';
@@ -31,7 +30,8 @@ export function reorderElement<T>(list: Array<T>, element: T, shift: number) {
 
   const newIndex = Math.max(0, Math.min(index + shift, list.length));
 
-  return fromJS(list).delete(index).insert(newIndex, element).toJS();
+  list.splice(newIndex, 0, list.splice(index, 1)[0]);
+  return list;
 }
 
 type Tab = {
