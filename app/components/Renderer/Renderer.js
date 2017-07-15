@@ -16,26 +16,73 @@ type RendererProps = {
   near: number,
   far: number,
   children: React$Component<*, *, *>,
+  cameraRef: (THREE.Camera) => void,
+  onMouseDown: (Event) => void, // eslint-disable-line react/no-unused-prop-types
+  onMouseMove: (Event) => void, // eslint-disable-line react/no-unused-prop-types
+  onMouseUp: (Event) => void, // eslint-disable-line react/no-unused-prop-types
+};
+
+const propsEvents = {
+  mousedown: 'onMouseDown',
+  mousemove: 'onMouseMove',
+  mouseup: 'onMouseUp',
 };
 
 export default class Renderer extends React.PureComponent {
+  static defaultProps: {
+    onMouseDown: null,
+    onMouseMove: null,
+    onMouseUp: null,
+    cameraRef: null,
+  }
+
   constructor(props: RendererProps) {
     super(props);
     this.raycaster = new THREE.Raycaster();
   }
 
-  props: RendererProps;
-  raycaster: THREE.Raycaster;
-  scene: THREE.Scene;
-  camera: THREE.Camera;
+  componentDidMount() {
+    window.addEventListener('mouseup', this.redispatchMouseEvent.bind(this));
+    window.addEventListener('mousemove', this.redispatchMouseEvent.bind(this));
+  }
+
+  setCameraRef = (ref: THREE.Camera) => {
+    this.camera = ref;
+    if (this.props.cameraRef) {
+      this.props.cameraRef(ref);
+    }
+  };
 
   handleClick = this.redispatchMouseEvent.bind(this);
-  handleMouseMove = this.redispatchMouseEvent.bind(this);
-  handleMouseUp = this.redispatchMouseEvent.bind(this);
   handleMouseDown = this.redispatchMouseEvent.bind(this);
 
-  redispatchMouseEvent(event: { type: string, nativeEvent: MouseEvent }) {
-    const { offsetX, offsetY } = event.nativeEvent;
+  redispatchMouseEvent(event: { type: string, nativeEvent: MouseEvent } & SyntheticEvent) {
+    const rendererEvent = this.props[propsEvents[event.type]];
+    const nativeEvent = event.nativeEvent || event;
+
+    if (!event.nativeEvent) {
+      const wrapped = event.stopPropagation;
+      let propagationStopped = false;
+
+      // $FlowFixMe
+      event.stopPropagation = () => { // eslint-disable-line no-param-reassign
+        propagationStopped = true;
+        wrapped();
+      };
+
+      // $FlowFixMe
+      event.isPropagationStopped = () => propagationStopped; // eslint-disable-line no-param-reassign
+    }
+
+    if (rendererEvent) {
+      rendererEvent(event);
+
+      if (event.defaultPrevented || (event.isDefaultPrevented && event.isDefaultPrevented())) {
+        return;
+      }
+    }
+
+    const { offsetX, offsetY } = nativeEvent;
     const { width, height } = this.props;
 
     const x = offsetX / width;
@@ -57,6 +104,11 @@ export default class Renderer extends React.PureComponent {
     });
   }
 
+  props: RendererProps;
+  raycaster: THREE.Raycaster;
+  scene: THREE.Scene;
+  camera: THREE.Camera;
+
   render() {
     const { x, y, z, width, height, near, far, children } = this.props;
 
@@ -65,8 +117,6 @@ export default class Renderer extends React.PureComponent {
         role="button"
         tabIndex="0"
         onClick={this.handleClick}
-        onMouseMove={this.handleMouseMove}
-        onMouseUp={this.handleMouseUp}
         onMouseDown={this.handleMouseDown}
       >
         <React3
@@ -84,7 +134,7 @@ export default class Renderer extends React.PureComponent {
               near={near - 0.0001}
               far={far}
               position={new THREE.Vector3(x, y, z)}
-              ref={(ref) => { this.camera = ref; }}
+              ref={this.setCameraRef}
             />
             <ContainerProvider container={{ width, height }}>
               {children}

@@ -25,6 +25,11 @@ Object {
     ],
     "height": Array [],
   },
+  "camera": Object {
+    "x": 0,
+    "y": 0,
+    "z": 1,
+  },
   "canonicalMap": Object {
     "block": Array [],
     "collision": Array [],

@@ -56,10 +56,6 @@ export default class GridArea extends React.PureComponent {
     };
   };
 
-  componentDidMount() {
-    window.addEventListener('mouseup', this.onMouseUp);
-  }
-
   onMouseDown = (event: AreaEvent) => {
     const { x, y } = event;
     const pos = this.calculatePos(x, y);
@@ -132,6 +128,7 @@ export default class GridArea extends React.PureComponent {
         name={name}
         onMouseDown={this.onMouseDown}
         onMouseMove={this.onMouseMove}
+        onMouseUp={this.onMouseUp}
       />
     );
   }

@@ -11,3 +11,4 @@ export const LOAD_MAP_DATA = 'jigglemap/MapEditor/LOAD_MAP_DATA';
 
 export const EDIT_MAP = 'jigglemap/MapEditor/EDIT_MAP';
 export const COMMIT_MAP_EDIT = 'jigglemap/MapEditor/COMMIT_MAP_EDIT';
+export const SET_CAMERA_POSITION = 'jigglemap/MapEditor/SET_CAMERA_POSITION';

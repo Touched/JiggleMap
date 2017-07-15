@@ -9,6 +9,7 @@ import {
   LOAD_MAP_DATA,
   EDIT_MAP,
   COMMIT_MAP_EDIT,
+  SET_CAMERA_POSITION,
 } from './constants';
 
 import { drawLine } from './tools/helpers';
@@ -44,6 +45,11 @@ const initialState = {
   scripts: [],
   connections: [],
   entities: [],
+  camera: {
+    x: 0,
+    y: 0,
+    z: 1,
+  },
 };
 
 function loadMapData(data) {
@@ -131,6 +137,15 @@ function mapEditorReducer(state = initialState, action) {
       return {
         ...state,
         canonicalMap: state.map,
+      };
+    case SET_CAMERA_POSITION:
+      return {
+        ...state,
+        camera: {
+          x: action.x,
+          y: action.y,
+          z: state.camera.z,
+        },
       };
     default:
       return state;

@@ -10,6 +10,7 @@ import {
   LOAD_MAP_DATA,
   EDIT_MAP,
   COMMIT_MAP_EDIT,
+  SET_CAMERA_POSITION,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -47,5 +48,13 @@ export function editMap(start, end, modifiers) {
 export function commitMapEdit() {
   return {
     type: COMMIT_MAP_EDIT,
+  };
+}
+
+export function setCameraPosition(x, y) {
+  return {
+    type: SET_CAMERA_POSITION,
+    x,
+    y,
   };
 }

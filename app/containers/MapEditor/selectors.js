@@ -8,6 +8,8 @@ const selectMapBlocksetTileset = (type) => (state) => state.blocksets[type].tile
 const selectMapBlockData = () => (state) => state.map.block;
 const selectMapDimensions = () => (state) => state.map.dimensions;
 
+const makeSelectCameraPosition = () => (state) => state.camera;
+
 /**
  * Concatenate the palettes of the primary and secondary blocksets
  */
@@ -103,6 +105,7 @@ const makeSelectMapTilemap = () => createSelector(
 
 export {
   selectMapDimensions,
+  makeSelectCameraPosition,
   makeSelectMapPalette,
   makeSelectMapTileset,
   makeSelectMapBlocks,
