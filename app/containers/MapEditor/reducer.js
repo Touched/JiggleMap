@@ -8,6 +8,7 @@ import {
   LOAD_MAP_BLOCKSET,
   LOAD_MAP_DATA,
   EDIT_MAP,
+  COMMIT_MAP_EDIT,
 } from './constants';
 
 const mapData = {
@@ -28,7 +29,12 @@ const initialState = {
   loading: false,
   linked: false,
   border: mapData,
+
+  // When the user is editing (i.e. dragging the mouse around), the changes they make are
+  // applied to the data in 'map' for UI feedback. They are then copied to 'canonicalMap'
+  // when they lift the mouse button.
   map: mapData,
+  canonicalMap: mapData,
   blocksets: {
     primary: blocksetData,
     secondary: blocksetData,
@@ -74,7 +80,7 @@ function editMap(data, start, end) {
     block: 0,
   }];
 
-  let mapBlockData = null; // data.block.slice();
+  let mapBlockData = null;
   const [width] = data.dimensions;
 
   patch.forEach(({ x, y, block }) => {
@@ -107,15 +113,26 @@ function mapEditorReducer(state = initialState, action) {
           },
         },
       };
-    case LOAD_MAP_DATA:
+    case LOAD_MAP_DATA: {
+      const loadedData = loadMapData(action.entity.data.map);
+
       return {
         ...state,
-        map: loadMapData(action.entity.data.map),
+        map: loadedData,
+        canonicalMap: loadedData,
       };
+    }
     case EDIT_MAP:
       return {
         ...state,
-        map: editMap(state.map, action.start, action.end, action.modifiers),
+        // Changes are applied to the canonical map, but saved in the map so that they are
+        // visible to the user.
+        map: editMap(state.canonicalMap, action.start, action.end, action.modifiers),
+      };
+    case COMMIT_MAP_EDIT:
+      return {
+        ...state,
+        canonicalMap: state.map,
       };
     default:
       return state;

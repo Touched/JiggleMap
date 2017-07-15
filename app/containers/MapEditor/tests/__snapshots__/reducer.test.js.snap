@@ -25,6 +25,15 @@ Object {
     ],
     "height": Array [],
   },
+  "canonicalMap": Object {
+    "block": Array [],
+    "collision": Array [],
+    "dimensions": Array [
+      0,
+      0,
+    ],
+    "height": Array [],
+  },
   "connections": Array [],
   "entities": Array [],
   "linked": false,

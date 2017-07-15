@@ -9,6 +9,7 @@ import {
   LOAD_MAP_BLOCKSET,
   LOAD_MAP_DATA,
   EDIT_MAP,
+  COMMIT_MAP_EDIT,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -40,5 +41,11 @@ export function editMap(start, end, modifiers) {
     start,
     end,
     modifiers,
+  };
+}
+
+export function commitMapEdit() {
+  return {
+    type: COMMIT_MAP_EDIT,
   };
 }

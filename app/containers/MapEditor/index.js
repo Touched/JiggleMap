@@ -16,7 +16,7 @@ import {
   makeSelectMapTileset,
   makeSelectMapTilemap,
 } from './selectors';
-import { editMap } from './actions';
+import { editMap, commitMapEdit } from './actions';
 
 export class MapEditor extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   props: {
@@ -24,6 +24,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     tileset: Uint8Array,
     tilemap: Uint8Array,
     editMap: Function,
+    commitMapEdit: Function,
     dimensions: [number, number],
   }
 
@@ -70,6 +71,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
             width={width * 16}
             height={height * 16}
             onMouseMove={this.props.editMap}
+            onMouseUp={this.props.commitMapEdit}
           />
         </Renderer>
       </div>
@@ -88,6 +90,9 @@ function mapTabDispatchToProps(tabDispatch) {
   return {
     editMap(start, end, modifiers) {
       tabDispatch(editMap(start, end, modifiers));
+    },
+    commitMapEdit() {
+      tabDispatch(commitMapEdit());
     },
   };
 }
