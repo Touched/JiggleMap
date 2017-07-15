@@ -11,6 +11,8 @@ import {
   COMMIT_MAP_EDIT,
 } from './constants';
 
+import { drawLine } from './tools/helpers';
+
 const mapData = {
   dimensions: [0, 0],
   height: [],
@@ -70,15 +72,11 @@ function setMapDataValue(oldData, newData, index, value) {
 }
 
 function editMap(data, start, end) {
-  const patch = [{
-    x: start.x,
-    y: start.y,
+  const patch = drawLine(start.x, start.y, end.x, end.y, (x, y) => ({
+    x,
+    y,
     block: 0,
-  }, {
-    x: end.x,
-    y: end.y,
-    block: 0,
-  }];
+  }));
 
   let mapBlockData = null;
   const [width] = data.dimensions;
