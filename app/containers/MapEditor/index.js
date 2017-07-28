@@ -104,7 +104,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
 
   handleMouseUp = () => {
     if (this.state.pan) {
-      this.props.setCameraPosition(this.state.pan.position.x, this.state.pan.position.y);
+      this.props.setCameraPosition(this.state.pan.position.x, this.state.pan.position.y, this.props.camera.z);
 
       this.setState((state) => ({
         ...state,
@@ -113,15 +113,37 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     }
   };
 
+  handleWheel = ({ deltaY, nativeEvent: { offsetX, offsetY } }) => {
+    const { camera } = this.props;
+    const x = ((offsetX / WIDTH) * 2) - 1;
+    const y = -((offsetY / HEIGHT) * 2) + 1;
+
+    const vector = new THREE.Vector3(x, y, 1);
+    const currentPosition = new THREE.Vector3(camera.x, camera.y, camera.z);
+
+    vector.unproject(this.camera);
+    vector.sub(currentPosition);
+
+    if (deltaY < 0) {
+      vector.addVectors(currentPosition, vector.setLength(0.25));
+    } else {
+      vector.subVectors(currentPosition, vector.setLength(0.25));
+    }
+
+    if (vector.z > this.camera.near && vector.z < this.camera.far) {
+      this.props.setCameraPosition(vector.x, vector.y, vector.z);
+    }
+  };
+
   render() {
     const { dimensions: [width, height], camera } = this.props;
 
     return (
-      <div>
+      <div onWheel={this.handleWheel}>
         <Renderer
           x={this.state.pan ? this.state.pan.position.x : camera.x}
           y={this.state.pan ? this.state.pan.position.y : camera.y}
-          z={this.props.camera.z}
+          z={camera.z}
           width={WIDTH}
           height={HEIGHT}
           near={0.25}
@@ -183,8 +205,8 @@ function mapTabDispatchToProps(tabDispatch) {
     commitMapEdit() {
       tabDispatch(commitMapEdit());
     },
-    setCameraPosition(x, y) {
-      tabDispatch(setCameraPosition(x, y));
+    setCameraPosition(x, y, z) {
+      tabDispatch(setCameraPosition(x, y, z));
     },
   };
 }

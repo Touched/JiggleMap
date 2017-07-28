@@ -51,10 +51,11 @@ export function commitMapEdit() {
   };
 }
 
-export function setCameraPosition(x, y) {
+export function setCameraPosition(x, y, z) {
   return {
     type: SET_CAMERA_POSITION,
     x,
     y,
+    z,
   };
 }

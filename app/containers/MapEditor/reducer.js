@@ -144,7 +144,7 @@ function mapEditorReducer(state = initialState, action) {
         camera: {
           x: action.x,
           y: action.y,
-          z: state.camera.z,
+          z: action.z,
         },
       };
     default:
