@@ -116,15 +116,15 @@ export default class GridArea extends React.PureComponent {
   props: PropTypes;
 
   render() {
-    const { name, width, height, x, y, z } = this.props;
+    const { name, width, height, x, y, z, gridWidth, gridHeight } = this.props;
 
     return (
       <Area
-        x={x}
-        y={y}
+        x={x * gridWidth}
+        y={y * gridHeight}
         z={z}
-        width={width}
-        height={height}
+        width={width * gridWidth}
+        height={height * gridHeight}
         name={name}
         onMouseDown={this.onMouseDown}
         onMouseMove={this.onMouseMove}

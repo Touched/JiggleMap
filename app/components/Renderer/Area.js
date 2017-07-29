@@ -23,8 +23,8 @@ type Dimensions = {
 };
 
 export class AreaEvent {
-  x: number;
-  y: number;
+  x: ?number;
+  y: ?number;
   propagationStopped: boolean;
   shiftKey: boolean;
   altKey: boolean;
@@ -33,9 +33,12 @@ export class AreaEvent {
   button: number;
   buttons: number;
 
-  constructor(baseEvent: MouseEvent, dimensions: Dimensions, details: RaycastDetails) {
-    this.x = dimensions.width * details.uv.x;
-    this.y = dimensions.height * (1 - details.uv.y);
+  constructor(baseEvent: MouseEvent, dimensions: Dimensions, details: ?RaycastDetails) {
+    if (details) {
+      this.x = dimensions.width * details.uv.x;
+      this.y = dimensions.height * (1 - details.uv.y);
+    }
+
     this.shiftKey = baseEvent.shiftKey;
     this.altKey = baseEvent.altKey;
     this.ctrlKey = baseEvent.ctrlKey;
@@ -77,7 +80,7 @@ export default class Area extends React.PureComponent {
 
   componentDidMount() {
     const object = React3.findTHREEObject(this);
-    object.userData.dispatchHitRegionMouseEvent = this.dispatchHitRegionMouseEvent.bind(this);
+    object.userData.dispatchHitRegionMouseEvent = this.dispatchHitRegionMouseEvent;
   }
 
   props: {
@@ -93,14 +96,14 @@ export default class Area extends React.PureComponent {
     onMouseMove: EventCallback,
   };
 
-  dispatchHitRegionMouseEvent(type: string, event: MouseEvent, details: RaycastDetails) {
+  dispatchHitRegionMouseEvent = (type: string, event: MouseEvent, details: RaycastDetails) => {
     const { width, height } = this.props;
     const areaEvent = new AreaEvent(event, { width, height }, details);
 
     this.dispatchEvent(type, areaEvent);
 
-    return event;
-  }
+    return areaEvent;
+  };
 
   fetchHandler = {
     click: this.props.onClick,

@@ -8,14 +8,16 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import * as THREE from 'three';
 
-import { GridArea, GBATilemap, Renderer } from 'components/Renderer';
+import { GridArea, Renderer, Draggable } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
+
+import Map from './Map';
 
 import {
   selectMapDimensions,
   makeSelectMapPalette,
   makeSelectMapTileset,
-  makeSelectMapTilemap,
+  makeSelectMapTilemaps,
   makeSelectCameraPosition,
 } from './selectors';
 import { editMap, commitMapEdit, setCameraPosition } from './actions';
@@ -36,7 +38,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
   props: {
     palette: Uint8Array,
     tileset: Uint8Array,
-    tilemap: Uint8Array,
+    tilemaps: Uint8Array,
     editMap: Function,
     commitMapEdit: Function,
     setCameraPosition: Function,
@@ -153,33 +155,30 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
           onMouseUp={this.handleMouseUp}
           cameraRef={(ref) => { this.camera = ref; }}
         >
-          <GBATilemap
+          <Map
             x={0}
             y={0}
             z={0}
-            width={width * 16}
-            height={height * 16}
+            width={width}
+            height={height}
             tileset={this.props.tileset}
-            tilemap={this.props.tilemap[0]}
+            tilemaps={this.props.tilemaps}
             palette={this.props.palette}
-            transparent
           />
-          <GBATilemap
-            x={0}
-            y={0}
-            z={0}
-            width={width * 16}
-            height={height * 16}
-            tileset={this.props.tileset}
-            tilemap={this.props.tilemap[1]}
-            palette={this.props.palette}
-            transparent
-          />
+          <Draggable x={width} width={width} height={height}>
+            <Map
+              width={width}
+              height={height}
+              tileset={this.props.tileset}
+              tilemaps={this.props.tilemaps}
+              palette={this.props.palette}
+            />
+          </Draggable>
           <GridArea
             x={0}
             y={0}
-            width={width * 16}
-            height={height * 16}
+            width={width}
+            height={height}
             onMouseMove={this.props.editMap}
             onMouseUp={this.props.commitMapEdit}
           />
@@ -194,7 +193,7 @@ const mapTabStateToProps = createStructuredSelector({
   camera: makeSelectCameraPosition(),
   palette: makeSelectMapPalette(),
   tileset: makeSelectMapTileset(),
-  tilemap: makeSelectMapTilemap(),
+  tilemaps: makeSelectMapTilemaps(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

@@ -96,7 +96,7 @@ function buildLayersForMap(data, [width, height], blocks) {
 /**
  * Build a tilemap for the map data given the blocksets
  */
-const makeSelectMapTilemap = () => createSelector(
+const makeSelectMapTilemaps = () => createSelector(
   selectMapBlockData(),
   selectMapDimensions(),
   makeSelectMapBlocks(),
@@ -109,5 +109,5 @@ export {
   makeSelectMapPalette,
   makeSelectMapTileset,
   makeSelectMapBlocks,
-  makeSelectMapTilemap,
+  makeSelectMapTilemaps,
 };
