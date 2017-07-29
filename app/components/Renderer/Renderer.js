@@ -5,7 +5,7 @@ import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 
 import ContainerProvider from './ContainerProvider';
-import { FOV } from './constants';
+import { FOV, FOV_RADIANS, DISTANCE } from './constants';
 
 type RendererProps = {
   x: number,
@@ -84,19 +84,33 @@ export default class Renderer extends React.PureComponent {
 
     const { offsetX, offsetY } = nativeEvent;
     const { width, height } = this.props;
-
     const x = offsetX / width;
     const y = offsetY / height;
-    const coords = new THREE.Vector2((x * 2) - 1, -(y * 2) + 1);
 
+    // Calculate the world coordinates from mouse position
+    const dir = new THREE.Vector3((x * 2) - 1, -(y * 2) + 1, 0)
+      .unproject(this.camera)
+      .sub(this.camera.position)
+      .normalize();
+    const distance = -this.camera.position.z / dir.z;
+    const cursorPosition = this.camera.position.clone().add(dir.multiplyScalar(distance));
+
+    // Raycast
+    const coords = new THREE.Vector2((x * 2) - 1, -(y * 2) + 1);
     this.raycaster.setFromCamera(coords, this.camera);
     const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
     intersects.every((details) => {
+      const aspect = width / height;
+      const verticalFraction = 2 * Math.tan(FOV_RADIANS / 2) * DISTANCE;
+      const horizontalFraction = verticalFraction * aspect;
+      const pixelX = Math.floor((cursorPosition.x * width) / horizontalFraction);
+      const pixelY = Math.floor((-cursorPosition.y * height) / verticalFraction);
+
       const { dispatchHitRegionMouseEvent: dispatchEvent } = details.object.userData;
 
       if (dispatchEvent) {
-        const areaEvent = dispatchEvent(event.type, event, details);
+        const areaEvent = dispatchEvent(event.type, event, { x: pixelX, y: pixelY });
         return !areaEvent.isPropagationStopped();
       }
 

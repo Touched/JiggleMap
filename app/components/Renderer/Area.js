@@ -8,14 +8,7 @@ import nop from 'utils/nop';
 import { containerShape } from './ContainerProvider';
 import { calculateBoundingRectangle } from './utils';
 
-export type RaycastDetails = {
-  distance: number,
-  face: THREE.Face3,
-  faceIndex: number,
-  object: THREE.Object3D,
-  point: THREE.Vector3,
-  uv: THREE.Vector2,
-};
+type Point = { x: number, y: number };
 
 type Dimensions = {
   width: number,
@@ -23,8 +16,8 @@ type Dimensions = {
 };
 
 export class AreaEvent {
-  x: ?number;
-  y: ?number;
+  x: number;
+  y: number;
   propagationStopped: boolean;
   shiftKey: boolean;
   altKey: boolean;
@@ -33,12 +26,9 @@ export class AreaEvent {
   button: number;
   buttons: number;
 
-  constructor(baseEvent: MouseEvent, dimensions: Dimensions, details: ?RaycastDetails) {
-    if (details) {
-      this.x = dimensions.width * details.uv.x;
-      this.y = dimensions.height * (1 - details.uv.y);
-    }
-
+  constructor(baseEvent: MouseEvent, dimensions: Dimensions, point: Point) {
+    this.x = point.x;
+    this.y = point.y;
     this.shiftKey = baseEvent.shiftKey;
     this.altKey = baseEvent.altKey;
     this.ctrlKey = baseEvent.ctrlKey;
@@ -96,9 +86,14 @@ export default class Area extends React.PureComponent {
     onMouseMove: EventCallback,
   };
 
-  dispatchHitRegionMouseEvent = (type: string, event: MouseEvent, details: RaycastDetails) => {
-    const { width, height } = this.props;
-    const areaEvent = new AreaEvent(event, { width, height }, details);
+  dispatchHitRegionMouseEvent = (type: string, event: MouseEvent, point: Point) => {
+    const { width, height, x, y } = this.props;
+    const pointX = Math.min(Math.max(point.x - x, 0), width);
+    const pointY = Math.min(Math.max(point.y - y, 0), height);
+
+    // console.log(point, pointX, pointY);
+
+    const areaEvent = new AreaEvent(event, { width, height }, { x: pointX, y: pointY });
 
     this.dispatchEvent(type, areaEvent);
 
