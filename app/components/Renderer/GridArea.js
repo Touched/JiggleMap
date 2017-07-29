@@ -24,6 +24,7 @@ type PropTypes = {
   y: number;
   z: number;
   name: string;
+  bounded: boolean;
 };
 
 /**
@@ -40,6 +41,7 @@ export default class GridArea extends React.PureComponent {
     onMouseUp: nop,
     gridWidth: 16,
     gridHeight: 16,
+    bounded: false,
   };
 
   constructor(props: PropTypes) {
@@ -116,7 +118,7 @@ export default class GridArea extends React.PureComponent {
   props: PropTypes;
 
   render() {
-    const { name, width, height, x, y, z, gridWidth, gridHeight } = this.props;
+    const { name, width, height, x, y, z, gridWidth, gridHeight, bounded } = this.props;
 
     return (
       <Area
@@ -126,6 +128,7 @@ export default class GridArea extends React.PureComponent {
         width={width * gridWidth}
         height={height * gridHeight}
         name={name}
+        bounded={bounded}
         onMouseDown={this.onMouseDown}
         onMouseMove={this.onMouseMove}
         onMouseUp={this.onMouseUp}

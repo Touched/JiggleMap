@@ -8,7 +8,7 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import * as THREE from 'three';
 
-import { GridArea, Renderer, Draggable } from 'components/Renderer';
+import { GridArea, Renderer } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import Map from './Map';
@@ -165,15 +165,6 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
             tilemaps={this.props.tilemaps}
             palette={this.props.palette}
           />
-          <Draggable x={width} width={width} height={height}>
-            <Map
-              width={width}
-              height={height}
-              tileset={this.props.tileset}
-              tilemaps={this.props.tilemaps}
-              palette={this.props.palette}
-            />
-          </Draggable>
           <GridArea
             x={0}
             y={0}
@@ -181,6 +172,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
             height={height}
             onMouseMove={this.props.editMap}
             onMouseUp={this.props.commitMapEdit}
+            bounded
           />
         </Renderer>
       </div>

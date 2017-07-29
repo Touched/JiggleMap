@@ -2,13 +2,16 @@
 
 import React from 'react';
 
+import { AreaEvent } from './Area';
 import GridArea from './GridArea';
 import Group from './Group';
 
+type Position = {
+  x: number;
+  y: number;
+};
+
 type PropTypes = {
-  /* onMouseDown: EventCallback;
-   * onMouseMove: EventCallback;
-   * onMouseUp: EventCallback;*/
   gridHeight: number;
   gridWidth: number;
   width: number;
@@ -18,18 +21,16 @@ type PropTypes = {
   z: number;
   name: string;
   children: ReactElement,
+  onDrag: (Position, Position, AreaEvent) => void;
 };
 
 
-export default class Draggable extends React.PureComponent {
+export default class DraggableArea extends React.PureComponent {
   static defaultProps = {
     x: 0,
     y: 0,
     z: Infinity,
     name: '',
-    /* onMouseDown: nop,
-     * onMouseMove: nop,
-     * onMouseUp: nop,*/
     gridWidth: 16,
     gridHeight: 16,
   };
@@ -49,7 +50,8 @@ export default class Draggable extends React.PureComponent {
     event.stopPropagation();
   };
 
-  handleDrag = (start, end, event) => {
+  handleDrag = (start: Position, end: Position, event: AreaEvent) => {
+    this.props.onDrag(start, end, event);
     event.stopPropagation();
   };
 

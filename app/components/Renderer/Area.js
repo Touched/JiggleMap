@@ -66,6 +66,7 @@ export default class Area extends React.PureComponent {
     onMouseDown: nop,
     onMouseMove: nop,
     onMouseUp: nop,
+    bounded: false,
   };
 
   componentDidMount() {
@@ -84,14 +85,13 @@ export default class Area extends React.PureComponent {
     onMouseDown: EventCallback,
     onMouseUp: EventCallback,
     onMouseMove: EventCallback,
+    bounded: boolean,
   };
 
   dispatchHitRegionMouseEvent = (type: string, event: MouseEvent, point: Point) => {
-    const { width, height, x, y } = this.props;
-    const pointX = Math.min(Math.max(point.x - x, 0), width);
-    const pointY = Math.min(Math.max(point.y - y, 0), height);
-
-    // console.log(point, pointX, pointY);
+    const { width, height, x, y, bounded } = this.props;
+    const pointX = bounded ? Math.min(Math.max(point.x - x, 0), width) : point.x - x;
+    const pointY = bounded ? Math.min(Math.max(point.y - y, 0), height) : point.y - y;
 
     const areaEvent = new AreaEvent(event, { width, height }, { x: pointX, y: pointY });
 
