@@ -28,6 +28,16 @@ const propsEvents = {
   mouseup: 'onMouseUp',
 };
 
+const isGlobalEvent = {
+  mousedown: false,
+  mousemove: true,
+  mouseup: true,
+};
+
+function getAllChildren({ children }) {
+  return children.concat(...children.map(getAllChildren));
+}
+
 export default class Renderer extends React.PureComponent {
   static defaultProps: {
     onMouseDown: null,
@@ -95,19 +105,26 @@ export default class Renderer extends React.PureComponent {
     const distance = -this.camera.position.z / dir.z;
     const cursorPosition = this.camera.position.clone().add(dir.multiplyScalar(distance));
 
-    // Raycast
-    const coords = new THREE.Vector2((x * 2) - 1, -(y * 2) + 1);
-    this.raycaster.setFromCamera(coords, this.camera);
-    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+    let objects;
+    if (isGlobalEvent[event.type]) {
+      // This event is fired for all objects in the scene, regardless of whether
+      // they are under the cursor or not.
+      objects = getAllChildren(this.scene);
+    } else {
+      // This event is only fired for objects under the cursor
+      const coords = new THREE.Vector2((x * 2) - 1, -(y * 2) + 1);
+      this.raycaster.setFromCamera(coords, this.camera);
+      objects = this.raycaster.intersectObjects(this.scene.children, true).map((intersect) => intersect.object);
+    }
 
-    intersects.every((details) => {
+    objects.every((object) => {
       const aspect = width / height;
       const verticalFraction = 2 * Math.tan(FOV_RADIANS / 2) * DISTANCE;
       const horizontalFraction = verticalFraction * aspect;
       const pixelX = Math.floor((cursorPosition.x * width) / horizontalFraction);
       const pixelY = Math.floor((-cursorPosition.y * height) / verticalFraction);
 
-      const { dispatchHitRegionMouseEvent: dispatchEvent } = details.object.userData;
+      const { dispatchHitRegionMouseEvent: dispatchEvent } = object.userData;
 
       if (dispatchEvent) {
         const areaEvent = dispatchEvent(event.type, event, { x: pixelX, y: pixelY });
