@@ -11,6 +11,8 @@ import {
   EDIT_MAP,
   COMMIT_MAP_EDIT,
   SET_CAMERA_POSITION,
+  MOVE_CONNECTION,
+  COMMIT_CONNECTION_MOVE,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -62,3 +64,18 @@ export function setCameraPosition(x, y, z) {
   };
 }
 
+export function moveConnection(connection, x, y) {
+  return {
+    type: MOVE_CONNECTION,
+    connection,
+    x,
+    y,
+  };
+}
+
+export function commitConnectionMove(connection) {
+  return {
+    type: COMMIT_CONNECTION_MOVE,
+    connection,
+  };
+}

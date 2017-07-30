@@ -4,12 +4,16 @@
  *
  */
 
+import R from 'ramda';
+
 import {
   LOAD_MAIN_MAP,
   LOAD_CONNECTED_MAP,
   EDIT_MAP,
   COMMIT_MAP_EDIT,
   SET_CAMERA_POSITION,
+  MOVE_CONNECTION,
+  COMMIT_CONNECTION_MOVE,
 } from './constants';
 
 import { drawLine } from './tools/helpers';
@@ -44,6 +48,7 @@ const initialState = {
   },
   scripts: [],
   connections: [],
+  canonicalConnectionOffsets: [],
   entities: [],
   camera: {
     x: 0,
@@ -142,6 +147,10 @@ function mapEditorReducer(state = initialState, action) {
             offset: action.offset,
           },
         ],
+        canonicalConnectionOffsets: [
+          ...state.canonicalConnectionOffsets,
+          action.offset,
+        ],
       };
     case EDIT_MAP:
       return {
@@ -164,6 +173,32 @@ function mapEditorReducer(state = initialState, action) {
           z: action.z,
         },
       };
+    case MOVE_CONNECTION: {
+      const { direction } = state.connections[action.connection];
+      const canonicalOffset = state.canonicalConnectionOffsets[action.connection];
+
+      let movement;
+      switch (direction) {
+        case 'left':
+        case 'right':
+          movement = action.y;
+          break;
+        case 'up':
+        case 'down':
+          movement = action.x;
+          break;
+        default:
+          movement = 0;
+          break;
+      }
+
+      const lens = R.lensPath(['connections', action.connection, 'offset']);
+      return R.set(lens, canonicalOffset + movement, state);
+    }
+    case COMMIT_CONNECTION_MOVE: {
+      const lens = R.lensPath(['connections', action.connection, 'canonicalConnectionOffsets']);
+      return R.set(lens, state.connections[action.connection].offset, state);
+    }
     default:
       return state;
   }

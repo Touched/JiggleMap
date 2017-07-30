@@ -12,6 +12,7 @@ import { GridArea, Renderer } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import Map from './Map';
+import DraggableMap from './DraggableMap';
 
 import {
   selectMapDimensions,
@@ -21,7 +22,7 @@ import {
   makeSelectCameraPosition,
   makeSelectConnectedMaps,
 } from './selectors';
-import { editMap, commitMapEdit, setCameraPosition } from './actions';
+import { editMap, commitMapEdit, setCameraPosition, moveConnection, commitConnectionMove } from './actions';
 
 const WIDTH = 512;
 const HEIGHT = 512;
@@ -43,6 +44,8 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     editMap: Function,
     commitMapEdit: Function,
     setCameraPosition: Function,
+    moveConnection: (number, number, number) => void,
+    commitConnectionMove: (number) => void,
     dimensions: [number, number],
     camera: {
       x: number,
@@ -167,7 +170,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
           cameraRef={(ref) => { this.camera = ref; }}
         >
           {connections.map(({ dimensions, tilemaps, tileset, palette, position }, i) => (
-            <Map
+            <DraggableMap
               key={i} // eslint-disable-line react/no-array-index-key
               x={position.x}
               y={position.y}
@@ -177,6 +180,8 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
               tileset={tileset}
               tilemaps={tilemaps}
               palette={palette}
+              onDrag={(start, end) => this.props.moveConnection(i, end.x - start.x, end.y - start.y)}
+              onDragEnd={() => this.props.commitConnectionMove(i)}
               darken
             />
           ))}
@@ -224,6 +229,12 @@ function mapTabDispatchToProps(tabDispatch) {
     },
     setCameraPosition(x, y, z) {
       tabDispatch(setCameraPosition(x, y, z));
+    },
+    moveConnection(connection, x, y) {
+      tabDispatch(moveConnection(connection, x, y));
+    },
+    commitConnectionMove(connection) {
+      tabDispatch(commitConnectionMove(connection));
     },
   };
 }

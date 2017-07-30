@@ -90,8 +90,8 @@ export default class Area extends React.PureComponent {
 
   dispatchHitRegionMouseEvent = (type: string, event: MouseEvent, point: Point) => {
     const { width, height, x, y, bounded } = this.props;
-    const pointX = bounded ? Math.min(Math.max(point.x - x, 0), width) : point.x - x;
-    const pointY = bounded ? Math.min(Math.max(point.y - y, 0), height) : point.y - y;
+    const pointX = bounded ? Math.min(Math.max(point.x - x, 0), width) : point.x;// - x;
+    const pointY = bounded ? Math.min(Math.max(point.y - y, 0), height) : point.y;// - y;
 
     const areaEvent = new AreaEvent(event, { width, height }, { x: pointX, y: pointY });
 

@@ -1,10 +1,10 @@
 /* @flow */
 
 import React from 'react';
+import nop from 'utils/nop';
 
 import { AreaEvent } from './Area';
 import GridArea from './GridArea';
-import Group from './Group';
 
 type Position = {
   x: number;
@@ -20,8 +20,9 @@ type PropTypes = {
   y: number;
   z: number;
   name: string;
-  children: ReactElement,
   onDrag: (Position, Position, AreaEvent) => void;
+  onDragStart: (Position, Position, AreaEvent) => void;
+  onDragEnd: (Position, Position, AreaEvent) => void;
 };
 
 
@@ -33,6 +34,9 @@ export default class DraggableArea extends React.PureComponent {
     name: '',
     gridWidth: 16,
     gridHeight: 16,
+    onDrag: nop,
+    onDragStart: nop,
+    onDragEnd: nop,
   };
 
   constructor(props: PropTypes, context) {
@@ -43,6 +47,7 @@ export default class DraggableArea extends React.PureComponent {
   }
 
   handleDragStart = (start, end, event) => {
+    this.props.onDragStart(start, end, event);
     this.setState(() => ({
       dragging: true,
     }));
@@ -55,7 +60,8 @@ export default class DraggableArea extends React.PureComponent {
     event.stopPropagation();
   };
 
-  handleDragEnd = () => {
+  handleDragEnd = (start: Position, end: Position, event: AreaEvent) => {
+    this.props.onDragEnd(start, end, event);
     this.setState(() => ({
       dragging: false,
     }));
@@ -65,18 +71,18 @@ export default class DraggableArea extends React.PureComponent {
     const { x, y, z, name, width, height, gridWidth, gridHeight } = this.props;
 
     return (
-      <Group x={x * gridHeight} y={y * gridHeight} z={z}>
-        {React.Children.only(this.props.children)}
-        <GridArea
-          onMouseDown={this.handleDragStart}
-          onMouseMove={this.handleDrag}
-          name={name}
-          width={width}
-          height={height}
-          gridWidth={gridWidth}
-          gridHeight={gridHeight}
-        />
-      </Group>
+      <GridArea
+        x={x}
+        y={y}
+        z={z}
+        onMouseDown={this.handleDragStart}
+        onMouseMove={this.handleDrag}
+        name={name}
+        width={width}
+        height={height}
+        gridWidth={gridWidth}
+        gridHeight={gridHeight}
+      />
     );
   }
 }
