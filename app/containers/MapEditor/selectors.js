@@ -112,23 +112,23 @@ const makeSelectConnectionPosition = ([theirWidth, theirHeight]) => createSelect
     switch (direction) {
       case 'up':
         return {
-          x: 0,
+          x: offset,
           y: -myHeight,
         };
       case 'down':
         return {
-          x: 0,
+          x: offset,
           y: theirHeight,
         };
       case 'left':
         return {
           x: -myWidth,
-          y: 0,
+          y: offset,
         };
       case 'right':
         return {
           x: theirWidth,
-          y: 0,
+          y: offset,
         };
       default:
         return {
