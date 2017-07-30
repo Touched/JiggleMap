@@ -5,8 +5,8 @@
  */
 
 import {
-  LOAD_MAP_BLOCKSET,
-  LOAD_MAP_DATA,
+  LOAD_MAIN_MAP,
+  LOAD_CONNECTED_MAP,
   EDIT_MAP,
   COMMIT_MAP_EDIT,
   SET_CAMERA_POSITION,
@@ -67,6 +67,23 @@ function loadMapData(data) {
   };
 }
 
+function loadBlocksetData(data) {
+  return {
+    primary: {
+      id: data.primary.entity.meta.id,
+      palette: data.primary.entity.data.palette,
+      blocks: data.primary.entity.data.blocks,
+      tiles: data.primary.tiles,
+    },
+    secondary: {
+      id: data.secondary.entity.meta.id,
+      palette: data.secondary.entity.data.palette,
+      blocks: data.secondary.entity.data.blocks,
+      tiles: data.secondary.tiles,
+    },
+  };
+}
+
 function setMapDataValue(oldData, newData, index, value) {
   if (value === undefined || oldData[index] === value) {
     return newData;
@@ -104,28 +121,28 @@ function editMap(data, start, end) {
 
 function mapEditorReducer(state = initialState, action) {
   switch (action.type) {
-    case LOAD_MAP_BLOCKSET:
-      return {
-        ...state,
-        blocksets: {
-          ...state.blocksets,
-          [action.primary ? 'primary' : 'secondary']: {
-            id: action.entity.meta.id,
-            palette: action.entity.data.palette,
-            blocks: action.entity.data.blocks,
-            tiles: action.tiles,
-          },
-        },
-      };
-    case LOAD_MAP_DATA: {
-      const loadedData = loadMapData(action.entity.data.map);
+    case LOAD_MAIN_MAP: {
+      const loadedData = action.map ? loadMapData(action.map.data.map) : state.map;
 
       return {
         ...state,
         map: loadedData,
-        canonicalMap: loadedData,
+        canonicalMap: action.map ? loadedData : state.canonicalMap,
+        blocksets: action.blocksets ? loadBlocksetData(action.blocksets) : state.blocksets,
       };
     }
+    case LOAD_CONNECTED_MAP:
+      return {
+        ...state,
+        connections: [
+          ...state.connections, {
+            map: loadMapData(action.map.data.map),
+            blocksets: loadBlocksetData(action.blocksets),
+            direction: action.direction,
+            offset: action.offset,
+          },
+        ],
+      };
     case EDIT_MAP:
       return {
         ...state,

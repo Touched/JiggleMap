@@ -7233,6 +7233,10 @@ require-uncached@^1.0.2:
     caller-path "^0.1.0"
     resolve-from "^1.0.0"
 
+reselect-map@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/reselect-map/-/reselect-map-1.0.3.tgz#15533293cf18581f12332571150313f31dbe7879"
+
 reselect@2.5.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-2.5.4.tgz#b7d23fdf00b83fa7ad0279546f8dbbbd765c7047"

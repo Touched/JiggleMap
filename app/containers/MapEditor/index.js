@@ -19,6 +19,7 @@ import {
   makeSelectMapTileset,
   makeSelectMapTilemaps,
   makeSelectCameraPosition,
+  makeSelectConnectedMaps,
 } from './selectors';
 import { editMap, commitMapEdit, setCameraPosition } from './actions';
 
@@ -38,7 +39,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
   props: {
     palette: Uint8Array,
     tileset: Uint8Array,
-    tilemaps: Uint8Array,
+    tilemaps: Array<Uint8Array>,
     editMap: Function,
     commitMapEdit: Function,
     setCameraPosition: Function,
@@ -47,6 +48,16 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
       x: number,
       y: number,
       z: number,
+    },
+    connections: {
+      palette: Uint8Array,
+      tileset: Uint8Array,
+      tilemaps: Array<Uint8Array>,
+      dimensions: [number, number],
+      position: {
+        x: number,
+        y: number,
+      },
     },
   }
 
@@ -138,7 +149,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
   };
 
   render() {
-    const { dimensions: [width, height], camera } = this.props;
+    const { dimensions: [width, height], camera, connections } = this.props;
 
     return (
       <div onWheel={this.handleWheel}>
@@ -155,6 +166,19 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
           onMouseUp={this.handleMouseUp}
           cameraRef={(ref) => { this.camera = ref; }}
         >
+          {connections.map(({ dimensions, tilemaps, tileset, palette, position }, i) => (
+            <Map
+              key={i} // eslint-disable-line react/no-array-index-key
+              x={position.x}
+              y={position.y}
+              z={0}
+              width={dimensions[0]}
+              height={dimensions[1]}
+              tileset={tileset}
+              tilemaps={tilemaps}
+              palette={palette}
+            />
+          ))}
           <Map
             x={0}
             y={0}
@@ -186,6 +210,7 @@ const mapTabStateToProps = createStructuredSelector({
   palette: makeSelectMapPalette(),
   tileset: makeSelectMapTileset(),
   tilemaps: makeSelectMapTilemaps(),
+  connections: makeSelectConnectedMaps(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

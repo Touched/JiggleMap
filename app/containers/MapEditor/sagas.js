@@ -1,6 +1,6 @@
 import invariant from 'invariant';
 import path from 'path';
-import { call, select } from 'redux-saga/effects';
+import { call, select, all } from 'redux-saga/effects';
 import native from 'native';
 
 import fs from 'utils/fs';
@@ -8,9 +8,9 @@ import { takeLatestRelayed, putRelayed } from 'containers/EditorTabs/sagaEffects
 import { LOAD } from 'containers/EditorTabs/constants';
 import { makeSelectEntity } from 'containers/App/selectors';
 import { parseEntity } from 'containers/App/sagas';
-import { loadMapBlockset, loadMapData } from './actions';
+import { loadMainMap, loadConnectedMap } from './actions';
 
-export function* loadBlockset(tabId, primary, { id, type }) {
+export function* loadBlockset(primary, { id, type }) {
   invariant(
     type === 'blockset',
     `loadBlocksetData can only load blockset entities, but it receieved a '${type}'`,
@@ -26,8 +26,10 @@ export function* loadBlockset(tabId, primary, { id, type }) {
   const tilesData = native.decode(tilesBuffer);
 
   // TODO: Error handling for bad PNGs/dimensions
-
-  yield putRelayed(tabId, loadMapBlockset(primary, entity, Array.from(tilesData.pixels)));
+  return {
+    entity,
+    tiles: Array.from(tilesData.pixels),
+  };
 }
 
 export function* loadData({ id, type }) {
@@ -40,16 +42,46 @@ export function* loadData({ id, type }) {
   return yield call(parseEntity, type, entityPath);
 }
 
+function* loadSingleMap({ id, type }) {
+  invariant(
+    type === 'map',
+    `loadMapData can only load map entities, but it receieved a '${type}'`,
+  );
+
+  const { path: entityPath } = yield select(makeSelectEntity(type, id));
+  const entity = yield call(parseEntity, type, entityPath);
+
+  const [primary, secondary] = yield all([
+    call(loadBlockset, true, entity.data.blocksets.primary),
+    call(loadBlockset, false, entity.data.blocksets.secondary),
+  ]);
+
+  return {
+    map: entity,
+    blocksets: {
+      primary,
+      secondary,
+    },
+  };
+}
+
+function* loadSingleMapConnection(entityId, direction, offset) {
+  return {
+    ...yield call(loadSingleMap, entityId),
+    direction,
+    offset,
+  };
+}
+
 export function* loadMap({ id, action: { meta } }) {
-  const entity = yield call(loadData, meta);
+  const mainMap = yield call(loadSingleMap, meta);
+  yield putRelayed(id, loadMainMap(mainMap));
 
-  // TODO: Set map data
-  yield putRelayed(id, loadMapData(entity));
+  const connections = yield all(mainMap.map.data.connections.map(({ direction, map, offset }) =>
+    call(loadSingleMapConnection, map, direction, offset),
+  ));
 
-  // Load blockset assets
-  // TODO: Make parallel
-  yield call(loadBlockset, id, true, entity.data.blocksets.primary);
-  yield call(loadBlockset, id, false, entity.data.blocksets.secondary);
+  yield all(connections.map((connection) => putRelayed(id, loadConnectedMap(connection))));
 
   // TODO: Take a SAVE action for any of the loaded entities and trigger a reload
 }

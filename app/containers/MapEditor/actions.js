@@ -6,8 +6,8 @@
 
 import {
   LOAD_MAP_ENTITY,
-  LOAD_MAP_BLOCKSET,
-  LOAD_MAP_DATA,
+  LOAD_MAIN_MAP,
+  LOAD_CONNECTED_MAP,
   EDIT_MAP,
   COMMIT_MAP_EDIT,
   SET_CAMERA_POSITION,
@@ -20,19 +20,21 @@ export function loadMapEntity(entity) {
   };
 }
 
-export function loadMapBlockset(primary, entity, tiles) {
+export function loadMainMap({ map, blocksets }) {
   return {
-    type: LOAD_MAP_BLOCKSET,
-    primary,
-    entity,
-    tiles,
+    type: LOAD_MAIN_MAP,
+    map,
+    blocksets,
   };
 }
 
-export function loadMapData(entity) {
+export function loadConnectedMap({ map, blocksets, direction, offset }) {
   return {
-    type: LOAD_MAP_DATA,
-    entity,
+    type: LOAD_CONNECTED_MAP,
+    map,
+    blocksets,
+    direction,
+    offset,
   };
 }
 
@@ -59,3 +61,4 @@ export function setCameraPosition(x, y, z) {
     z,
   };
 }
+

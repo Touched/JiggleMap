@@ -1,4 +1,5 @@
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
+import { createArraySelector } from 'reselect-map';
 import R from 'ramda';
 
 const selectMapBlocksetPalette = (type) => (state) => state.blocksets[type].palette;
@@ -103,6 +104,55 @@ const makeSelectMapTilemaps = () => createSelector(
   buildLayersForMap,
 );
 
+const makeSelectConnectionPosition = ([theirWidth, theirHeight]) => createSelector(
+  (state) => state.offset,
+  (state) => state.direction,
+  selectMapDimensions(),
+  (offset, direction, [myWidth, myHeight]) => {
+    switch (direction) {
+      case 'up':
+        return {
+          x: 0,
+          y: -myHeight,
+        };
+      case 'down':
+        return {
+          x: 0,
+          y: theirHeight,
+        };
+      case 'left':
+        return {
+          x: -myWidth,
+          y: 0,
+        };
+      case 'right':
+        return {
+          x: theirWidth,
+          y: 0,
+        };
+      default:
+        return {
+          x: 0,
+          y: 0,
+        };
+    }
+  },
+);
+
+const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
+  tilemaps: makeSelectMapTilemaps(),
+  palette: makeSelectMapPalette(),
+  tileset: makeSelectMapTileset(),
+  dimensions: selectMapDimensions(),
+  position: makeSelectConnectionPosition(dimensions),
+});
+
+const makeSelectConnectedMaps = () => createArraySelector(
+  (state) => state.connections,
+  selectMapDimensions(),
+  (connection, dimensions) => makeSelectConnectedMap(dimensions)(connection),
+);
+
 export {
   selectMapDimensions,
   makeSelectCameraPosition,
@@ -110,4 +160,5 @@ export {
   makeSelectMapTileset,
   makeSelectMapBlocks,
   makeSelectMapTilemaps,
+  makeSelectConnectedMaps,
 };
