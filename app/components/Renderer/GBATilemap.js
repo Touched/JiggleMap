@@ -13,7 +13,11 @@ void main() {
 }
 `;
 
-const fragmentShader = `
+type FragmentShaderInput = {
+  colorFilter: string;
+};
+
+const fragmentShader = (input: FragmentShaderInput) => `
 varying vec2 textureCoords;
 uniform sampler2D tilemap;
 uniform sampler2D image;
@@ -24,6 +28,12 @@ uniform vec2 mapSize;
 bool flag_set(float lhs, float bit) {
     return int(mod(floor(lhs / exp2(bit)), 2.0)) == 1;
 }
+
+vec4 color_filter(vec4 color) {
+    ${input.colorFilter}
+    return color;
+}
+
 void main() {
     vec2 sizeInTiles = sheetSize / tileSize;
     vec4 currentTile = floor(texture2D(tilemap, textureCoords) * 256.0);
@@ -50,7 +60,7 @@ void main() {
     if (color.a <= 0.0) {
         discard;
     }
-    gl_FragColor = color;
+    gl_FragColor = color_filter(color);
 }
 `;
 
@@ -88,6 +98,7 @@ export default class GBATilemap extends React.PureComponent {
     tileHeight: 8,
     transparent: false,
     name: '',
+    colorFilter: '',
   };
 
   componentDidMount() {
@@ -119,6 +130,7 @@ export default class GBATilemap extends React.PureComponent {
     tilemap: Uint8Array,
     transparent: boolean,
     name: string,
+    colorFilter: string,
   };
 
   canvas: HTMLCanvasElement;
@@ -249,7 +261,7 @@ export default class GBATilemap extends React.PureComponent {
         <mesh renderOrder={z}>
           <planeGeometry width={boundingRectangle.width} height={boundingRectangle.height} />
           <shaderMaterial
-            fragmentShader={fragmentShader}
+            fragmentShader={fragmentShader({ colorFilter: this.props.colorFilter })}
             vertexShader={vertexShader}
             transparent={transparent}
           >

@@ -177,6 +177,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
               tileset={tileset}
               tilemaps={tilemaps}
               palette={palette}
+              darken
             />
           ))}
           <Map

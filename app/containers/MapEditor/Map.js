@@ -4,7 +4,25 @@
 import React from 'react';
 import { GBATilemap, Group } from 'components/Renderer';
 
-export default function Map({ width, height, x, y, z, tileset, tilemaps, palette }: Props) {
+type Props = {
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+  z: number;
+  tileset: Uint8Array;
+  palette: Uint8Array;
+  tilemaps: Array<Uint8Array>;
+  darken: boolean;
+};
+
+const darkenFilter = `
+color.r *= 0.5;
+color.g *= 0.5;
+color.b *= 0.5;
+`;
+
+export default function Map({ width, height, x, y, z, tileset, tilemaps, palette, darken }: Props) {
   return (
     <Group z={z} y={y * 16}>
       {tilemaps.map((tilemap, i) => (
@@ -12,6 +30,7 @@ export default function Map({ width, height, x, y, z, tileset, tilemaps, palette
           key={i}
           x={x * 16}
           y={0}
+          colorFilter={darken ? darkenFilter : ''}
           width={width * 16}
           height={height * 16}
           tileset={tileset}
@@ -23,3 +42,10 @@ export default function Map({ width, height, x, y, z, tileset, tilemaps, palette
     </Group>
   );
 }
+
+Map.defaultProps = {
+  x: 0,
+  y: 0,
+  z: 0,
+  darken: false,
+};
