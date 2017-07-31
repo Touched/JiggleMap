@@ -17,6 +17,7 @@ import Map from './Map';
 import DraggableMap from './DraggableMap';
 import MapControls from './MapControls';
 import ToolBox from './ToolBox';
+import BlockPicker from './BlockPicker';
 import './styles.scss';
 
 import {
@@ -26,6 +27,7 @@ import {
   makeSelectMapTilemaps,
   makeSelectCameraPosition,
   makeSelectConnectedMaps,
+  makeSelectMapBlockset,
 } from './selectors';
 import {
   editMap,
@@ -51,6 +53,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     palette: Uint8Array,
     tileset: Uint8Array,
     tilemaps: Array<Uint8Array>,
+    blocks: Array<Uint8Array>,
     editMap: Function,
     commitMapEdit: Function,
     setCameraPosition: Function,
@@ -187,69 +190,74 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     const far = 2;
 
     return (
-      <div onWheel={this.handleWheel} ref={measureRef} className="MapEditor">
-        <div className="MapEditor__Overlay">
-          <ToolBox onToolSelect={console.log} />
-          <MapControls
-            zoomMin={near}
-            zoomMax={far}
-            zoom={camera.z}
-            onToggleLayer={console.log}
-            onRecenterClick={this.recenterMap}
-            onZoomChanged={({ target }) => this.props.setCameraPosition(camera.x, camera.y, target.value)}
-            selectedLayer="map"
-          />
-        </div>
-        <Renderer
-          x={this.state.pan ? this.state.pan.position.x : camera.x}
-          y={this.state.pan ? this.state.pan.position.y : camera.y}
-          z={camera.z}
-          width={contentRect.bounds.width}
-          height={contentRect.bounds.height}
-          near={near}
-          far={far}
-          onMouseDown={this.handleMouseDown}
-          onMouseMove={this.handleMouseMove}
-          onMouseUp={this.handleMouseUp}
-          cameraRef={(ref) => { this.camera = ref; }}
-          className="MapEditor__MapViewport"
-        >
-          {connections.map(({ dimensions, tilemaps, tileset, palette, position }, i) => (
-            <DraggableMap
-              key={i} // eslint-disable-line react/no-array-index-key
-              x={position.x}
-              y={position.y}
-              z={0}
-              width={dimensions[0]}
-              height={dimensions[1]}
-              tileset={tileset}
-              tilemaps={tilemaps}
-              palette={palette}
-              onDrag={(start, end) => this.props.moveConnection(i, end.x - start.x, end.y - start.y)}
-              onDragEnd={() => this.props.commitConnectionMove(i)}
-              darken
+      <div className="MapEditor">
+        <div className="MapEditor__Container" ref={measureRef} onWheel={this.handleWheel}>
+          <div className="MapEditor__Overlay">
+            <ToolBox onToolSelect={console.log} />
+            <MapControls
+              zoomMin={near}
+              zoomMax={far}
+              zoom={camera.z}
+              onToggleLayer={console.log}
+              onRecenterClick={this.recenterMap}
+              onZoomChanged={({ target }) => this.props.setCameraPosition(camera.x, camera.y, target.value)}
+              selectedLayer="map"
             />
-          ))}
-          <Map
-            x={0}
-            y={0}
-            z={0}
-            width={width}
-            height={height}
-            tileset={this.props.tileset}
-            tilemaps={this.props.tilemaps}
-            palette={this.props.palette}
-          />
-          <GridArea
-            x={0}
-            y={0}
-            width={width}
-            height={height}
-            onMouseMove={this.props.editMap}
-            onMouseUp={this.props.commitMapEdit}
-            bounded
-          />
-        </Renderer>
+          </div>
+          <Renderer
+            x={this.state.pan ? this.state.pan.position.x : camera.x}
+            y={this.state.pan ? this.state.pan.position.y : camera.y}
+            z={camera.z}
+            width={contentRect.bounds.width}
+            height={contentRect.bounds.height}
+            near={near}
+            far={far}
+            onMouseDown={this.handleMouseDown}
+            onMouseMove={this.handleMouseMove}
+            onMouseUp={this.handleMouseUp}
+            cameraRef={(ref) => { this.camera = ref; }}
+            className="MapEditor__MapViewport"
+          >
+            {connections.map(({ dimensions, tilemaps, tileset, palette, position }, i) => (
+              <DraggableMap
+                key={i} // eslint-disable-line react/no-array-index-key
+                x={position.x}
+                y={position.y}
+                z={0}
+                width={dimensions[0]}
+                height={dimensions[1]}
+                tileset={tileset}
+                tilemaps={tilemaps}
+                palette={palette}
+                onDrag={(start, end) => this.props.moveConnection(i, end.x - start.x, end.y - start.y)}
+                onDragEnd={() => this.props.commitConnectionMove(i)}
+                darken
+              />
+            ))}
+            <Map
+              x={0}
+              y={0}
+              z={0}
+              width={width}
+              height={height}
+              tileset={this.props.tileset}
+              tilemaps={this.props.tilemaps}
+              palette={this.props.palette}
+            />
+            <GridArea
+              x={0}
+              y={0}
+              width={width}
+              height={height}
+              onMouseMove={this.props.editMap}
+              onMouseUp={this.props.commitMapEdit}
+              bounded
+            />
+          </Renderer>
+        </div>
+        <div className="ToolControls">
+          <BlockPicker tileset={this.props.tileset} palette={this.props.palette} blocks={this.props.blocks} />
+        </div>
       </div>
     );
   }
@@ -262,6 +270,7 @@ const mapTabStateToProps = createStructuredSelector({
   tileset: makeSelectMapTileset(),
   tilemaps: makeSelectMapTilemaps(),
   connections: makeSelectConnectedMaps(),
+  blocks: makeSelectMapBlockset(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

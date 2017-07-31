@@ -105,6 +105,11 @@ const makeSelectMapTilemaps = () => createSelector(
   buildLayersForMap,
 );
 
+const makeSelectMapBlockset = () => createSelector(
+  makeSelectMapBlocks(),
+  (blocks) => buildLayersForMap(R.range(0, blocks.length), [8, blocks.length / 8], blocks),
+);
+
 const makeSelectConnectionPosition = ([theirWidth, theirHeight]) => createSelector(
   (state) => state.offset,
   (state) => state.direction,
@@ -163,4 +168,5 @@ export {
   makeSelectMapBlocks,
   makeSelectMapTilemaps,
   makeSelectConnectedMaps,
+  makeSelectMapBlockset,
 };

@@ -15,8 +15,10 @@ type RendererProps = {
   height: number,
   near: number,
   far: number,
+  customRenderer: Function,
   children: React$Component<*, *, *>,
   cameraRef: (THREE.Camera) => void,
+  canvasRef: (HTMLCanvasElement) => void,
   onMouseDown: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   onMouseMove: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   onMouseUp: (Event) => void, // eslint-disable-line react/no-unused-prop-types
@@ -45,6 +47,8 @@ export default class Renderer extends React.PureComponent {
     onMouseMove: null,
     onMouseUp: null,
     cameraRef: null,
+    canvasRef: null,
+    customRenderer: null,
   }
 
   constructor(props: RendererProps) {
@@ -154,6 +158,8 @@ export default class Renderer extends React.PureComponent {
       >
         <React3
           mainCamera="camera"
+          canvasRef={(ref) => this.props.canvasRef && this.props.canvasRef(ref)}
+          customRenderer={this.props.customRenderer}
           width={width}
           height={height}
           pixelRatio={window.devicePixelRatio}

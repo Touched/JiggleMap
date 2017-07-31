@@ -4,14 +4,20 @@ $iconHeight: 42px;
 .MapEditor {
   display: flex;
   flex-grow: 1;
-  position: relative;
 
   .MapEditor__MapViewport {
+    flex-grow: 1;
     display: flex;
 
     &:focus {
       outline: none;
     }
+  }
+
+  .MapEditor__Container {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
   }
 
   .MapEditor__Overlay {
@@ -67,6 +73,11 @@ $iconHeight: 42px;
       margin: 0 5px;
       background: #ccc;
     }
+  }
+
+  .ToolControls {
+    background: #ccc;
+    display: flex;
   }
 
   .MapControls {
