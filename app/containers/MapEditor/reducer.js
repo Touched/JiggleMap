@@ -5,6 +5,8 @@
  */
 
 import R from 'ramda';
+import * as THREE from 'three';
+import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
 import {
   LOAD_MAIN_MAP,
@@ -14,6 +16,7 @@ import {
   SET_CAMERA_POSITION,
   MOVE_CONNECTION,
   COMMIT_CONNECTION_MOVE,
+  RESIZE_VIEWPORT,
 } from './constants';
 
 import { drawLine } from './tools/helpers';
@@ -35,6 +38,10 @@ const blocksetData = {
 const initialState = {
   loading: false,
   linked: false,
+  viewportSize: {
+    width: 0,
+    height: 0,
+  },
   border: mapData,
 
   // When the user is editing (i.e. dragging the mouse around), the changes they make are
@@ -128,12 +135,24 @@ function mapEditorReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_MAIN_MAP: {
       const loadedData = action.map ? loadMapData(action.map.data.map) : state.map;
+      const { viewportSize: { width, height } } = state;
+      const { dimensions } = loadedData;
+      const boundingBox = calculateBoundingRectangle(width, height, dimensions[0] * 16, dimensions[1] * 16, 0, 0);
+      const min = new THREE.Vector3(0, 0, 0);
+      const max = new THREE.Vector3(boundingBox.width, boundingBox.height, 0);
+      const box = new THREE.Box3(min, max);
+      const midpoint = box.getCenter();
 
       return {
         ...state,
         map: loadedData,
         canonicalMap: action.map ? loadedData : state.canonicalMap,
         blocksets: action.blocksets ? loadBlocksetData(action.blocksets) : state.blocksets,
+        camera: {
+          ...state.camera,
+          x: midpoint.x,
+          y: -midpoint.y,
+        },
       };
     }
     case LOAD_CONNECTED_MAP:
@@ -171,6 +190,14 @@ function mapEditorReducer(state = initialState, action) {
           x: action.x,
           y: action.y,
           z: action.z,
+        },
+      };
+    case RESIZE_VIEWPORT:
+      return {
+        ...state,
+        viewportSize: {
+          width: action.width,
+          height: action.height,
         },
       };
     case MOVE_CONNECTION: {

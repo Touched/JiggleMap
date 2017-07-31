@@ -10,6 +10,7 @@ const selectMapBlockData = () => (state) => state.map.block;
 const selectMapDimensions = () => (state) => state.map.dimensions;
 
 const makeSelectCameraPosition = () => (state) => state.camera;
+const makeSelectViewportSize = () => (state) => state.viewportSize;
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -156,6 +157,7 @@ const makeSelectConnectedMaps = () => createArraySelector(
 export {
   selectMapDimensions,
   makeSelectCameraPosition,
+  makeSelectViewportSize,
   makeSelectMapPalette,
   makeSelectMapTileset,
   makeSelectMapBlocks,

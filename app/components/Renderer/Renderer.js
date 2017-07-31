@@ -20,6 +20,7 @@ type RendererProps = {
   onMouseDown: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   onMouseMove: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   onMouseUp: (Event) => void, // eslint-disable-line react/no-unused-prop-types
+  className: string,
 };
 
 const propsEvents = {
@@ -149,6 +150,7 @@ export default class Renderer extends React.PureComponent {
         tabIndex="0"
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
+        className={this.props.className}
       >
         <React3
           mainCamera="camera"

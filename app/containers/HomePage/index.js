@@ -22,6 +22,7 @@ import EditorTabs, { EditorTabsBar } from 'containers/EditorTabs';
 import MainDrawer from 'containers/App/Sidebar/MainDrawer';
 import EntityDrawer from 'containers/App/Sidebar/EntityDrawer';
 import { buildTabRoutes } from '../../tabs';
+import './styles.scss';
 
 const sidebarItems = [{
   id: 'main',
@@ -50,9 +51,9 @@ export class HomePage extends React.Component { // eslint-disable-line react/pre
     const { sidebarItem, setSidebarItem: setActiveItem } = this.props;
 
     return (
-      <div>
+      <div className="HomePage">
         <EditorTabsBar />
-        <div>
+        <div className="HomePage__container">
           <Sidebar
             items={sidebarItems}
             active={sidebarItem}

@@ -1,0 +1,10 @@
+.HomePage {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  .HomePage__container {
+    display: flex;
+    flex-grow: 1;
+  }
+}

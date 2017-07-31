@@ -13,6 +13,7 @@ import {
   SET_CAMERA_POSITION,
   MOVE_CONNECTION,
   COMMIT_CONNECTION_MOVE,
+  RESIZE_VIEWPORT,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -77,5 +78,13 @@ export function commitConnectionMove(connection) {
   return {
     type: COMMIT_CONNECTION_MOVE,
     connection,
+  };
+}
+
+export function resizeViewport(width, height) {
+  return {
+    type: RESIZE_VIEWPORT,
+    width,
+    height,
   };
 }

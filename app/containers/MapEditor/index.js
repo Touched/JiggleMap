@@ -7,12 +7,14 @@
 import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import * as THREE from 'three';
+import { withContentRect } from 'react-measure';
 
 import { GridArea, Renderer } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import Map from './Map';
 import DraggableMap from './DraggableMap';
+import './styles.scss';
 
 import {
   selectMapDimensions,
@@ -22,10 +24,15 @@ import {
   makeSelectCameraPosition,
   makeSelectConnectedMaps,
 } from './selectors';
-import { editMap, commitMapEdit, setCameraPosition, moveConnection, commitConnectionMove } from './actions';
+import {
+  editMap,
+  commitMapEdit,
+  setCameraPosition,
+  moveConnection,
+  commitConnectionMove,
+  resizeViewport,
+} from './actions';
 
-const WIDTH = 512;
-const HEIGHT = 512;
 const PAN_SPEED = 1;
 
 export class MapEditor extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -44,6 +51,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     editMap: Function,
     commitMapEdit: Function,
     setCameraPosition: Function,
+    measureRef: Function,
     moveConnection: (number, number, number) => void,
     commitConnectionMove: (number) => void,
     dimensions: [number, number],
@@ -60,6 +68,12 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
       position: {
         x: number,
         y: number,
+      },
+    },
+    contentRect: {
+      bounds: {
+        width: number, // eslint-disable-line react/no-unused-prop-types
+        height: number, // eslint-disable-line react/no-unused-prop-types
       },
     },
   }
@@ -87,10 +101,11 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
       event.preventDefault();
 
       const { pageX, pageY } = event;
+      const { contentRect: { bounds } } = this.props;
       const panStart = this.state.pan.start;
 
-      const a = new THREE.Vector2(pageX / WIDTH, -pageY / HEIGHT);
-      const b = new THREE.Vector2(panStart.x / WIDTH, -panStart.y / HEIGHT);
+      const a = new THREE.Vector2(pageX / bounds.width, -pageY / bounds.height);
+      const b = new THREE.Vector2(panStart.x / bounds.width, -panStart.y / bounds.height);
       const mouseChange = new THREE.Vector2().subVectors(a, b);
       const eye = new THREE.Vector3(0, 0, 0).sub(this.camera.position);
 
@@ -130,9 +145,9 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
   };
 
   handleWheel = ({ deltaY, nativeEvent: { offsetX, offsetY } }) => {
-    const { camera } = this.props;
-    const x = ((offsetX / WIDTH) * 2) - 1;
-    const y = -((offsetY / HEIGHT) * 2) + 1;
+    const { camera, contentRect: { bounds } } = this.props;
+    const x = ((offsetX / bounds.width) * 2) - 1;
+    const y = -((offsetY / bounds.height) * 2) + 1;
 
     const vector = new THREE.Vector3(x, y, 1);
     const currentPosition = new THREE.Vector3(camera.x, camera.y, camera.z);
@@ -152,22 +167,23 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
   };
 
   render() {
-    const { dimensions: [width, height], camera, connections } = this.props;
+    const { dimensions: [width, height], camera, connections, measureRef, contentRect } = this.props;
 
     return (
-      <div onWheel={this.handleWheel}>
+      <div onWheel={this.handleWheel} ref={measureRef} className="MapEditor">
         <Renderer
           x={this.state.pan ? this.state.pan.position.x : camera.x}
           y={this.state.pan ? this.state.pan.position.y : camera.y}
           z={camera.z}
-          width={WIDTH}
-          height={HEIGHT}
+          width={contentRect.bounds.width}
+          height={contentRect.bounds.height}
           near={0.25}
           far={2}
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           onMouseUp={this.handleMouseUp}
           cameraRef={(ref) => { this.camera = ref; }}
+          className="MapEditor__MapViewport"
         >
           {connections.map(({ dimensions, tilemaps, tileset, palette, position }, i) => (
             <DraggableMap
@@ -236,7 +252,10 @@ function mapTabDispatchToProps(tabDispatch) {
     commitConnectionMove(connection) {
       tabDispatch(commitConnectionMove(connection));
     },
+    onResize({ bounds: { width, height } }) {
+      tabDispatch(resizeViewport(width, height));
+    },
   };
 }
 
-export default connectTab(null, mapTabStateToProps, null, mapTabDispatchToProps)(MapEditor);
+export default connectTab(null, mapTabStateToProps, null, mapTabDispatchToProps)(withContentRect('bounds')(MapEditor));

@@ -5,6 +5,7 @@ $iconSize: 100px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  flex-grow: 1;
 
   .WelcomeTab__icon {
     width: $iconSize;

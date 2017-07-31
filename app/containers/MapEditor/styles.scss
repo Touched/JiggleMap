@@ -1,0 +1,8 @@
+.MapEditor {
+  display: flex;
+  flex-grow: 1;
+
+  .MapEditor__MapViewport {
+    display: flex;
+  }
+}
