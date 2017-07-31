@@ -11,9 +11,12 @@ import { withContentRect } from 'react-measure';
 
 import { GridArea, Renderer } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
+import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
 import Map from './Map';
 import DraggableMap from './DraggableMap';
+import MapControls from './MapControls';
+import ToolBox from './ToolBox';
 import './styles.scss';
 
 import {
@@ -166,19 +169,45 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     }
   };
 
+  recenterMap = () => {
+    const { contentRect: { bounds: { width, height } }, dimensions, camera } = this.props;
+    const boundingBox = calculateBoundingRectangle(width, height, dimensions[0] * 16, dimensions[1] * 16, 0, 0);
+    const min = new THREE.Vector3(0, 0, 0);
+    const max = new THREE.Vector3(boundingBox.width, boundingBox.height, 0);
+    const box = new THREE.Box3(min, max);
+    const midpoint = box.getCenter();
+
+    this.props.setCameraPosition(midpoint.x, -midpoint.y, camera.z);
+  };
+
   render() {
     const { dimensions: [width, height], camera, connections, measureRef, contentRect } = this.props;
 
+    const near = 0.25;
+    const far = 2;
+
     return (
       <div onWheel={this.handleWheel} ref={measureRef} className="MapEditor">
+        <div className="MapEditor__Overlay">
+          <ToolBox onToolSelect={console.log} />
+          <MapControls
+            zoomMin={near}
+            zoomMax={far}
+            zoom={camera.z}
+            onToggleLayer={console.log}
+            onRecenterClick={this.recenterMap}
+            onZoomChanged={({ target }) => this.props.setCameraPosition(camera.x, camera.y, target.value)}
+            selectedLayer="map"
+          />
+        </div>
         <Renderer
           x={this.state.pan ? this.state.pan.position.x : camera.x}
           y={this.state.pan ? this.state.pan.position.y : camera.y}
           z={camera.z}
           width={contentRect.bounds.width}
           height={contentRect.bounds.height}
-          near={0.25}
-          far={2}
+          near={near}
+          far={far}
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           onMouseUp={this.handleMouseUp}

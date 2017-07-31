@@ -1,8 +1,89 @@
+$overlayPadding: 10px;
+$iconHeight: 42px;
+
 .MapEditor {
   display: flex;
   flex-grow: 1;
+  position: relative;
 
   .MapEditor__MapViewport {
     display: flex;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .MapEditor__Overlay {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    justify-content: flex-start;
+    padding: $overlayPadding;
+    flex-direction: column;
+  }
+
+  .MapEditor__OverlayBox {
+    pointer-events: all;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+    background: white;
+    border-radius: 3px;
+    padding: 0.5em;
+
+    button {
+      width: $iconHeight;
+      height: $iconHeight;
+      border-radius: 100%;
+      margin: 3px;
+
+      &.active {
+        background: #009788;
+      }
+
+      &:hover {
+        background: #ccc;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:active {
+        background: #aaa;
+      }
+    }
+  }
+
+  .ToolBox {
+    margin: 0 auto auto auto;
+
+    .ToolBox__separator {
+      width: 1px;
+      height: $iconHeight;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 5px;
+      background: #ccc;
+    }
+  }
+
+  .MapControls {
+    margin-left: auto;
+    align-self: flex-end;
+
+    input[type="range"] {
+      line-height: $iconHeight;
+      vertical-align: middle;
+      margin: 0.5em;
+    }
+
+    .MapControls__LayerControls {
+      display: flex;
+      justify-content: center;
+    }
+
+    .MapControls__CameraControls {}
   }
 }
