@@ -5,6 +5,7 @@
  */
 
 import R from 'ramda';
+import { combineReducers } from 'redux';
 import undoable, { includeAction } from 'redux-undo';
 import * as THREE from 'three';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
@@ -38,13 +39,7 @@ const blocksetData = {
   tiles: [],
 };
 
-const initialState = {
-  loading: false,
-  linked: false,
-  viewportSize: {
-    width: 0,
-    height: 0,
-  },
+const initialDataState = {
   border: mapData,
 
   // When the user is editing (i.e. dragging the mouse around), the changes they make are
@@ -60,12 +55,23 @@ const initialState = {
   connections: [],
   canonicalConnectionOffsets: [],
   entities: [],
+};
+
+const initialEditingState = {
+  loading: false,
+  linked: false,
+  viewportSize: {
+    width: 0,
+    height: 0,
+  },
   camera: {
     x: 0,
     y: 0,
     z: 1,
   },
-  currentBlock: 0,
+  toolState: {
+    currentBlock: 0,
+  },
 };
 
 function loadMapData(data) {
@@ -110,11 +116,11 @@ function setMapDataValue(oldData, newData, index, value) {
   return dataCopy;
 }
 
-function editMap(state, data, start, end) {
+function editMap(toolState, data, start, end) {
   const patch = drawLine(start.x, start.y, end.x, end.y, (x, y) => ({
     x,
     y,
-    block: state.currentBlock,
+    block: toolState.currentBlock,
   }));
 
   let mapBlockData = null;
@@ -135,28 +141,16 @@ function editMap(state, data, start, end) {
   return data;
 }
 
-function mapEditorReducer(state = initialState, action) {
+function mapDataReducer(state = initialDataState, action) {
   switch (action.type) {
     case LOAD_MAIN_MAP: {
       const loadedData = action.map ? loadMapData(action.map.data.map) : state.map;
-      const { viewportSize: { width, height } } = state;
-      const { dimensions } = loadedData;
-      const boundingBox = calculateBoundingRectangle(width, height, dimensions[0] * 16, dimensions[1] * 16, 0, 0);
-      const min = new THREE.Vector3(0, 0, 0);
-      const max = new THREE.Vector3(boundingBox.width, boundingBox.height, 0);
-      const box = new THREE.Box3(min, max);
-      const midpoint = box.getCenter();
 
       return {
         ...state,
         map: loadedData,
         canonicalMap: action.map ? loadedData : state.canonicalMap,
         blocksets: action.blocksets ? loadBlocksetData(action.blocksets) : state.blocksets,
-        camera: {
-          ...state.camera,
-          x: midpoint.x,
-          y: -midpoint.y,
-        },
       };
     }
     case LOAD_CONNECTED_MAP:
@@ -180,29 +174,12 @@ function mapEditorReducer(state = initialState, action) {
         ...state,
         // Changes are applied to the canonical map, but saved in the map so that they are
         // visible to the user.
-        map: editMap(state, state.canonicalMap, action.start, action.end, action.modifiers),
+        map: editMap(action.toolState, state.canonicalMap, action.start, action.end, action.modifiers),
       };
     case COMMIT_MAP_EDIT:
       return {
         ...state,
         canonicalMap: state.map,
-      };
-    case SET_CAMERA_POSITION:
-      return {
-        ...state,
-        camera: {
-          x: action.x,
-          y: action.y,
-          z: action.z,
-        },
-      };
-    case RESIZE_VIEWPORT:
-      return {
-        ...state,
-        viewportSize: {
-          width: action.width,
-          height: action.height,
-        },
       };
     case MOVE_CONNECTION: {
       const { direction } = state.connections[action.connection];
@@ -230,18 +207,67 @@ function mapEditorReducer(state = initialState, action) {
       const lens = R.lensPath(['connections', action.connection, 'canonicalConnectionOffsets']);
       return R.set(lens, state.connections[action.connection].offset, state);
     }
+    default:
+      return state;
+  }
+}
+
+function mapEditingReducer(state = initialEditingState, action) {
+  switch (action.type) {
+    case LOAD_MAIN_MAP: {
+      const { viewportSize: { width, height } } = state;
+      const { width: mapWidth, height: mapHeight } = action.map.data.map;
+      const boundingBox = calculateBoundingRectangle(width, height, mapWidth * 16, mapHeight * 16, 0, 0);
+      const min = new THREE.Vector3(0, 0, 0);
+      const max = new THREE.Vector3(boundingBox.width, boundingBox.height, 0);
+      const box = new THREE.Box3(min, max);
+      const midpoint = box.getCenter();
+
+      return {
+        ...state,
+        camera: {
+          ...state.camera,
+          x: midpoint.x,
+          y: -midpoint.y,
+        },
+      };
+    }
+    case SET_CAMERA_POSITION:
+      return {
+        ...state,
+        camera: {
+          x: action.x,
+          y: action.y,
+          z: action.z,
+        },
+      };
+    case RESIZE_VIEWPORT:
+      return {
+        ...state,
+        viewportSize: {
+          width: action.width,
+          height: action.height,
+        },
+      };
     case SET_CURRENT_BLOCK:
       return {
         ...state,
-        currentBlock: action.block,
+        toolState: {
+          ...state.toolState,
+          currentBlock: action.block,
+        },
       };
     default:
       return state;
   }
 }
 
-export default undoable(mapEditorReducer, {
-  limit: 10,
-  filter: includeAction([MAP_LOADED, COMMIT_CONNECTION_MOVE, COMMIT_MAP_EDIT]),
-  ignoreInitialState: true,
+// Split the reducers into undoable map data and other editing state
+export default combineReducers({
+  editing: mapEditingReducer,
+  data: undoable(mapDataReducer, {
+    limit: 10,
+    filter: includeAction([MAP_LOADED, COMMIT_CONNECTION_MOVE, COMMIT_MAP_EDIT]),
+    ignoreInitialState: true,
+  }),
 });

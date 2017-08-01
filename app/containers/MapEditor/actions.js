@@ -49,9 +49,10 @@ export function loadConnectedMap({ map, blocksets, direction, offset }) {
   };
 }
 
-export function editMap(start, end, modifiers) {
+export function editMap(toolState, start, end, modifiers) {
   return {
     type: EDIT_MAP,
+    toolState,
     start,
     end,
     modifiers,

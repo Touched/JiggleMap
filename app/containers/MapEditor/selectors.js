@@ -9,8 +9,9 @@ const selectMapBlocksetTileset = (type) => (state) => state.blocksets[type].tile
 const selectMapBlockData = () => (state) => state.map.block;
 const selectMapDimensions = () => (state) => state.map.dimensions;
 
-const makeSelectCameraPosition = () => (state) => state.present.camera;
-const makeSelectViewportSize = () => (state) => state.present.viewportSize;
+const makeSelectCameraPosition = () => (state) => state.editing.camera;
+const makeSelectViewportSize = () => (state) => state.editing.viewportSize;
+const makeSelectToolState = () => (state) => state.editing.toolState;
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -145,7 +146,7 @@ const makeSelectConnectionPosition = ([theirWidth, theirHeight]) => createSelect
   },
 );
 
-const makeSelectMainMap = () => (state) => state.present;
+const makeSelectMainMap = () => (state) => state.data.present;
 const makeSelectMainMapDimensions = () => createSelector(
   makeSelectMainMap(),
   selectMapDimensions(),
@@ -176,7 +177,7 @@ const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
 });
 
 const makeSelectConnectedMaps = () => createArraySelector(
-  (state) => state.present.connections,
+  (state) => state.data.present.connections,
   makeSelectMainMapDimensions(),
   (connection, dimensions) => makeSelectConnectedMap(dimensions)(connection),
 );
@@ -190,4 +191,5 @@ export {
   makeSelectMainMapPalette,
   makeSelectMainMapTileset,
   makeSelectMainMapTilemaps,
+  makeSelectToolState,
 };

@@ -28,6 +28,7 @@ import {
   makeSelectCameraPosition,
   makeSelectConnectedMaps,
   makeSelectMainMapBlockset,
+  makeSelectToolState,
 } from './selectors';
 import {
   editMap,
@@ -64,6 +65,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     moveConnection: (number, number, number) => void,
     commitConnectionMove: (number) => void,
     dimensions: [number, number],
+    toolState: Object,
     camera: {
       x: number,
       y: number,
@@ -252,7 +254,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
               y={0}
               width={width}
               height={height}
-              onMouseMove={this.props.editMap}
+              onMouseMove={(...args) => this.props.editMap(this.props.toolState, ...args)}
               onMouseUp={this.props.commitMapEdit}
               bounded
             />
@@ -279,12 +281,13 @@ const mapTabStateToProps = createStructuredSelector({
   tilemaps: makeSelectMainMapTilemaps(),
   connections: makeSelectConnectedMaps(),
   blocks: makeSelectMainMapBlockset(),
+  toolState: makeSelectToolState(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {
   return {
-    editMap(start, end, modifiers) {
-      tabDispatch(editMap(start, end, modifiers));
+    editMap(toolState, start, end, modifiers) {
+      tabDispatch(editMap(toolState, start, end, modifiers));
     },
     commitMapEdit() {
       tabDispatch(commitMapEdit());
