@@ -15,6 +15,7 @@ import {
   COMMIT_CONNECTION_MOVE,
   RESIZE_VIEWPORT,
   SET_CURRENT_BLOCK,
+  MAP_LOADED,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -29,6 +30,12 @@ export function loadMainMap({ map, blocksets }) {
     type: LOAD_MAIN_MAP,
     map,
     blocksets,
+  };
+}
+
+export function mapLoaded() {
+  return {
+    type: MAP_LOADED,
   };
 }
 

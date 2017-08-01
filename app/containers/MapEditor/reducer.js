@@ -5,6 +5,7 @@
  */
 
 import R from 'ramda';
+import undoable, { includeAction } from 'redux-undo';
 import * as THREE from 'three';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
@@ -18,6 +19,7 @@ import {
   COMMIT_CONNECTION_MOVE,
   RESIZE_VIEWPORT,
   SET_CURRENT_BLOCK,
+  MAP_LOADED,
 } from './constants';
 
 import { drawLine } from './tools/helpers';
@@ -238,4 +240,8 @@ function mapEditorReducer(state = initialState, action) {
   }
 }
 
-export default mapEditorReducer;
+export default undoable(mapEditorReducer, {
+  limit: 10,
+  filter: includeAction([MAP_LOADED, COMMIT_CONNECTION_MOVE, COMMIT_MAP_EDIT]),
+  ignoreInitialState: true,
+});

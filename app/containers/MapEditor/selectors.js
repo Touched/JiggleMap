@@ -9,8 +9,8 @@ const selectMapBlocksetTileset = (type) => (state) => state.blocksets[type].tile
 const selectMapBlockData = () => (state) => state.map.block;
 const selectMapDimensions = () => (state) => state.map.dimensions;
 
-const makeSelectCameraPosition = () => (state) => state.camera;
-const makeSelectViewportSize = () => (state) => state.viewportSize;
+const makeSelectCameraPosition = () => (state) => state.present.camera;
+const makeSelectViewportSize = () => (state) => state.present.viewportSize;
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -145,6 +145,28 @@ const makeSelectConnectionPosition = ([theirWidth, theirHeight]) => createSelect
   },
 );
 
+const makeSelectMainMap = () => (state) => state.present;
+const makeSelectMainMapDimensions = () => createSelector(
+  makeSelectMainMap(),
+  selectMapDimensions(),
+);
+const makeSelectMainMapPalette = () => createSelector(
+  makeSelectMainMap(),
+  makeSelectMapPalette(),
+);
+const makeSelectMainMapTileset = () => createSelector(
+  makeSelectMainMap(),
+  makeSelectMapTileset(),
+);
+const makeSelectMainMapTilemaps = () => createSelector(
+  makeSelectMainMap(),
+  makeSelectMapTilemaps(),
+);
+const makeSelectMainMapBlockset = () => createSelector(
+  makeSelectMainMap(),
+  makeSelectMapBlockset(),
+);
+
 const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
   tilemaps: makeSelectMapTilemaps(),
   palette: makeSelectMapPalette(),
@@ -154,19 +176,18 @@ const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
 });
 
 const makeSelectConnectedMaps = () => createArraySelector(
-  (state) => state.connections,
-  selectMapDimensions(),
+  (state) => state.present.connections,
+  makeSelectMainMapDimensions(),
   (connection, dimensions) => makeSelectConnectedMap(dimensions)(connection),
 );
 
 export {
-  selectMapDimensions,
   makeSelectCameraPosition,
   makeSelectViewportSize,
-  makeSelectMapPalette,
-  makeSelectMapTileset,
-  makeSelectMapBlocks,
-  makeSelectMapTilemaps,
   makeSelectConnectedMaps,
-  makeSelectMapBlockset,
+  makeSelectMainMapBlockset,
+  makeSelectMainMapDimensions,
+  makeSelectMainMapPalette,
+  makeSelectMainMapTileset,
+  makeSelectMainMapTilemaps,
 };

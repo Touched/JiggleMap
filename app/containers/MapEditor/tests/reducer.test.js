@@ -1,5 +1,5 @@
 
-import mapEditorReducer from '../reducer';
+import { mapEditorReducer } from '../reducer';
 
 describe('mapEditorReducer', () => {
   it('returns the initial state', () => {

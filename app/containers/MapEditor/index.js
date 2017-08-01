@@ -21,13 +21,13 @@ import BlockPicker from './BlockPicker';
 import './styles.scss';
 
 import {
-  selectMapDimensions,
-  makeSelectMapPalette,
-  makeSelectMapTileset,
-  makeSelectMapTilemaps,
+  makeSelectMainMapDimensions,
+  makeSelectMainMapPalette,
+  makeSelectMainMapTileset,
+  makeSelectMainMapTilemaps,
   makeSelectCameraPosition,
   makeSelectConnectedMaps,
-  makeSelectMapBlockset,
+  makeSelectMainMapBlockset,
 } from './selectors';
 import {
   editMap,
@@ -59,6 +59,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     commitMapEdit: Function,
     setCameraPosition: Function,
     setCurrentBlock: Function,
+    tabDispatch: Function,
     measureRef: Function,
     moveConnection: (number, number, number) => void,
     commitConnectionMove: (number) => void,
@@ -195,7 +196,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
       <div className="MapEditor">
         <div className="MapEditor__Container" ref={measureRef} onWheel={this.handleWheel}>
           <div className="MapEditor__Overlay">
-            <ToolBox onToolSelect={console.log} />
+            <ToolBox tabDispatch={this.props.tabDispatch} />
             <MapControls
               zoomMin={near}
               zoomMax={far}
@@ -271,13 +272,13 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
 }
 
 const mapTabStateToProps = createStructuredSelector({
-  dimensions: selectMapDimensions(),
+  dimensions: makeSelectMainMapDimensions(),
   camera: makeSelectCameraPosition(),
-  palette: makeSelectMapPalette(),
-  tileset: makeSelectMapTileset(),
-  tilemaps: makeSelectMapTilemaps(),
+  palette: makeSelectMainMapPalette(),
+  tileset: makeSelectMainMapTileset(),
+  tilemaps: makeSelectMainMapTilemaps(),
   connections: makeSelectConnectedMaps(),
-  blocks: makeSelectMapBlockset(),
+  blocks: makeSelectMainMapBlockset(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {
@@ -303,6 +304,7 @@ function mapTabDispatchToProps(tabDispatch) {
     setCurrentBlock(block) {
       tabDispatch(setCurrentBlock(block));
     },
+    tabDispatch,
   };
 }
 

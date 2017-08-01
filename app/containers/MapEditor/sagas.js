@@ -8,7 +8,7 @@ import { takeLatestRelayed, putRelayed } from 'containers/EditorTabs/sagaEffects
 import { LOAD } from 'containers/EditorTabs/constants';
 import { makeSelectEntity } from 'containers/App/selectors';
 import { parseEntity } from 'containers/App/sagas';
-import { loadMainMap, loadConnectedMap } from './actions';
+import { loadMainMap, loadConnectedMap, mapLoaded } from './actions';
 
 export function* loadBlockset(primary, { id, type }) {
   invariant(
@@ -82,6 +82,9 @@ export function* loadMap({ id, action: { meta } }) {
   ));
 
   yield all(connections.map((connection) => putRelayed(id, loadConnectedMap(connection))));
+
+  // Mark the map as having finished loading
+  yield putRelayed(id, mapLoaded());
 
   // TODO: Take a SAVE action for any of the loaded entities and trigger a reload
 }

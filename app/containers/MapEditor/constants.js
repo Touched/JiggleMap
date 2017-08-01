@@ -8,6 +8,7 @@ export const LOAD_MAP_ENTITY = 'jigglemap/MapEditor/LOAD_MAP_ENTITY';
 
 export const LOAD_MAIN_MAP = 'jigglemap/MapEditor/LOAD_MAIN_MAP';
 export const LOAD_CONNECTED_MAP = 'jigglemap/MapEditor/LOAD_CONNECTED_MAP';
+export const MAP_LOADED = 'jigglemap/MapEditor/MAP_LOADED';
 
 export const RESIZE_VIEWPORT = 'jigglemap/MapEditor/RESIZE_VIEWPORT';
 export const EDIT_MAP = 'jigglemap/MapEditor/EDIT_MAP';
