@@ -36,6 +36,7 @@ import {
   moveConnection,
   commitConnectionMove,
   resizeViewport,
+  setCurrentBlock,
 } from './actions';
 
 const PAN_SPEED = 1;
@@ -57,6 +58,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
     editMap: Function,
     commitMapEdit: Function,
     setCameraPosition: Function,
+    setCurrentBlock: Function,
     measureRef: Function,
     moveConnection: (number, number, number) => void,
     commitConnectionMove: (number) => void,
@@ -256,7 +258,12 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
           </Renderer>
         </div>
         <div className="ToolControls">
-          <BlockPicker tileset={this.props.tileset} palette={this.props.palette} blocks={this.props.blocks} />
+          <BlockPicker
+            tileset={this.props.tileset}
+            palette={this.props.palette}
+            blocks={this.props.blocks}
+            onChange={this.props.setCurrentBlock}
+          />
         </div>
       </div>
     );
@@ -292,6 +299,9 @@ function mapTabDispatchToProps(tabDispatch) {
     },
     onResize({ bounds: { width, height } }) {
       tabDispatch(resizeViewport(width, height));
+    },
+    setCurrentBlock(block) {
+      tabDispatch(setCurrentBlock(block));
     },
   };
 }

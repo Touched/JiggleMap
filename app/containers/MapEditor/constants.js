@@ -15,3 +15,4 @@ export const COMMIT_MAP_EDIT = 'jigglemap/MapEditor/COMMIT_MAP_EDIT';
 export const SET_CAMERA_POSITION = 'jigglemap/MapEditor/SET_CAMERA_POSITION';
 export const MOVE_CONNECTION = 'jigglemap/MapEditor/MOVE_CONNECTION';
 export const COMMIT_CONNECTION_MOVE = 'jigglemap/MapEditor/COMMIT_CONNECTION_MOVE';
+export const SET_CURRENT_BLOCK = 'jigglemap/MapEditor/SET_CURRENT_BLOCK';

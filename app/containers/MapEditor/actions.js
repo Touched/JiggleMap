@@ -14,6 +14,7 @@ import {
   MOVE_CONNECTION,
   COMMIT_CONNECTION_MOVE,
   RESIZE_VIEWPORT,
+  SET_CURRENT_BLOCK,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -86,5 +87,12 @@ export function resizeViewport(width, height) {
     type: RESIZE_VIEWPORT,
     width,
     height,
+  };
+}
+
+export function setCurrentBlock(block) {
+  return {
+    type: SET_CURRENT_BLOCK,
+    block,
   };
 }

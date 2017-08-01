@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
-import { Renderer } from 'components/Renderer';
+import { GridArea, Renderer } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 import { nativeImage } from 'electron';
 
@@ -13,6 +13,14 @@ export default class BlockPicker extends React.Component {
   static defaultProps = {
     zoom: 2,
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      src: '',
+    };
+  }
 
   getBlockImage(block: number) {
     const { blocks, zoom } = this.props;
@@ -65,6 +73,7 @@ export default class BlockPicker extends React.Component {
     tileset: Uint8Array;
     blocks: Array<Uint8Array>;
     zoom: number;
+    onChange: (value) => void,
   };
   canvas: HtmlCanvasElement;
 
@@ -76,6 +85,18 @@ export default class BlockPicker extends React.Component {
 
     return this.renderer;
   };
+
+  handleMouseDown = ({ x, y }) => {
+    const block = (y * WIDTH_IN_BLOCKS) + x;
+
+    this.setState(() => ({
+      src: this.getBlockImage(block).toDataURL(),
+    }));
+
+    if (this.props.onChange) {
+      this.props.onChange(block);
+    }
+  }
 
   render() {
     const { tileset, palette, blocks, zoom } = this.props;
@@ -99,26 +120,35 @@ export default class BlockPicker extends React.Component {
     );
 
     return (
-      <Renderer
-        x={left}
-        y={top}
-        z={1 / zoom}
-        width={containerWidth}
-        height={containerHeight}
-        near={0.25}
-        far={2}
-        customRenderer={this.customRenderer}
-        canvasRef={(ref) => { this.canvas = ref; }}
-        onMouseDown={() => console.log(this.getBlockImage(4).toDataURL())}
-      >
-        <Map
-          width={width}
-          height={height}
-          tileset={tileset}
-          tilemaps={blocks}
-          palette={palette}
-        />
-      </Renderer>
+      <div>
+        <img alt="Selected Block" src={this.state.src} width={64} height={64} style={{ imageRendering: 'pixelated' }} />
+        <Renderer
+          x={left}
+          y={top}
+          z={1 / zoom}
+          width={containerWidth}
+          height={containerHeight}
+          near={0.25}
+          far={2}
+          customRenderer={this.customRenderer}
+          canvasRef={(ref) => { this.canvas = ref; }}
+        >
+          <Map
+            width={width}
+            height={height}
+            tileset={tileset}
+            tilemaps={blocks}
+            palette={palette}
+          />
+          <GridArea
+            width={width}
+            height={height}
+            onMouseDown={this.handleMouseDown}
+            bounded
+          />
+        </Renderer>
+      </div>
     );
   }
 }
+

@@ -17,6 +17,7 @@ import {
   MOVE_CONNECTION,
   COMMIT_CONNECTION_MOVE,
   RESIZE_VIEWPORT,
+  SET_CURRENT_BLOCK,
 } from './constants';
 
 import { drawLine } from './tools/helpers';
@@ -62,6 +63,7 @@ const initialState = {
     y: 0,
     z: 1,
   },
+  currentBlock: 0,
 };
 
 function loadMapData(data) {
@@ -106,11 +108,11 @@ function setMapDataValue(oldData, newData, index, value) {
   return dataCopy;
 }
 
-function editMap(data, start, end) {
+function editMap(state, data, start, end) {
   const patch = drawLine(start.x, start.y, end.x, end.y, (x, y) => ({
     x,
     y,
-    block: 0,
+    block: state.currentBlock,
   }));
 
   let mapBlockData = null;
@@ -176,7 +178,7 @@ function mapEditorReducer(state = initialState, action) {
         ...state,
         // Changes are applied to the canonical map, but saved in the map so that they are
         // visible to the user.
-        map: editMap(state.canonicalMap, action.start, action.end, action.modifiers),
+        map: editMap(state, state.canonicalMap, action.start, action.end, action.modifiers),
       };
     case COMMIT_MAP_EDIT:
       return {
@@ -226,6 +228,11 @@ function mapEditorReducer(state = initialState, action) {
       const lens = R.lensPath(['connections', action.connection, 'canonicalConnectionOffsets']);
       return R.set(lens, state.connections[action.connection].offset, state);
     }
+    case SET_CURRENT_BLOCK:
+      return {
+        ...state,
+        currentBlock: action.block,
+      };
     default:
       return state;
   }
