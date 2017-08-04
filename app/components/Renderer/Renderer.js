@@ -51,6 +51,11 @@ export default class Renderer extends React.PureComponent {
     customRenderer: null,
   }
 
+  static contextTypes = {
+    tabId: React.PropTypes.string,
+    store: React.PropTypes.object,
+  };
+
   constructor(props: RendererProps) {
     super(props);
     this.raycaster = new THREE.Raycaster();
@@ -175,7 +180,11 @@ export default class Renderer extends React.PureComponent {
               position={new THREE.Vector3(x, y, z)}
               ref={this.setCameraRef}
             />
-            <ContainerProvider container={{ width, height }}>
+            <ContainerProvider
+              container={{ width, height }}
+              store={this.context.store}
+              tabId={this.context.tabId}
+            >
               {children}
             </ContainerProvider>
           </scene>

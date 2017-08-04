@@ -14,15 +14,21 @@ export default class ContainerProvider extends React.Component {
   static propTypes = {
     container: containerShape.isRequired,
     children: PropTypes.node.isRequired,
+    tabId: PropTypes.string.isRequired,
+    store: PropTypes.object.isRequired,
   };
 
   static childContextTypes = {
     container: containerShape,
+    tabId: PropTypes.string,
+    store: PropTypes.object,
   };
 
   getChildContext() {
     return {
       container: this.props.container,
+      tabId: this.props.tabId,
+      store: this.props.store,
     };
   }
 
