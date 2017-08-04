@@ -21,6 +21,8 @@ import {
   RESIZE_VIEWPORT,
   SET_CURRENT_BLOCK,
   MAP_LOADED,
+  MOVE_ENTITY,
+  COMMIT_ENTITY_MOVE,
 } from './constants';
 
 import { drawLine } from './tools/helpers';
@@ -55,6 +57,7 @@ const initialDataState = {
   connections: [],
   canonicalConnectionOffsets: [],
   entities: [],
+  canonicalEntityCoordinates: [],
 };
 
 const initialEditingState = {
@@ -152,6 +155,7 @@ function mapDataReducer(state = initialDataState, action) {
         canonicalMap: action.map ? loadedData : state.canonicalMap,
         blocksets: action.blocksets ? loadBlocksetData(action.blocksets) : state.blocksets,
         entities: action.map.data.entities,
+        canonicalEntityCoordinates: action.map.data.entities.map(({ x, y }) => ({ x, y })),
       };
     }
     case LOAD_CONNECTED_MAP:
@@ -209,6 +213,33 @@ function mapDataReducer(state = initialDataState, action) {
     case COMMIT_CONNECTION_MOVE: {
       const lens = R.lensPath(['canonicalConnectionOffsets', action.connection]);
       return R.set(lens, state.connections[action.connection].offset, state);
+    }
+    case MOVE_ENTITY: {
+      const index = state.entities.findIndex(({ id }) => id === action.id);
+
+      if (index >= 0) {
+        const [width, height] = state.map.dimensions;
+        const { x: canonicalX, y: canonicalY } = state.canonicalEntityCoordinates[index];
+
+        const x = Math.max(Math.min(canonicalX + action.x, width - 1), 0);
+        const y = Math.max(Math.min(canonicalY + action.y, height - 1), 0);
+
+        const lens = R.lensPath(['entities', index]);
+        return R.over(lens, R.merge(R.__, { x, y }), state); // eslint-disable-line no-underscore-dangle
+      }
+
+      return state;
+    }
+    case COMMIT_ENTITY_MOVE: {
+      const index = state.entities.findIndex(({ id }) => id === action.id);
+
+      if (index >= 0) {
+        const { x, y } = state.entities[index];
+        const lens = R.lensPath(['canonicalEntityCoordinates', index]);
+        return R.over(lens, R.merge(R.__, { x, y }), state); // eslint-disable-line no-underscore-dangle
+      }
+
+      return state;
     }
     default:
       return state;
@@ -270,7 +301,7 @@ export default combineReducers({
   editing: mapEditingReducer,
   data: undoable(mapDataReducer, {
     limit: 10,
-    filter: includeAction([MAP_LOADED, COMMIT_CONNECTION_MOVE, COMMIT_MAP_EDIT]),
+    filter: includeAction([MAP_LOADED, COMMIT_CONNECTION_MOVE, COMMIT_MAP_EDIT, COMMIT_ENTITY_MOVE]),
     ignoreInitialState: true,
   }),
 });

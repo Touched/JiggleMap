@@ -8,7 +8,7 @@ import { calculateBoundingRectangle } from './utils';
 
 const Complex = threeSimplicialComplex(THREE);
 
-export default class Icon extends React.Component {
+export default class Icon extends React.PureComponent {
   static contextTypes = {
     container: containerShape,
   };

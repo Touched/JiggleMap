@@ -126,7 +126,7 @@ export default class Renderer extends React.PureComponent {
 
     const objects = isGlobalEvent[event.type] ? getAllChildren(this.scene) : intersects;
 
-    objects.every((object) => {
+    objects.reverse().every((object) => {
       const aspect = width / height;
       const verticalFraction = 2 * Math.tan(FOV_RADIANS / 2) * DISTANCE;
       const horizontalFraction = verticalFraction * aspect;

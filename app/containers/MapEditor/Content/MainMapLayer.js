@@ -26,6 +26,16 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
     toolState: Object,
   }
 
+  handleMouseMove = (start, end, event) => {
+    this.props.editMap(this.props.toolState, start, end, event);
+    event.stopPropagation();
+  };
+
+  handleMouseUp = (start, end, event) => {
+    this.props.commitMapEdit();
+    event.stopPropagation();
+  };
+
   render() {
     const { dimensions: [width, height] } = this.props;
 
@@ -46,8 +56,8 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
           y={0}
           width={width}
           height={height}
-          onMouseMove={(...args) => this.props.editMap(this.props.toolState, ...args)}
-          onMouseUp={this.props.commitMapEdit}
+          onMouseMove={this.handleMouseMove}
+          onMouseUp={this.handleMouseUp}
           bounded
         />
       </Group>

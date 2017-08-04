@@ -10,8 +10,6 @@ import {
   makeSelectConnectedMaps,
 } from '../selectors';
 import {
-  editMap,
-  commitMapEdit,
   moveConnection,
   commitConnectionMove,
 } from '../actions';
@@ -66,12 +64,6 @@ const mapTabStateToProps = createStructuredSelector({
 
 function mapTabDispatchToProps(tabDispatch) {
   return {
-    editMap(toolState, start, end, modifiers) {
-      tabDispatch(editMap(toolState, start, end, modifiers));
-    },
-    commitMapEdit() {
-      tabDispatch(commitMapEdit());
-    },
     moveConnection(connection, x, y) {
       tabDispatch(moveConnection(connection, x, y));
     },

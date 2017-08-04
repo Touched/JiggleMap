@@ -16,6 +16,8 @@ import {
   RESIZE_VIEWPORT,
   SET_CURRENT_BLOCK,
   MAP_LOADED,
+  MOVE_ENTITY,
+  COMMIT_ENTITY_MOVE,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -102,5 +104,21 @@ export function setCurrentBlock(block) {
   return {
     type: SET_CURRENT_BLOCK,
     block,
+  };
+}
+
+export function moveEntity(id, x, y) {
+  return {
+    type: MOVE_ENTITY,
+    id,
+    x,
+    y,
+  };
+}
+
+export function commitEntityMove(id) {
+  return {
+    type: COMMIT_ENTITY_MOVE,
+    id,
   };
 }
