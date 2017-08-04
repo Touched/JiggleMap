@@ -185,26 +185,28 @@ function mapDataReducer(state = initialDataState, action) {
       const { direction } = state.connections[action.connection];
       const canonicalOffset = state.canonicalConnectionOffsets[action.connection];
 
-      let movement;
+      const [width, height] = state.map.dimensions;
+
+      let offset;
       switch (direction) {
         case 'left':
         case 'right':
-          movement = action.y;
+          offset = Math.max(Math.min(canonicalOffset + action.y, height), -height);
           break;
         case 'up':
         case 'down':
-          movement = action.x;
+          offset = Math.max(Math.min(canonicalOffset + action.x, width), -width);
           break;
         default:
-          movement = 0;
+          offset = 0;
           break;
       }
 
       const lens = R.lensPath(['connections', action.connection, 'offset']);
-      return R.set(lens, canonicalOffset + movement, state);
+      return R.set(lens, offset, state);
     }
     case COMMIT_CONNECTION_MOVE: {
-      const lens = R.lensPath(['connections', action.connection, 'canonicalConnectionOffsets']);
+      const lens = R.lensPath(['canonicalConnectionOffsets', action.connection]);
       return R.set(lens, state.connections[action.connection].offset, state);
     }
     default:

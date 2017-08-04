@@ -77,6 +77,7 @@ export default class DraggableArea extends React.PureComponent {
         z={z}
         onMouseDown={this.handleDragStart}
         onMouseMove={this.handleDrag}
+        onMouseUp={this.handleDragEnd}
         name={name}
         width={width}
         height={height}

@@ -19,10 +19,11 @@ type Props = {
   tilemaps: Array<Uint8Array>;
   darken: boolean;
   onDrag: (Position, Position, AreaEvent) => void;
+  onDragEnd: (Position, Position, AreaEvent) => void;
 };
 
 export default function DraggableMap(props: Props) {
-  const { x, y, z, width, height, tileset, tilemaps, palette, darken, onDrag } = props;
+  const { x, y, z, width, height, tileset, tilemaps, palette, darken, onDrag, onDragEnd } = props;
 
   return (
     <Group>
@@ -44,6 +45,7 @@ export default function DraggableMap(props: Props) {
         width={width}
         height={height}
         onDrag={onDrag}
+        onDragEnd={onDragEnd}
       />
     </Group>
   );
