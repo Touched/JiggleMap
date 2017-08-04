@@ -56,6 +56,7 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
           y={0}
           width={width}
           height={height}
+          onMouseDown={this.handleMouseMove}
           onMouseMove={this.handleMouseMove}
           onMouseUp={this.handleMouseUp}
           bounded
