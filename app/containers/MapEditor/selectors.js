@@ -7,6 +7,8 @@ const selectMapBlocksetBlocks = (type) => (state) => state.blocksets[type].block
 const selectMapBlocksetTileset = (type) => (state) => state.blocksets[type].tiles;
 
 const selectMapBlockData = () => (state) => state.map.block;
+const selectMapCollisionData = () => (state) => state.map.collision;
+const selectMapHeightData = () => (state) => state.map.height;
 const selectMapDimensions = () => (state) => state.map.dimensions;
 
 const makeSelectCameraPosition = () => (state) => state.editing.camera;
@@ -171,6 +173,22 @@ const makeSelectMainMapEntities = () => createSelector(
   makeSelectMainMap(),
   R.prop('entities'),
 );
+const makeSelectMainMapCollisionData = () => createSelector(
+  makeSelectMainMap(),
+  selectMapCollisionData(),
+);
+const makeSelectMainMapHeightData = () => createSelector(
+  makeSelectMainMap(),
+  selectMapHeightData(),
+);
+const makeSelectMainMapHeightMap = () => createSelector(
+  makeSelectMainMapHeightData(),
+  (a) => Uint8Array.from(a),
+);
+const makeSelectMainMapCollisionMap = () => createSelector(
+  makeSelectMainMapCollisionData(),
+  (a) => Uint8Array.from(a),
+);
 
 const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
   tilemaps: makeSelectMapTilemaps(),
@@ -197,4 +215,6 @@ export {
   makeSelectMainMapTilemaps,
   makeSelectToolState,
   makeSelectMainMapEntities,
+  makeSelectMainMapCollisionMap,
+  makeSelectMainMapHeightMap,
 };
