@@ -59,6 +59,9 @@ export default class Renderer extends React.PureComponent {
   constructor(props: RendererProps) {
     super(props);
     this.raycaster = new THREE.Raycaster();
+    this.state = {
+      cursor: null,
+    };
   }
 
   componentDidMount() {
@@ -115,17 +118,13 @@ export default class Renderer extends React.PureComponent {
     const distance = -this.camera.position.z / dir.z;
     const cursorPosition = this.camera.position.clone().add(dir.multiplyScalar(distance));
 
-    let objects;
-    if (isGlobalEvent[event.type]) {
-      // This event is fired for all objects in the scene, regardless of whether
-      // they are under the cursor or not.
-      objects = getAllChildren(this.scene);
-    } else {
-      // This event is only fired for objects under the cursor
-      const coords = new THREE.Vector2((x * 2) - 1, -(y * 2) + 1);
-      this.raycaster.setFromCamera(coords, this.camera);
-      objects = this.raycaster.intersectObjects(this.scene.children, true).map((intersect) => intersect.object);
-    }
+    const coords = new THREE.Vector2((x * 2) - 1, -(y * 2) + 1);
+    this.raycaster.setFromCamera(coords, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.scene.children, true).map(
+      (intersect) => intersect.object,
+    );
+
+    const objects = isGlobalEvent[event.type] ? getAllChildren(this.scene) : intersects;
 
     objects.every((object) => {
       const aspect = width / height;
@@ -143,6 +142,24 @@ export default class Renderer extends React.PureComponent {
 
       return true;
     });
+
+    if (intersects.length) {
+      const cursor = intersects.reduce((currentCursor, object) => {
+        const { getCursor } = object.userData;
+
+        if (getCursor) {
+          return getCursor(event.type);
+        }
+
+        return null;
+      });
+
+      if (cursor !== this.state.cursor) {
+        this.setState(() => ({ cursor }));
+      }
+    } else if (this.state.cursor !== null) {
+      this.setState(() => ({ cursor: null }));
+    }
   }
 
   props: RendererProps;
@@ -153,6 +170,8 @@ export default class Renderer extends React.PureComponent {
   render() {
     const { x, y, z, width, height, near, far, children } = this.props;
 
+    const cursor = this.state.cursor || 'default';
+
     return (
       <div
         role="button"
@@ -160,6 +179,7 @@ export default class Renderer extends React.PureComponent {
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
         className={this.props.className}
+        style={{ cursor }}
       >
         <React3
           mainCamera="camera"

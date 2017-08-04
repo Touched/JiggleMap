@@ -43,6 +43,7 @@ export default class DraggableArea extends React.PureComponent {
     super(props, context);
     this.state = {
       dragging: false,
+      cursor: null,
     };
   }
 
@@ -83,6 +84,8 @@ export default class DraggableArea extends React.PureComponent {
         height={height}
         gridWidth={gridWidth}
         gridHeight={gridHeight}
+        cursor="-webkit-grab"
+        cursorHeld="-webkit-grabbing"
       />
     );
   }

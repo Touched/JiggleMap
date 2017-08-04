@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+import React3 from 'react-three-renderer';
 import nop from 'utils/nop';
 
 import Area, { AreaEvent } from './Area';
@@ -25,6 +26,8 @@ type PropTypes = {
   z: number;
   name: string;
   bounded: boolean;
+  cursor?: string;
+  cursorHeld?: string; // eslint-disable-line react/require-default-props
 };
 
 /**
@@ -42,6 +45,7 @@ export default class GridArea extends React.PureComponent {
     gridWidth: 16,
     gridHeight: 16,
     bounded: false,
+    cursor: 'default',
   };
 
   constructor(props: PropTypes) {
@@ -57,6 +61,17 @@ export default class GridArea extends React.PureComponent {
       end: Position;
     };
   };
+
+  componentDidMount() {
+    const object = React3.findTHREEObject(this);
+    object.userData.getCursor = (eventType) => {
+      if (eventType === 'mousedown') {
+        return this.props.cursor;
+      }
+
+      return this.props.cursorHeld || this.props.cursor;
+    };
+  }
 
   onMouseDown = (event: AreaEvent) => {
     const { x, y } = event;
