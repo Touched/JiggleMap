@@ -7,3 +7,4 @@ export { default as GridArea } from './GridArea';
 export { default as Group } from './Group';
 export { default as DraggableArea } from './DraggableArea';
 export { default as Sprite } from './Sprite';
+export { default as Icon } from './Icon';

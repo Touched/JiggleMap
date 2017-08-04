@@ -14,6 +14,7 @@ import connectTab from 'containers/EditorTabs/connectTab';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
 import Map from './Map';
+import MapEntities from './MapEntities';
 import DraggableMap from './DraggableMap';
 import MapControls from './MapControls';
 import ToolBox from './ToolBox';
@@ -29,6 +30,7 @@ import {
   makeSelectConnectedMaps,
   makeSelectMainMapBlockset,
   makeSelectToolState,
+  makeSelectMainMapEntities,
 } from './selectors';
 import {
   editMap,
@@ -39,6 +41,8 @@ import {
   resizeViewport,
   setCurrentBlock,
 } from './actions';
+
+import type { Entity } from './MapEntities';
 
 const PAN_SPEED = 1;
 
@@ -87,6 +91,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
         height: number, // eslint-disable-line react/no-unused-prop-types
       },
     },
+    entities: Array<Entity>,
   }
 
   handleMouseDown = (event: { nativeEvent: MouseEvent } & SyntheticMouseEvent) => {
@@ -258,6 +263,7 @@ export class MapEditor extends React.PureComponent { // eslint-disable-line reac
               onMouseUp={this.props.commitMapEdit}
               bounded
             />
+            <MapEntities entities={this.props.entities} />
           </Renderer>
         </div>
         <div className="ToolControls">
@@ -282,6 +288,7 @@ const mapTabStateToProps = createStructuredSelector({
   connections: makeSelectConnectedMaps(),
   blocks: makeSelectMainMapBlockset(),
   toolState: makeSelectToolState(),
+  entities: makeSelectMainMapEntities(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

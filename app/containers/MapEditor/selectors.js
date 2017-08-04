@@ -167,6 +167,10 @@ const makeSelectMainMapBlockset = () => createSelector(
   makeSelectMainMap(),
   makeSelectMapBlockset(),
 );
+const makeSelectMainMapEntities = () => createSelector(
+  makeSelectMainMap(),
+  R.prop('entities'),
+);
 
 const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
   tilemaps: makeSelectMapTilemaps(),
@@ -192,4 +196,5 @@ export {
   makeSelectMainMapTileset,
   makeSelectMainMapTilemaps,
   makeSelectToolState,
+  makeSelectMainMapEntities,
 };

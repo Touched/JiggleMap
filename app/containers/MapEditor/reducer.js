@@ -151,6 +151,7 @@ function mapDataReducer(state = initialDataState, action) {
         map: loadedData,
         canonicalMap: action.map ? loadedData : state.canonicalMap,
         blocksets: action.blocksets ? loadBlocksetData(action.blocksets) : state.blocksets,
+        entities: action.map.data.entities,
       };
     }
     case LOAD_CONNECTED_MAP:
