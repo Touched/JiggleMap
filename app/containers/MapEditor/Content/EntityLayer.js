@@ -1,8 +1,12 @@
 import React from 'react';
+import { createStructuredSelector } from 'reselect';
+
 import { Group, Icon } from 'components/Renderer';
+import connectTab from 'containers/EditorTabs/connectTab';
+import { makeSelectMainMapEntities } from '../selectors';
 
 /* eslint-disable react/no-unused-prop-types */
-export type Entity = {
+export type EntityData = {
   type: string;
   x: number;
   y: number;
@@ -25,7 +29,7 @@ function BasicEntity({ x, y, color, path }: { x: number, y: number, color: numbe
   );
 }
 
-export function UnknownMapEntity(props) {
+export function UnknownEntity(props) {
   return (
     <BasicEntity
       {...props}
@@ -35,7 +39,7 @@ export function UnknownMapEntity(props) {
   );
 }
 
-export function InteractableMapEntity(props) {
+export function InteractableEntity(props) {
   return (
     <BasicEntity
       {...props}
@@ -45,7 +49,7 @@ export function InteractableMapEntity(props) {
   );
 }
 
-export function TriggerMapEntity(props) {
+export function TriggerEntity(props) {
   return (
     <BasicEntity
       {...props}
@@ -55,7 +59,7 @@ export function TriggerMapEntity(props) {
   );
 }
 
-export function ObjectMapEntity(props) {
+export function ObjectEntity(props) {
   return (
     <BasicEntity
       {...props}
@@ -65,7 +69,7 @@ export function ObjectMapEntity(props) {
   );
 }
 
-export function WarpMapEntity(props) {
+export function WarpEntity(props) {
   return (
     <BasicEntity
       {...props}
@@ -75,26 +79,36 @@ export function WarpMapEntity(props) {
   );
 }
 
-export function MapEntity({ entity }: { entity: Entity }) {
+export function Entity({ entity }: { entity: EntityData }) {
   switch (entity.type) {
     case 'warp':
-      return <WarpMapEntity id={entity.id} x={entity.x} y={entity.y} />;
+      return <WarpEntity id={entity.id} x={entity.x} y={entity.y} />;
     case 'object':
-      return <ObjectMapEntity id={entity.id} x={entity.x} y={entity.y} />;
+      return <ObjectEntity id={entity.id} x={entity.x} y={entity.y} />;
     case 'trigger':
-      return <TriggerMapEntity id={entity.id} x={entity.x} y={entity.y} />;
+      return <TriggerEntity id={entity.id} x={entity.x} y={entity.y} />;
     case 'interactable':
-      return <InteractableMapEntity id={entity.id} x={entity.x} y={entity.y} />;
+      return <InteractableEntity id={entity.id} x={entity.x} y={entity.y} />;
     default:
-      return <UnknownMapEntity id={entity.id} x={entity.x} y={entity.y} />;
+      return <UnknownEntity id={entity.id} x={entity.x} y={entity.y} />;
   }
 }
 
-export default function MapEntities({ entities }: { entities: Array<Entity> }) {
-  return (
-    <Group>
-      {entities.map((entity) => <MapEntity key={entity.id} entity={entity} />)}
-    </Group>
-  );
+export class EntityLayer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  props: { entities: Array<Entity> };
+
+  render() {
+    return (
+      <Group>
+        {this.props.entities.map((entity) => <Entity key={entity.id} entity={entity} />)}
+      </Group>
+    );
+  }
 }
 
+
+const mapTabStateToProps = createStructuredSelector({
+  entities: makeSelectMainMapEntities(),
+});
+
+export default connectTab(null, mapTabStateToProps, null, null)(EntityLayer);
