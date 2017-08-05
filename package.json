@@ -48,6 +48,7 @@
     "pretest": "npm run test:clean && npm run lint && npm run check",
     "test:clean": "rimraf ./coverage",
     "test": "cross-env NODE_ENV=test jest --coverage",
+    "test:watch:coverage": "cross-env NODE_ENV=test jest --watchAll --coverage",
     "test:update-snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
@@ -153,6 +154,7 @@
       "!app/routes.js",
       "!app/main.js"
     ],
+    "coveragePathIgnorePatterns": ["/node_modules/", "app/global-styles.js"],
     "moduleDirectories": [
       "node_modules",
       "app"

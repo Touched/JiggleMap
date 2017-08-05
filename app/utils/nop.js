@@ -1,1 +1,1 @@
-export default () => undefined;
+export default /* istanbul ignore next */ () => undefined;
