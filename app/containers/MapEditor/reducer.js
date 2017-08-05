@@ -144,7 +144,7 @@ function editMap(toolState, data, start, end) {
   return data;
 }
 
-function mapDataReducer(state = initialDataState, action) {
+export function mapDataReducer(state = initialDataState, action) {
   switch (action.type) {
     case LOAD_MAIN_MAP: {
       const loadedData = action.map ? loadMapData(action.map.data.map) : state.map;
@@ -246,7 +246,7 @@ function mapDataReducer(state = initialDataState, action) {
   }
 }
 
-function mapEditingReducer(state = initialEditingState, action) {
+export function mapEditingReducer(state = initialEditingState, action) {
   switch (action.type) {
     case LOAD_MAIN_MAP: {
       const { viewportSize: { width, height } } = state;

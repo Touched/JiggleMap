@@ -1,8 +1,13 @@
+import { mapDataReducer, mapEditingReducer } from '../reducer';
 
-import { mapEditorReducer } from '../reducer';
-
-describe('mapEditorReducer', () => {
+describe('mapDataReducer', () => {
   it('returns the initial state', () => {
-    expect(mapEditorReducer(undefined, {})).toMatchSnapshot();
+    expect(mapDataReducer(undefined, {})).toMatchSnapshot();
+  });
+});
+
+describe('mapEditingReducer', () => {
+  it('returns the initial state', () => {
+    expect(mapEditingReducer(undefined, {})).toMatchSnapshot();
   });
 });

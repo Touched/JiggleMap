@@ -217,4 +217,6 @@ export {
   makeSelectMainMapEntities,
   makeSelectMainMapCollisionMap,
   makeSelectMainMapHeightMap,
+  makeSelectMapPalette,
+  makeSelectMapBlocks,
 };

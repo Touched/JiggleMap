@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mapEditorReducer returns the initial state 1`] = `
+exports[`mapDataReducer returns the initial state 1`] = `
 Object {
   "blocksets": Object {
     "primary": Object {
@@ -25,11 +25,8 @@ Object {
     ],
     "height": Array [],
   },
-  "camera": Object {
-    "x": 0,
-    "y": 0,
-    "z": 1,
-  },
+  "canonicalConnectionOffsets": Array [],
+  "canonicalEntityCoordinates": Array [],
   "canonicalMap": Object {
     "block": Array [],
     "collision": Array [],
@@ -41,8 +38,6 @@ Object {
   },
   "connections": Array [],
   "entities": Array [],
-  "linked": false,
-  "loading": false,
   "map": Object {
     "block": Array [],
     "collision": Array [],
@@ -53,5 +48,24 @@ Object {
     "height": Array [],
   },
   "scripts": Array [],
+}
+`;
+
+exports[`mapEditingReducer returns the initial state 1`] = `
+Object {
+  "camera": Object {
+    "x": 0,
+    "y": 0,
+    "z": 1,
+  },
+  "linked": false,
+  "loading": false,
+  "toolState": Object {
+    "currentBlock": 0,
+  },
+  "viewportSize": Object {
+    "height": 0,
+    "width": 0,
+  },
 }
 `;
