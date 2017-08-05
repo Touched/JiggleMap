@@ -11,7 +11,7 @@ type Position = {
   y: number;
 };
 
-type PropTypes = {
+type Props = {
   gridHeight: number;
   gridWidth: number;
   width: number;
@@ -25,8 +25,24 @@ type PropTypes = {
   onDragEnd: (Position, Position, AreaEvent) => void;
 };
 
+type DefaultProps = {
+  x: number;
+  y: number;
+  z: number;
+  name: string;
+  gridHeight: number;
+  gridWidth: number;
+  onDrag: (Position, Position, AreaEvent) => void;
+  onDragStart: (Position, Position, AreaEvent) => void;
+  onDragEnd: (Position, Position, AreaEvent) => void;
+};
 
-export default class DraggableArea extends React.PureComponent {
+type State = {
+  dragging: boolean;
+  cursor: ?string;
+};
+
+export default class DraggableArea extends React.PureComponent<DefaultProps, Props, State> {
   static defaultProps = {
     x: 0,
     y: 0,
@@ -39,15 +55,17 @@ export default class DraggableArea extends React.PureComponent {
     onDragEnd: nop,
   };
 
-  constructor(props: PropTypes, context) {
-    super(props, context);
+  constructor(props: Props) {
+    super(props);
     this.state = {
       dragging: false,
       cursor: null,
     };
   }
 
-  handleDragStart = (start, end, event) => {
+  state: State;
+
+  handleDragStart = (start: Position, end: Position, event: AreaEvent) => {
     this.props.onDragStart(start, end, event);
     this.setState(() => ({
       dragging: true,

@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import ContainerProvider from './ContainerProvider';
 import { FOV, FOV_RADIANS, DISTANCE } from './constants';
 
-type RendererProps = {
+type Props = {
   x: number,
   y: number,
   z: number,
@@ -23,6 +23,19 @@ type RendererProps = {
   onMouseMove: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   onMouseUp: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   className: string,
+};
+
+type DefaultProps = {
+  onMouseDown: ?(Event) => void,
+  onMouseMove: ?(Event) => void,
+  onMouseUp: ?(Event) => void,
+  cameraRef: ?(THREE.Camera) => void,
+  canvasRef: ?(HTMLCanvasElement) => void,
+  customRenderer: ?Function,
+};
+
+type State = {
+  cursor: ?string,
 };
 
 const propsEvents = {
@@ -41,28 +54,30 @@ function getAllChildren({ children }) {
   return children.concat(...children.map(getAllChildren));
 }
 
-export default class Renderer extends React.PureComponent {
-  static defaultProps: {
+export default class Renderer extends React.PureComponent<DefaultProps, Props, State> {
+  static defaultProps = {
     onMouseDown: null,
     onMouseMove: null,
     onMouseUp: null,
     cameraRef: null,
     canvasRef: null,
     customRenderer: null,
-  }
+  };
 
   static contextTypes = {
     tabId: React.PropTypes.string,
     store: React.PropTypes.object,
   };
 
-  constructor(props: RendererProps) {
+  constructor(props: Props) {
     super(props);
     this.raycaster = new THREE.Raycaster();
     this.state = {
       cursor: null,
     };
   }
+
+  state: State;
 
   componentDidMount() {
     window.addEventListener('mouseup', this.redispatchMouseEvent.bind(this));
@@ -162,7 +177,7 @@ export default class Renderer extends React.PureComponent {
     }
   }
 
-  props: RendererProps;
+  props: Props;
   raycaster: THREE.Raycaster;
   scene: THREE.Scene;
   camera: THREE.Camera;
