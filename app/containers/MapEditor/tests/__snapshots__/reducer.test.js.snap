@@ -51,6 +51,13 @@ Object {
 }
 `;
 
+exports[`mapEditingReducer LOAD_MAIN_MAP recenters the map 1`] = `
+Object {
+  "x": 0.64,
+  "y": -0.5333333333333332,
+}
+`;
+
 exports[`mapEditingReducer returns the initial state 1`] = `
 Object {
   "camera": Object {

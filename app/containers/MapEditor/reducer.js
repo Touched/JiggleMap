@@ -147,15 +147,24 @@ function editMap(toolState, data, start, end) {
 export function mapDataReducer(state = initialDataState, action) {
   switch (action.type) {
     case LOAD_MAIN_MAP: {
-      const loadedData = action.map ? loadMapData(action.map.data.map) : state.map;
+      let mapState = {};
+      if (action.map) {
+        const loadedData = loadMapData(action.map.data.map);
+
+        mapState = {
+          map: loadedData,
+          canonicalMap: loadedData,
+          entities: action.map.data.entities,
+          canonicalEntityCoordinates: action.map.data.entities.map(({ x, y }) => ({ x, y })),
+        };
+      }
+
+      const blocksetState = action.blocksets ? { blocksets: loadBlocksetData(action.blocksets) } : {};
 
       return {
         ...state,
-        map: loadedData,
-        canonicalMap: action.map ? loadedData : state.canonicalMap,
-        blocksets: action.blocksets ? loadBlocksetData(action.blocksets) : state.blocksets,
-        entities: action.map.data.entities,
-        canonicalEntityCoordinates: action.map.data.entities.map(({ x, y }) => ({ x, y })),
+        ...mapState,
+        ...blocksetState,
       };
     }
     case LOAD_CONNECTED_MAP:
