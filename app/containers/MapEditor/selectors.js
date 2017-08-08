@@ -65,7 +65,7 @@ const defaultTile = {
 
 const defaultBlock = R.repeat(defaultTile, 8);
 
-function buildLayersForMap(data, [width, height], blocks) {
+export function buildLayersForMap(data, [width, height], blocks) {
   const layers = [
     Array(width * height * 4),
     Array(width * height * 4),
@@ -206,6 +206,7 @@ const makeSelectConnectedMaps = () => createArraySelector(
 
 export {
   makeSelectCameraPosition,
+  makeSelectMapTileset,
   makeSelectViewportSize,
   makeSelectConnectedMaps,
   makeSelectMainMapBlockset,
