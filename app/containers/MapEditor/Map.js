@@ -24,12 +24,10 @@ color.b *= 0.5;
 
 export default function Map({ width, height, x, y, z, tileset, tilemaps, palette, darken }: Props) {
   return (
-    <Group z={z} y={y * 16}>
+    <Group z={z} y={y * 16} x={x * 16}>
       {tilemaps.map((tilemap, i) => (
         <GBATilemap
           key={i}
-          x={x * 16}
-          y={0}
           colorFilter={darken ? darkenFilter : ''}
           width={width * 16}
           height={height * 16}
