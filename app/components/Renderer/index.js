@@ -9,3 +9,4 @@ export { default as DraggableArea } from './DraggableArea';
 export { default as Sprite } from './Sprite';
 export { default as Icon } from './Icon';
 export { default as Colormap } from './Colormap';
+export { calculateBoundingRectangle, svgPathToMesh } from './utils';

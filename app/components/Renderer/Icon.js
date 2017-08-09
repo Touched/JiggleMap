@@ -1,12 +1,9 @@
 import React from 'react';
 import * as THREE from 'three';
-import svgMesh3d from 'svg-mesh-3d';
-import threeSimplicialComplex from 'three-simplicial-complex';
 
 import { containerShape } from './ContainerProvider';
 import { calculateBoundingRectangle } from './utils';
-
-const Complex = threeSimplicialComplex(THREE);
+import type { Mesh } from './utils';
 
 export default class Icon extends React.PureComponent {
   static contextTypes = {
@@ -20,14 +17,6 @@ export default class Icon extends React.PureComponent {
     name: '',
   };
 
-  componentWillMount() {
-    this.update(this.props);
-  }
-
-  componentWillUpdate(nextProps) {
-    this.update(nextProps);
-  }
-
   props: {
     width: number,
     height: number,
@@ -35,14 +24,9 @@ export default class Icon extends React.PureComponent {
     y: number,
     z: number,
     name: string,
-    path: string, // eslint-disable-line react/no-unused-prop-types
     color: number,
+    mesh: Mesh,
   };
-
-  update({ path }) {
-    const complex = svgMesh3d(path);
-    this.mesh = new Complex(complex);
-  }
 
   render() {
     const {
@@ -79,9 +63,9 @@ export default class Icon extends React.PureComponent {
         </mesh>
         <mesh renderOrder={z} scale={scale}>
           <geometry
-            vertices={this.mesh.vertices}
-            faces={this.mesh.faces}
-            faceVertexUvs={this.mesh.faceVertexUvs}
+            vertices={this.props.mesh.vertices}
+            faces={this.props.mesh.faces}
+            faceVertexUvs={this.props.mesh.faceVertexUvs}
             dynamic
           />
           <meshBasicMaterial color={0xffffff} side={THREE.DoubleSide} transparent />

@@ -154,7 +154,10 @@
       "!app/routes.js",
       "!app/main.js"
     ],
-    "coveragePathIgnorePatterns": ["/node_modules/", "app/global-styles.js"],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "app/global-styles.js"
+    ],
     "moduleDirectories": [
       "node_modules",
       "app"
