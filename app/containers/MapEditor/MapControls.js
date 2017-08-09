@@ -13,7 +13,7 @@ type Props = {
   zoom: number;
   zoomMin: number;
   zoomMax: number;
-  selectedLayer: string
+  activeLayer: string
 };
 
 const LAYERS = [{
@@ -31,14 +31,14 @@ const LAYERS = [{
 }];
 
 export default function MapControls(props: Props) {
-  const { onToggleLayer, onRecenterClick, onZoomChanged, zoom, zoomMin, zoomMax, selectedLayer } = props;
+  const { onToggleLayer, onRecenterClick, onZoomChanged, zoom, zoomMin, zoomMax, activeLayer } = props;
 
   return (
     <div className="MapEditor__OverlayBox MapControls">
       <div className="MapControls__LayerControls">
         {LAYERS.map((layer) => (
           <button
-            className={classNames({ active: selectedLayer === layer.id })}
+            className={classNames({ active: activeLayer === layer.id })}
             onClick={() => onToggleLayer(layer.id)}
           >
             {layer.icon}

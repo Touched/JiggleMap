@@ -10,6 +10,7 @@ import {
   setCurrentBlock,
   moveEntity,
   commitEntityMove,
+  setActiveLayer,
 } from '../actions';
 import { mapDataReducer, mapEditingReducer } from '../reducer';
 
@@ -429,6 +430,14 @@ describe('mapEditingReducer', () => {
       expect(newState.toolState).toEqual({
         currentBlock: 123,
       });
+    });
+  });
+
+  describe('SET_ACTIVE_LAYER', () => {
+    it('sets the active layer', () => {
+      const action = setActiveLayer('collision');
+      const newState = mapEditingReducer(undefined, action);
+      expect(newState.activeLayer).toEqual('collision');
     });
   });
 });

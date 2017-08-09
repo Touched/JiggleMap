@@ -18,6 +18,7 @@ import {
   MAP_LOADED,
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
+  SET_ACTIVE_LAYER,
 } from './constants';
 
 export function loadMapEntity(entity) {
@@ -120,5 +121,12 @@ export function commitEntityMove(id) {
   return {
     type: COMMIT_ENTITY_MOVE,
     id,
+  };
+}
+
+export function setActiveLayer(layer) {
+  return {
+    type: SET_ACTIVE_LAYER,
+    layer,
   };
 }

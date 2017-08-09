@@ -43,8 +43,9 @@ $iconHeight: 42px;
       height: $iconHeight;
       border-radius: 100%;
       margin: 3px;
+      transition: 0.25s background ease-in;
 
-      &.active {
+      &.active, &.active:hover, &.active:active {
         background: #009788;
       }
 

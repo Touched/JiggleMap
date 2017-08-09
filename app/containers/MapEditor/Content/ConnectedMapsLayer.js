@@ -8,6 +8,7 @@ import DraggableMap from '../DraggableMap';
 
 import {
   makeSelectConnectedMaps,
+  makeSelectActiveLayer,
 } from '../selectors';
 import {
   moveConnection,
@@ -18,6 +19,7 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
   props: {
     moveConnection: (number, number, number) => void,
     commitConnectionMove: (number) => void,
+    activeLayer: string,
     /* eslint-disable react/no-unused-prop-types */
     connections: {
       palette: Uint8Array,
@@ -33,7 +35,7 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
   }
 
   render() {
-    const { connections } = this.props;
+    const { connections, activeLayer } = this.props;
 
     return (
       <Group>
@@ -48,8 +50,8 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
             tileset={tileset}
             tilemaps={tilemaps}
             palette={palette}
-            heightMap={heightMap}
-            collisionMap={collisionMap}
+            heightMap={activeLayer === 'height' && heightMap}
+            collisionMap={activeLayer === 'collision' && collisionMap}
             onDrag={(start, end) => this.props.moveConnection(i, end.x - start.x, end.y - start.y)}
             onDragEnd={() => this.props.commitConnectionMove(i)}
             darken
@@ -62,6 +64,7 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
 
 const mapTabStateToProps = createStructuredSelector({
   connections: makeSelectConnectedMaps(),
+  activeLayer: makeSelectActiveLayer(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

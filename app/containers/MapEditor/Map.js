@@ -27,15 +27,15 @@ color.b *= 0.5;
 const collisionPalette = new Uint8Array(256 * 4);
 collisionPalette.set([
   0, 0, 0, 0,
-  0, 0, 0, Math.floor(0.0 * 255),
+  255, 0, 0, Math.floor(0.6 * 255),
 ]);
 
 const heightAlpha = Math.floor(0.6 * 255);
 const heightPalette = new Uint8Array(256 * 4);
 heightPalette.set([
-  255, 0, 0, heightAlpha,
-  0, 255, 0, heightAlpha,
   0, 0, 255, heightAlpha,
+  0, 255, 0, heightAlpha,
+  255, 0, 0, heightAlpha,
   255, 255, 0, heightAlpha,
   0, 255, 255, heightAlpha,
   255, 0, 255, heightAlpha,

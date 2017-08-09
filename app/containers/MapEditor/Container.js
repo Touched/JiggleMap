@@ -21,11 +21,13 @@ import {
   makeSelectCameraPosition,
   makeSelectMainMapBlockset,
   makeSelectToolState,
+  makeSelectActiveLayer,
 } from './selectors';
 import {
   setCameraPosition,
   resizeViewport,
   setCurrentBlock,
+  setActiveLayer,
 } from './actions';
 
 const PAN_SPEED = 1;
@@ -45,9 +47,11 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
     blocks: Array<Uint8Array>,
     setCameraPosition: Function,
     setCurrentBlock: Function,
+    setActiveLayer: Function,
     tabDispatch: Function,
     measureRef: Function,
     dimensions: [number, number],
+    activeLayer: string,
     camera: {
       x: number,
       y: number,
@@ -176,10 +180,10 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
               zoomMin={near}
               zoomMax={far}
               zoom={camera.z}
-              onToggleLayer={console.log}
+              onToggleLayer={this.props.setActiveLayer}
               onRecenterClick={this.recenterMap}
+              activeLayer={this.props.activeLayer}
               onZoomChanged={({ target }) => this.props.setCameraPosition(camera.x, camera.y, target.value)}
-              selectedLayer="map"
             />
           </div>
           <Renderer
@@ -220,6 +224,7 @@ const mapTabStateToProps = createStructuredSelector({
   tilemaps: makeSelectMainMapTilemaps(),
   blocks: makeSelectMainMapBlockset(),
   toolState: makeSelectToolState(),
+  activeLayer: makeSelectActiveLayer(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {
@@ -232,6 +237,9 @@ function mapTabDispatchToProps(tabDispatch) {
     },
     setCurrentBlock(block) {
       tabDispatch(setCurrentBlock(block));
+    },
+    setActiveLayer(layer) {
+      tabDispatch(setActiveLayer(layer));
     },
     tabDispatch,
   };

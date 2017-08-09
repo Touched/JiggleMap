@@ -3,7 +3,7 @@ import { createStructuredSelector } from 'reselect';
 
 import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
-import { makeSelectMainMapEntities } from '../selectors';
+import { makeSelectMainMapEntities, makeSelectActiveLayer } from '../selectors';
 import { moveEntity, commitEntityMove } from '../actions';
 
 import Entity from './Entity';
@@ -14,12 +14,13 @@ export class EntityLayer extends React.PureComponent { // eslint-disable-line re
     entities: Array<EntityType>;
     moveEntity: Function;
     commitEntityMove: Function;
+    activeLayer: string;
   };
 
   render() {
     return (
       <Group>
-        {this.props.entities.map((entity) => (
+        {this.props.activeLayer === 'entities' && this.props.entities.map((entity) => (
           <Entity
             key={entity.id}
             entity={entity}
@@ -34,6 +35,7 @@ export class EntityLayer extends React.PureComponent { // eslint-disable-line re
 
 const mapTabStateToProps = createStructuredSelector({
   entities: makeSelectMainMapEntities(),
+  activeLayer: makeSelectActiveLayer(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

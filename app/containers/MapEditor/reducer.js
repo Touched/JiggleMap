@@ -23,6 +23,7 @@ import {
   MAP_LOADED,
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
+  SET_ACTIVE_LAYER,
 } from './constants';
 
 import { drawLine } from './tools/helpers';
@@ -75,6 +76,7 @@ const initialEditingState = {
   toolState: {
     currentBlock: 0,
   },
+  activeLayer: 'map',
 };
 
 function loadMapData(data) {
@@ -299,6 +301,11 @@ export function mapEditingReducer(state = initialEditingState, action) {
           ...state.toolState,
           currentBlock: action.block,
         },
+      };
+    case SET_ACTIVE_LAYER:
+      return {
+        ...state,
+        activeLayer: action.layer,
       };
     default:
       return state;

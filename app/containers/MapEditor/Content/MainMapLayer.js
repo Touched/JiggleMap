@@ -14,6 +14,7 @@ import {
   makeSelectMainMapCollisionMap,
   makeSelectMainMapHeightMap,
   makeSelectToolState,
+  makeSelectActiveLayer,
 } from '../selectors';
 import { editMap, commitMapEdit } from '../actions';
 
@@ -28,6 +29,7 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
     commitMapEdit: Function,
     dimensions: [number, number],
     toolState: Object,
+    activeLayer: string,
   }
 
   handleMouseMove = (start, end, event) => {
@@ -41,7 +43,7 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
   };
 
   render() {
-    const { dimensions: [width, height] } = this.props;
+    const { activeLayer, dimensions: [width, height] } = this.props;
 
     return (
       <Group>
@@ -54,8 +56,8 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
           tileset={this.props.tileset}
           tilemaps={this.props.tilemaps}
           palette={this.props.palette}
-          heightMap={this.props.heightMap}
-          collisionMap={this.props.collisionMap}
+          heightMap={activeLayer === 'height' && this.props.heightMap}
+          collisionMap={activeLayer === 'collision' && this.props.collisionMap}
         />
         <GridArea
           x={0}
@@ -80,6 +82,7 @@ const mapTabStateToProps = createStructuredSelector({
   toolState: makeSelectToolState(),
   collisionMap: makeSelectMainMapCollisionMap(),
   heightMap: makeSelectMainMapHeightMap(),
+  activeLayer: makeSelectActiveLayer(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

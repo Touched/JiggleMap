@@ -14,6 +14,7 @@ const selectMapDimensions = () => (state) => state.map.dimensions;
 const makeSelectCameraPosition = () => (state) => state.editing.camera;
 const makeSelectViewportSize = () => (state) => state.editing.viewportSize;
 const makeSelectToolState = () => (state) => state.editing.toolState;
+const makeSelectActiveLayer = () => (state) => state.editing.activeLayer;
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -214,4 +215,5 @@ export {
   makeSelectMainMapHeightMap,
   makeSelectMapPalette,
   makeSelectMapBlocks,
+  makeSelectActiveLayer,
 };

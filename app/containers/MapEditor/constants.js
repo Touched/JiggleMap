@@ -19,3 +19,5 @@ export const COMMIT_CONNECTION_MOVE = 'jigglemap/MapEditor/COMMIT_CONNECTION_MOV
 export const SET_CURRENT_BLOCK = 'jigglemap/MapEditor/SET_CURRENT_BLOCK';
 export const MOVE_ENTITY = 'jigglemap/MapEditor/MOVE_ENTITY';
 export const COMMIT_ENTITY_MOVE = 'jigglemap/MapEditor/COMMIT_ENTITY_MOVE';
+
+export const SET_ACTIVE_LAYER = 'jigglemap/MapEditor/SET_ACTIVE_LAYER';
