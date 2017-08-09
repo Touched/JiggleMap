@@ -6,11 +6,13 @@ import DraggableMap from '../DraggableMap';
 import Map from '../Map';
 
 describe('<DraggableMap />', () => {
-  it('renders a GBATilemap', () => {
+  it('renders a <Map />', () => {
     const tilemap = new Uint8Array();
     const tilemaps = [tilemap, tilemap, tilemap];
     const palette = new Uint8Array();
     const tileset = new Uint8Array();
+    const heightMap = new Uint8Array();
+    const collisionMap = new Uint8Array();
 
     const wrapper = shallow(
       <DraggableMap
@@ -22,6 +24,8 @@ describe('<DraggableMap />', () => {
         z={3}
         width={10}
         height={15}
+        collisionMap={collisionMap}
+        heightMap={heightMap}
         darken
       />
     );
@@ -34,6 +38,8 @@ describe('<DraggableMap />', () => {
       width: 10,
       height: 15,
       darken: true,
+      collisionMap,
+      heightMap,
       tileset,
       tilemaps,
       palette,

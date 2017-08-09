@@ -37,7 +37,7 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
 
     return (
       <Group>
-        {connections.map(({ dimensions, tilemaps, tileset, palette, position }, i) => (
+        {connections.map(({ dimensions, tilemaps, tileset, palette, position, heightMap, collisionMap }, i) => (
           <DraggableMap
             key={i} // eslint-disable-line react/no-array-index-key
             x={position.x}
@@ -48,6 +48,8 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
             tileset={tileset}
             tilemaps={tilemaps}
             palette={palette}
+            heightMap={heightMap}
+            collisionMap={collisionMap}
             onDrag={(start, end) => this.props.moveConnection(i, end.x - start.x, end.y - start.y)}
             onDragEnd={() => this.props.commitConnectionMove(i)}
             darken

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { GBATilemap, Group } from 'components/Renderer';
+import { Colormap, GBATilemap, Group } from 'components/Renderer';
 import Map from '../Map';
 
 describe('<Map />', () => {
@@ -12,6 +12,7 @@ describe('<Map />', () => {
     const wrapper = shallow(<Map tilemaps={tilemaps} />);
 
     expect(wrapper.find(GBATilemap)).toHaveLength(3);
+    expect(wrapper.find(Colormap)).toHaveLength(0);
   });
 
   it('passes props down to the tilemap', () => {
@@ -58,5 +59,29 @@ describe('<Map />', () => {
     const tilemaps = [new Uint8Array()];
     const wrapper = shallow(<Map tilemaps={tilemaps} darken />);
     expect(wrapper.find(GBATilemap).prop('colorFilter')).not.toEqual('');
+  });
+
+  it('renders a height map if passed a height map', () => {
+    const heightMap = new Uint8Array();
+
+    const wrapper = shallow(<Map heightMap={heightMap} width={10} height={5} />);
+
+    expect(wrapper.find(Colormap).props()).toMatchObject({
+      width: 10 * 16,
+      height: 5 * 16,
+      tilemap: heightMap,
+    });
+  });
+
+  it('renders a height map if passed a height map', () => {
+    const collisionMap = new Uint8Array();
+
+    const wrapper = shallow(<Map collisionMap={collisionMap} width={10} height={5} />);
+
+    expect(wrapper.find(Colormap).props()).toMatchObject({
+      width: 10 * 16,
+      height: 5 * 16,
+      tilemap: collisionMap,
+    });
   });
 });
