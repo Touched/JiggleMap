@@ -16,7 +16,7 @@ import { AppContainer } from 'react-hot-loader';
 import 'sanitize.css/sanitize.css';
 
 // Import root app
-import HomePage from 'containers/HomePage';
+import App from 'containers/App';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
@@ -44,7 +44,7 @@ const render = (messages) => {
     <AppContainer>
       <Provider store={store}>
         <LanguageProvider messages={messages}>
-          <HomePage />
+          <App />
         </LanguageProvider>
       </Provider>
     </AppContainer>
@@ -61,7 +61,7 @@ if (module.hot) {
     render(translationMessages);
   });
 
-  module.hot.accept('containers/HomePage', () => {
+  module.hot.accept('containers/App', () => {
     render(translationMessages);
   });
 }
