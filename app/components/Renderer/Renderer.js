@@ -75,13 +75,20 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
     this.state = {
       cursor: null,
     };
+
+    this.redispatchMouseEvent = this.redispatchMouseEvent.bind(this);
   }
 
   state: State;
 
   componentDidMount() {
-    window.addEventListener('mouseup', this.redispatchMouseEvent.bind(this));
-    window.addEventListener('mousemove', this.redispatchMouseEvent.bind(this));
+    window.addEventListener('mouseup', this.redispatchMouseEvent);
+    window.addEventListener('mousemove', this.redispatchMouseEvent);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mouseup', this.redispatchMouseEvent);
+    window.removeEventListener('mousemove', this.redispatchMouseEvent);
   }
 
   setCameraRef = (ref: THREE.Camera) => {
