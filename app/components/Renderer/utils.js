@@ -32,7 +32,7 @@ export function calculateBoundingRectangle(
 export type Mesh = {
   vertices: Array<THREE.Vector3>;
   faces: Array<THREE.Face3>;
-  faceVertexUvs: Array<Array>;
+  faceVertexUvs: Array<Array<THREE.UV>>;
 };
 
 export function svgPathToMesh(path: string): Mesh {
