@@ -15,6 +15,6 @@ export const LOAD_PROJECT = 'jigglemap/App/LOAD_PROJECT';
 export const LOAD_PROJECT_SUCCESS = 'jigglemap/App/LOAD_PROJECT_SUCCESS';
 export const LOAD_PROJECT_ERROR = 'jigglemap/App/LOAD_PROJECT_ERROR';
 
-export const ADD_ENTITY = 'jigglemap/App/ADD_ENTITY';
+export const ADD_RESOURCE = 'jigglemap/App/ADD_RESOURCE';
 
 export const SET_SIDEBAR_ITEM = 'jigglemap/App/SET_SIDEBAR_ITEM';

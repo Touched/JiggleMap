@@ -1,5 +1,5 @@
 {
-  "id": "http://example.com/schema/entity/data/map",
+  "id": "http://example.com/schema/resource/data/map",
   "type": "object",
   "additionalProperties": false,
   "required": ["connections", "entities", "scripts"],
@@ -19,7 +19,7 @@
             "type": "integer"
           },
           "map": {
-            "$ref": "http://example.com/schema/entity/types/reference/id/map"
+            "$ref": "http://example.com/schema/resource/types/reference/id/map"
           }
         }
       }
@@ -56,16 +56,16 @@
             },
             "selectCases": {
               "object": {
-                "$ref": "http://example.com/schema/entity/data/map#/definitions/objectEntity"
+                "$ref": "http://example.com/schema/resource/data/map#/definitions/objectEntity"
               },
               "warp": {
-                "$ref": "http://example.com/schema/entity/data/map#/definitions/warpEntity"
+                "$ref": "http://example.com/schema/resource/data/map#/definitions/warpEntity"
               },
               "interactable": {
-                "$ref": "http://example.com/schema/entity/data/map#/definitions/interactableEntity"
+                "$ref": "http://example.com/schema/resource/data/map#/definitions/interactableEntity"
               },
               "trigger": {
-                "$ref": "http://example.com/schema/entity/data/map#/definitions/triggerEntity"
+                "$ref": "http://example.com/schema/resource/data/map#/definitions/triggerEntity"
               }
             }
           }
@@ -78,10 +78,10 @@
       "required": ["primary", "secondary"],
       "properties": {
         "primary": {
-          "$ref": "http://example.com/schema/entity/types/reference/id/blockset"
+          "$ref": "http://example.com/schema/resource/types/reference/id/blockset"
         },
         "secondary": {
-          "$ref": "http://example.com/schema/entity/types/reference/id/blockset"
+          "$ref": "http://example.com/schema/resource/types/reference/id/blockset"
         }
       }
     },
@@ -118,13 +118,13 @@
                   "type": "integer"
                 },
                 "script": {
-                  "$ref": "http://example.com/schema/entity/types/reference/script"
+                  "$ref": "http://example.com/schema/resource/types/reference/script"
                 }
               }
             }
           },
           "script": {
-            "$ref": "http://example.com/schema/entity/types/reference/script"
+            "$ref": "http://example.com/schema/resource/types/reference/script"
           }
         },
         "select": {
@@ -153,7 +153,7 @@
       "$ref": "#/definitions/blockGrid"
     },
     "linked": {
-      "$ref": "http://example.com/schema/entity/types/reference/id/map"
+      "$ref": "http://example.com/schema/resource/types/reference/id/map"
     }
   },
   "oneOf": [{
@@ -207,7 +207,7 @@
           "type": "integer"
         },
         "script": {
-          "$ref": "http://example.com/schema/entity/types/reference/script"
+          "$ref": "http://example.com/schema/resource/types/reference/script"
         },
         "flag": {
           "type": "integer"
@@ -243,7 +243,7 @@
                   }
                 }
               }, {
-                "$ref": "http://example.com/schema/entity/types/reference/id/map"
+                "$ref": "http://example.com/schema/resource/types/reference/id/map"
               }]
             }
           }
@@ -260,7 +260,7 @@
           "enum": ["script", "hiddenItem", "secretBase"]
         },
         "script": {
-          "$ref": "http://example.com/schema/entity/types/reference/script"
+          "$ref": "http://example.com/schema/resource/types/reference/script"
         },
         "direction": {
           "type": "string",
@@ -312,7 +312,7 @@
           "type": "integer"
         },
         "script": {
-          "$ref": "http://example.com/schema/entity/types/reference/script"
+          "$ref": "http://example.com/schema/resource/types/reference/script"
         }
       }
     },

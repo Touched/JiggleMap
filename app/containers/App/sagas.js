@@ -3,15 +3,15 @@ import { remote } from 'electron';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import fs from 'utils/fs';
-import entitySchemas from 'utils/schema';
-import { addEntity, loadProjectSuccess, loadProjectError } from './actions';
+import resourceSchemas from 'utils/schema';
+import { addResource, loadProjectSuccess, loadProjectError } from './actions';
 import { LOAD_PROJECT } from './constants';
 
-export function parseEntity(entityType, entityPath) {
-  const validate = entitySchemas[entityType];
+export function parseResource(resourceType, resourcePath) {
+  const validate = resourceSchemas[resourceType];
 
   // TODO: Selectively load JSON (we only need the meta data)
-  return fs.readFileAsync(entityPath, 'utf8').then((contents) => JSON.parse(contents)).then((contents) => {
+  return fs.readFileAsync(resourcePath, 'utf8').then((contents) => JSON.parse(contents)).then((contents) => {
     // TODO: async validate
     if (!validate(contents)) {
       // TODO: Custom exception type
@@ -22,44 +22,44 @@ export function parseEntity(entityType, entityPath) {
   });
 }
 
-export function findEntities(entityType, entityDirectory) {
-  return fs.readdirAsync(entityDirectory).then((files) => files.map(
-    (directory) => path.join(entityDirectory, directory, `${entityType}.json`),
+export function findResources(resourceType, resourceDirectory) {
+  return fs.readdirAsync(resourceDirectory).then((files) => files.map(
+    (directory) => path.join(resourceDirectory, directory, `${resourceType}.json`),
   ).filter(
-    (entityPath) => fs.existsSync(entityPath),
+    (resourcePath) => fs.existsSync(resourcePath),
   ));
 }
 
-export function* loadEntity(entityType, entityPath) {
-  const entity = yield call(parseEntity, entityType, entityPath);
+export function* loadResource(resourceType, resourcePath) {
+  const resource = yield call(parseResource, resourceType, resourcePath);
 
-  yield put(addEntity(entityPath, entity.meta));
+  yield put(addResource(resourcePath, resource.meta));
 }
 
-export function* loadProjectEntity(entityPath) {
-  yield call(loadEntity, 'project', entityPath);
+export function* loadProjectResource(resourcePath) {
+  yield call(loadResource, 'project', resourcePath);
 }
 
-export function* loadSingletonEntity(entityType, projectRoot) {
-  const entityPath = path.join(projectRoot, `${entityType}.json`);
-  yield call(loadEntity, entityType, entityPath);
+export function* loadSingletonResource(resourceType, projectRoot) {
+  const resourcePath = path.join(projectRoot, `${resourceType}.json`);
+  yield call(loadResource, resourceType, resourcePath);
 }
 
-export function* loadEntities(entityType, entityDirectory, projectRoot) {
-  const entityPaths = yield call(findEntities, entityType, path.join(projectRoot, entityDirectory));
-  yield all(entityPaths.map((entityPath) => call(loadEntity, entityType, entityPath)));
+export function* loadResources(resourceType, resourceDirectory, projectRoot) {
+  const resourcePaths = yield call(findResources, resourceType, path.join(projectRoot, resourceDirectory));
+  yield all(resourcePaths.map((resourcePath) => call(loadResource, resourceType, resourcePath)));
 }
 
-export function* loadProjectEntities(projectPath) {
+export function* loadProjectResources(projectPath) {
   try {
-    yield call(loadProjectEntity, projectPath);
+    yield call(loadProjectResource, projectPath);
 
     const projectRoot = path.dirname(projectPath);
 
-    // yield call(loadSingletonEntity, 'banks', projectRoot);
+    // yield call(loadSingletonResource, 'banks', projectRoot);
 
-    yield call(loadEntities, 'map', 'maps', projectRoot);
-    yield call(loadEntities, 'blockset', 'blocksets', projectRoot);
+    yield call(loadResources, 'map', 'maps', projectRoot);
+    yield call(loadResources, 'blockset', 'blocksets', projectRoot);
 
     yield put(loadProjectSuccess());
   } catch (err) {
@@ -81,7 +81,7 @@ export function* loadProject() {
     return;
   }
 
-  yield call(loadProjectEntities, paths[0]);
+  yield call(loadProjectResources, paths[0]);
 }
 
 export function* projectData() {

@@ -22,7 +22,7 @@ import { makeSelectSidebarItem } from 'containers/App/selectors';
 import Sidebar from 'components/Sidebar';
 import EditorTabs, { EditorTabsBar } from 'containers/EditorTabs';
 import MainDrawer from 'containers/App/Sidebar/MainDrawer';
-import EntityDrawer from 'containers/App/Sidebar/EntityDrawer';
+import ResourceDrawer from 'containers/App/Sidebar/ResourceDrawer';
 import { buildTabRoutes } from '../../tabs';
 import './styles.scss';
 
@@ -33,7 +33,7 @@ const sidebarItems = [{
 }, {
   id: 'maps',
   icon: <MapIcon />,
-  component: <EntityDrawer type="map" />,
+  component: <ResourceDrawer type="map" />,
 }];
 
 const tabRoutes = buildTabRoutes();

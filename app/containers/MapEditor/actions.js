@@ -5,7 +5,7 @@
  */
 
 import {
-  LOAD_MAP_ENTITY,
+  LOAD_MAP_RESOURCE,
   LOAD_MAIN_MAP,
   LOAD_CONNECTED_MAP,
   EDIT_MAP,
@@ -21,10 +21,10 @@ import {
   SET_ACTIVE_LAYER,
 } from './constants';
 
-export function loadMapEntity(entity) {
+export function loadMapResource(resource) {
   return {
-    type: LOAD_MAP_ENTITY,
-    entity,
+    type: LOAD_MAP_RESOURCE,
+    resource,
   };
 }
 

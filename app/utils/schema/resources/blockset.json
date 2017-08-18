@@ -70,7 +70,7 @@
       }
     },
     "tiles": {
-      "$ref": "http://example.com/schema/entity/types/reference/path"
+      "$ref": "http://example.com/schema/resource/types/reference/path"
     }
   }
 }

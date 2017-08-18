@@ -17,15 +17,15 @@ const makeSelectLocationState = () => {
 
 const makeSelectSidebarItem = () => (state) => state.project.sidebarItem;
 
-const makeSelectEntities = (type) =>
-  (state) => Object.values(state.project.entities[type]);
+const makeSelectResources = (type) =>
+  (state) => Object.values(state.project.resources[type]);
 
-const makeSelectEntity = (type, id) =>
-  (state) => state.project.entities[type][id];
+const makeSelectResource = (type, id) =>
+  (state) => state.project.resources[type][id];
 
 export {
-  makeSelectEntity,
-  makeSelectEntities,
+  makeSelectResource,
+  makeSelectResources,
   makeSelectLocationState,
   makeSelectSidebarItem,
 };

@@ -4,7 +4,7 @@
  *
  */
 
-export const LOAD_MAP_ENTITY = 'jigglemap/MapEditor/LOAD_MAP_ENTITY';
+export const LOAD_MAP_RESOURCE = 'jigglemap/MapEditor/LOAD_MAP_RESOURCE';
 
 export const LOAD_MAIN_MAP = 'jigglemap/MapEditor/LOAD_MAIN_MAP';
 export const LOAD_CONNECTED_MAP = 'jigglemap/MapEditor/LOAD_CONNECTED_MAP';

@@ -1,5 +1,5 @@
 {
-  "id": "http://example.com/schema/entity/types/reference/id/map",
+  "id": "http://example.com/schema/resource/types/reference/id/map",
   "type": "object",
   "required": ["type", "id"],
   "additionalProperties": false,

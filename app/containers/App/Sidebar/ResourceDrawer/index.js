@@ -3,21 +3,21 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { loadTab } from 'containers/EditorTabs/actions';
 
-import { makeSelectEntities } from 'containers/App/selectors';
+import { makeSelectResources } from 'containers/App/selectors';
 
-function EntityLink({ entity, onClick }) {
+function ResourceLink({ resource, onClick }) {
   return (
-    <button onClick={() => onClick(entity)}>
-      <div>{entity.icon}</div>
-      <div>{entity.id}</div> {/* Display id muted */}
-      <div>{entity.name}</div>
-      <div>{entity.description}</div>
+    <button onClick={() => onClick(resource)}>
+      <div>{resource.icon}</div>
+      <div>{resource.id}</div> {/* Display id muted */}
+      <div>{resource.name}</div>
+      <div>{resource.description}</div>
     </button>
   );
 }
 
-EntityLink.propTypes = {
-  entity: PropTypes.shape({
+ResourceLink.propTypes = {
+  resource: PropTypes.shape({
     id: PropTypes.string,
     type: PropTypes.string,
     icon: PropTypes.string,
@@ -27,7 +27,7 @@ EntityLink.propTypes = {
   onClick: PropTypes.func,
 };
 
-EntityLink.defaultProps = {
+ResourceLink.defaultProps = {
   id: '',
   type: '',
   icon: null,
@@ -36,29 +36,29 @@ EntityLink.defaultProps = {
   onClick: null,
 };
 
-export class EntityDrawer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class ResourceDrawer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
-    entities: PropTypes.arrayOf(PropTypes.shape({
+    resources: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
       type: PropTypes.string,
       icon: PropTypes.string,
       name: PropTypes.string,
       description: PropTypes.string,
     })),
-    openEntity: PropTypes.func,
+    openResource: PropTypes.func,
   };
 
   static defaultProps = {
-    entities: [],
-    openEntity: null,
+    resources: [],
+    openResource: null,
   };
 
   render() {
     return (
       <ul>
-        {this.props.entities.map((entity) => (
-          <li key={entity.id}>
-            <EntityLink entity={entity} onClick={this.props.openEntity} />
+        {this.props.resources.map((resource) => (
+          <li key={resource.id}>
+            <ResourceLink resource={resource} onClick={this.props.openResource} />
           </li>
         ))}
       </ul>
@@ -67,12 +67,12 @@ export class EntityDrawer extends React.PureComponent { // eslint-disable-line r
 }
 
 const mapStateToProps = (state, { type }) => createStructuredSelector({
-  entities: makeSelectEntities(type),
+  resources: makeSelectResources(type),
 })(state);
 
 function mapDispatchToProps(dispatch) {
   return {
-    openEntity({ id, type, name }) {
+    openResource({ id, type, name }) {
       dispatch(loadTab(type, {
         title: name,
         meta: {
@@ -84,4 +84,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntityDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceDrawer);

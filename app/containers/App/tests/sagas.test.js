@@ -3,22 +3,22 @@ import { put, takeLatest, call, all } from 'redux-saga/effects';
 import { remote } from 'electron';
 
 import {
-  parseEntity,
-  findEntities,
-  loadEntity,
-  loadProjectEntity,
-  loadSingletonEntity,
-  loadEntities,
-  loadProjectEntities,
+  parseResource,
+  findResources,
+  loadResource,
+  loadProjectResource,
+  loadSingletonResource,
+  loadResources,
+  loadProjectResources,
   loadProject,
   projectData,
 } from '../sagas';
-import { addEntity, loadProjectSuccess, loadProjectError } from '../actions';
+import { addResource, loadProjectSuccess, loadProjectError } from '../actions';
 import { LOAD_PROJECT } from '../constants';
 
 jest.mock('electron');
 
-const projectEntity = {
+const projectResource = {
   meta: {
     format: {
       type: 'project',
@@ -35,7 +35,7 @@ beforeEach(async () => {
   // Creates an in-memory file system
   mock({
     '/test': {
-      'project.json': JSON.stringify(projectEntity),
+      'project.json': JSON.stringify(projectResource),
       maps: {
         a: {
           'map.json': '',
@@ -56,20 +56,20 @@ afterEach(async () => {
   mock.restore();
 });
 
-describe('parseEntity', () => {
+describe('parseResource', () => {
   it('reads the JSON data from the filesystem', async () => {
-    await expect(parseEntity('project', '/test/project.json')).resolves.toEqual(projectEntity);
+    await expect(parseResource('project', '/test/project.json')).resolves.toEqual(projectResource);
   });
 
-  it('validates the entity according to the type', async () => {
-    await expect(parseEntity('map', '/test/project.json')).rejects.toBeDefined();
-    await expect(parseEntity('project', '/test/project.json')).resolves.toBeDefined();
+  it('validates the resource according to the type', async () => {
+    await expect(parseResource('map', '/test/project.json')).rejects.toBeDefined();
+    await expect(parseResource('project', '/test/project.json')).resolves.toBeDefined();
   });
 });
 
-describe('findEntities', () => {
-  it('reads all the entities in a given directory', async () => {
-    await expect(findEntities('map', '/test/maps')).resolves.toEqual([
+describe('findResources', () => {
+  it('reads all the resources in a given directory', async () => {
+    await expect(findResources('map', '/test/maps')).resolves.toEqual([
       '/test/maps/a/map.json',
       '/test/maps/b/map.json',
       '/test/maps/c/map.json',
@@ -77,76 +77,76 @@ describe('findEntities', () => {
   });
 });
 
-describe('loadEntity', () => {
+describe('loadResource', () => {
   let generator;
   beforeEach(() => {
-    generator = loadEntity('project', '/test/project.json');
+    generator = loadResource('project', '/test/project.json');
   });
 
-  it('dispatches an action for the parsed entity', () => {
-    const entity = generator.next().value;
-    expect(entity).toEqual(call(parseEntity, 'project', '/test/project.json'));
+  it('dispatches an action for the parsed resource', () => {
+    const resource = generator.next().value;
+    expect(resource).toEqual(call(parseResource, 'project', '/test/project.json'));
 
-    const putDescriptor = generator.next(projectEntity).value;
-    expect(putDescriptor).toEqual(put(addEntity('/test/project.json', projectEntity.meta)));
+    const putDescriptor = generator.next(projectResource).value;
+    expect(putDescriptor).toEqual(put(addResource('/test/project.json', projectResource.meta)));
   });
 });
 
-describe('loadProjectEntity', () => {
+describe('loadProjectResource', () => {
   let generator;
   beforeEach(() => {
-    generator = loadProjectEntity('/test/project.json');
+    generator = loadProjectResource('/test/project.json');
   });
 
-  it('calls loadEntity for the project.json', () => {
+  it('calls loadResource for the project.json', () => {
     const callDescriptor = generator.next().value;
-    expect(callDescriptor).toEqual(call(loadEntity, 'project', '/test/project.json'));
+    expect(callDescriptor).toEqual(call(loadResource, 'project', '/test/project.json'));
   });
 });
 
-describe('loadSingletonEntity', () => {
+describe('loadSingletonResource', () => {
   let generator;
   beforeEach(() => {
-    generator = loadSingletonEntity('singleton', '/test');
+    generator = loadSingletonResource('singleton', '/test');
   });
 
-  it('calls loadEntity for the given singleton entity relative to the project root', () => {
+  it('calls loadResource for the given singleton resource relative to the project root', () => {
     const callDescriptor = generator.next().value;
-    expect(callDescriptor).toEqual(call(loadEntity, 'singleton', '/test/singleton.json'));
+    expect(callDescriptor).toEqual(call(loadResource, 'singleton', '/test/singleton.json'));
   });
 });
 
-describe('loadEntities', () => {
+describe('loadResources', () => {
   let generator;
   beforeEach(() => {
-    generator = loadEntities('map', 'maps', '/test');
+    generator = loadResources('map', 'maps', '/test');
   });
 
-  it('calls loadEntity for every entity returned by findEntities', () => {
+  it('calls loadResource for every resource returned by findResources', () => {
     const callDescriptor = generator.next().value;
-    expect(callDescriptor).toEqual(call(findEntities, 'map', '/test/maps'));
+    expect(callDescriptor).toEqual(call(findResources, 'map', '/test/maps'));
 
     const paths = ['/test/maps/a/map.json', '/test/maps/b/map.json'];
     const allDescriptor = generator.next(paths).value;
-    const expected = all(paths.map((path) => call(loadEntity, 'map', path)));
+    const expected = all(paths.map((path) => call(loadResource, 'map', path)));
     expect(allDescriptor).toEqual(expected);
   });
 });
 
-describe('loadProjectEntities', () => {
+describe('loadProjectResources', () => {
   let generator;
   beforeEach(() => {
-    generator = loadProjectEntities('/test/project.json');
+    generator = loadProjectResources('/test/project.json');
   });
 
-  it('loads all the correct entities and dispatches a success action', () => {
-    expect(generator.next().value).toEqual(call(loadProjectEntity, '/test/project.json'));
-    expect(generator.next().value).toEqual(call(loadEntities, 'map', 'maps', '/test'));
-    expect(generator.next().value).toEqual(call(loadEntities, 'blockset', 'blocksets', '/test'));
+  it('loads all the correct resources and dispatches a success action', () => {
+    expect(generator.next().value).toEqual(call(loadProjectResource, '/test/project.json'));
+    expect(generator.next().value).toEqual(call(loadResources, 'map', 'maps', '/test'));
+    expect(generator.next().value).toEqual(call(loadResources, 'blockset', 'blocksets', '/test'));
     expect(generator.next().value).toEqual(put(loadProjectSuccess()));
   });
 
-  it('dispatches an error action if the entities failed to load', () => {
+  it('dispatches an error action if the resources failed to load', () => {
     generator.next();
     const response = new Error('An error');
     const putDescriptor = generator.throw(response).value;
@@ -166,7 +166,7 @@ describe('loadProject', () => {
     ]);
 
     const callDescriptor = generator.next().value;
-    expect(callDescriptor).toEqual(call(loadProjectEntities, '/path/to/project.json'));
+    expect(callDescriptor).toEqual(call(loadProjectResources, '/path/to/project.json'));
   });
 
   it('does nothing if no file was selected', () => {

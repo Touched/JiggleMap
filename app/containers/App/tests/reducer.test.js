@@ -1,4 +1,4 @@
-import { loadProject, loadProjectSuccess, loadProjectError, addEntity } from '../actions';
+import { loadProject, loadProjectSuccess, loadProjectError, addResource } from '../actions';
 import projectReducer from '../reducer';
 
 describe('projectReducer', () => {
@@ -9,7 +9,7 @@ describe('projectReducer', () => {
   it('loading the project sets the boolean and resets the state', () => {
     const initialState = {
       path: '/path/to/project.json',
-      entities: {
+      resources: {
         key: 'value',
       },
     };
@@ -20,14 +20,14 @@ describe('projectReducer', () => {
       error: false,
       loading: true,
       path: '/path/to/project.json',
-      entities: {},
+      resources: {},
     });
   });
 
   it('resets the project state after an error', () => {
     const initialState = {
       path: '/path/to/project.json',
-      entities: {
+      resources: {
         key: 'value',
       },
     };
@@ -38,41 +38,41 @@ describe('projectReducer', () => {
       error: true,
       loading: false,
       path: null,
-      entities: {},
+      resources: {},
     });
   });
 
-  it('can add a new entity to the list', () => {
+  it('can add a new resource to the list', () => {
     const initialState = {
-      entities: {},
+      resources: {},
     };
 
-    const state = projectReducer(initialState, addEntity('/path/to/entity.json', {
+    const state = projectReducer(initialState, addResource('/path/to/resource.json', {
       format: {
         type: 'foo',
       },
       id: 'bar',
-      name: 'test entity',
-      description: 'this is a test entity',
+      name: 'test resource',
+      description: 'this is a test resource',
     }));
 
-    expect(state.entities).toEqual({
+    expect(state.resources).toEqual({
       foo: {
         bar: {
           id: 'bar',
           type: 'foo',
           icon: null,
-          path: '/path/to/entity.json',
-          name: 'test entity',
-          description: 'this is a test entity',
+          path: '/path/to/resource.json',
+          name: 'test resource',
+          description: 'this is a test resource',
         },
       },
     });
   });
 
-  it('can add an entity to the list', () => {
+  it('can add an resource to the list', () => {
     const initialState = {
-      entities: {
+      resources: {
         foo: {
           baz: {
             id: 'baz',
@@ -86,24 +86,24 @@ describe('projectReducer', () => {
       },
     };
 
-    const state = projectReducer(initialState, addEntity('/path/to/entity.json', {
+    const state = projectReducer(initialState, addResource('/path/to/resource.json', {
       format: {
         type: 'foo',
       },
       id: 'bar',
-      name: 'test entity',
-      description: 'this is a test entity',
+      name: 'test resource',
+      description: 'this is a test resource',
     }));
 
-    expect(state.entities).toEqual({
+    expect(state.resources).toEqual({
       foo: {
         bar: {
           id: 'bar',
           type: 'foo',
           icon: null,
-          path: '/path/to/entity.json',
-          name: 'test entity',
-          description: 'this is a test entity',
+          path: '/path/to/resource.json',
+          name: 'test resource',
+          description: 'this is a test resource',
         },
         baz: {
           id: 'baz',
@@ -120,7 +120,7 @@ describe('projectReducer', () => {
   it('resets the loading state after sucess', () => {
     const initialState = {
       path: '/path/to/project.json',
-      entities: {
+      resources: {
         key: 'value',
       },
       loading: true,

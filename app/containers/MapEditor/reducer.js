@@ -97,15 +97,15 @@ function loadMapData(data) {
 function loadBlocksetData(data) {
   return {
     primary: {
-      id: data.primary.entity.meta.id,
-      palette: data.primary.entity.data.palette,
-      blocks: data.primary.entity.data.blocks,
+      id: data.primary.resource.meta.id,
+      palette: data.primary.resource.data.palette,
+      blocks: data.primary.resource.data.blocks,
       tiles: data.primary.tiles,
     },
     secondary: {
-      id: data.secondary.entity.meta.id,
-      palette: data.secondary.entity.data.palette,
-      blocks: data.secondary.entity.data.blocks,
+      id: data.secondary.resource.meta.id,
+      palette: data.secondary.resource.data.palette,
+      blocks: data.secondary.resource.data.blocks,
       tiles: data.secondary.tiles,
     },
   };

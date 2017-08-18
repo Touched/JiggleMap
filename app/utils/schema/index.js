@@ -1,7 +1,8 @@
+
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import * as typeSchemas from './types';
-import * as entityDataSchemas from './entities';
+import * as resourceDataSchemas from './resources';
 
 const ajv = new Ajv({
   $data: true,
@@ -10,9 +11,9 @@ const ajv = new Ajv({
 
 ajvKeywords(ajv);
 
-export function buildEntitySchema(entityType, dataSchema) {
+export function buildResourceSchema(resourceType, dataSchema) {
   return ajv.compile({
-    id: `http://example.com/schema/entity/${entityType}`,
+    id: `http://example.com/schema/resource/${resourceType}`,
     type: 'object',
     required: ['meta', 'data'],
     additionalProperties: false,
@@ -28,7 +29,7 @@ export function buildEntitySchema(entityType, dataSchema) {
             properties: {
               type: {
                 type: 'string',
-                const: entityType,
+                const: resourceType,
               },
               version: {
                 type: 'string',
@@ -53,7 +54,7 @@ export function buildEntitySchema(entityType, dataSchema) {
   });
 }
 
-export default Object.keys(entityDataSchemas).reduce((validators, type) => ({
+export default Object.keys(resourceDataSchemas).reduce((validators, type) => ({
   ...validators,
-  [type]: buildEntitySchema(type, entityDataSchemas[type]),
+  [type]: buildResourceSchema(type, resourceDataSchemas[type]),
 }), {});

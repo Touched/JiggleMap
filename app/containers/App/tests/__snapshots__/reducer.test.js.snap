@@ -2,10 +2,10 @@
 
 exports[`projectReducer returns the initial state 1`] = `
 Object {
-  "entities": Object {},
   "error": false,
   "loading": false,
   "path": null,
+  "resources": Object {},
   "sidebarItem": null,
 }
 `;

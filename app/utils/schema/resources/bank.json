@@ -1,12 +1,12 @@
 {
   "type": "object",
-  "required": ["banks"],
+  "required": ["maps"],
   "additionalProperties": false,
   "properties": {
-    "banks": {
+    "maps": {
       "type": "array",
       "items": {
-        "$ref": "http://example.com/schema/entity/types/reference/id/bank"
+        "$ref": "http://example.com/schema/resource/types/reference/id/map"
       }
     }
   }

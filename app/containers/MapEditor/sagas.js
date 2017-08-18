@@ -6,28 +6,28 @@ import native from 'native';
 import fs from 'utils/fs';
 import { takeLatestRelayed, putRelayed } from 'containers/EditorTabs/sagaEffects';
 import { LOAD } from 'containers/EditorTabs/constants';
-import { makeSelectEntity } from 'containers/App/selectors';
-import { parseEntity } from 'containers/App/sagas';
+import { makeSelectResource } from 'containers/App/selectors';
+import { parseResource } from 'containers/App/sagas';
 import { loadMainMap, loadConnectedMap, mapLoaded } from './actions';
 
 export function* loadBlockset(primary, { id, type }) {
   invariant(
     type === 'blockset',
-    `loadBlocksetData can only load blockset entities, but it receieved a '${type}'`,
+    `loadBlocksetData can only load blockset resources, but it receieved a '${type}'`,
   );
 
-  const { path: entityPath } = yield select(makeSelectEntity(type, id));
-  const entity = yield call(parseEntity, type, entityPath);
+  const { path: resourcePath } = yield select(makeSelectResource(type, id));
+  const resource = yield call(parseResource, type, resourcePath);
 
-  // TODO: ensure entity.data.primary === primary
+  // TODO: ensure resource.data.primary === primary
 
-  const tilesPath = path.resolve(path.dirname(entityPath), entity.data.tiles.path);
+  const tilesPath = path.resolve(path.dirname(resourcePath), resource.data.tiles.path);
   const tilesBuffer = yield call(fs.readFileAsync.bind(fs), tilesPath);
   const tilesData = native.decode(tilesBuffer);
 
   // TODO: Error handling for bad PNGs/dimensions
   return {
-    entity,
+    resource,
     tiles: Array.from(tilesData.pixels),
   };
 }
@@ -35,29 +35,29 @@ export function* loadBlockset(primary, { id, type }) {
 export function* loadData({ id, type }) {
   invariant(
     type === 'map',
-    `loadMapData can only load map entities, but it receieved a '${type}'`,
+    `loadMapData can only load map resources, but it receieved a '${type}'`,
   );
 
-  const { path: entityPath } = yield select(makeSelectEntity(type, id));
-  return yield call(parseEntity, type, entityPath);
+  const { path: resourcePath } = yield select(makeSelectResource(type, id));
+  return yield call(parseResource, type, resourcePath);
 }
 
 function* loadSingleMap({ id, type }) {
   invariant(
     type === 'map',
-    `loadMapData can only load map entities, but it receieved a '${type}'`,
+    `loadMapData can only load map resources, but it receieved a '${type}'`,
   );
 
-  const { path: entityPath } = yield select(makeSelectEntity(type, id));
-  const entity = yield call(parseEntity, type, entityPath);
+  const { path: resourcePath } = yield select(makeSelectResource(type, id));
+  const resource = yield call(parseResource, type, resourcePath);
 
   const [primary, secondary] = yield all([
-    call(loadBlockset, true, entity.data.blocksets.primary),
-    call(loadBlockset, false, entity.data.blocksets.secondary),
+    call(loadBlockset, true, resource.data.blocksets.primary),
+    call(loadBlockset, false, resource.data.blocksets.secondary),
   ]);
 
   return {
-    map: entity,
+    map: resource,
     blocksets: {
       primary,
       secondary,
@@ -65,9 +65,9 @@ function* loadSingleMap({ id, type }) {
   };
 }
 
-function* loadSingleMapConnection(entityId, direction, offset) {
+function* loadSingleMapConnection(resourceId, direction, offset) {
   return {
-    ...yield call(loadSingleMap, entityId),
+    ...yield call(loadSingleMap, resourceId),
     direction,
     offset,
   };
@@ -86,7 +86,7 @@ export function* loadMap({ id, action: { meta } }) {
   // Mark the map as having finished loading
   yield putRelayed(id, mapLoaded());
 
-  // TODO: Take a SAVE action for any of the loaded entities and trigger a reload
+  // TODO: Take a SAVE action for any of the loaded resources and trigger a reload
 }
 
 export function* loadMapSaga(tabId) {

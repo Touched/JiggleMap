@@ -31,7 +31,7 @@ describe('mapDataReducer', () => {
 
   const blocksetData = {
     primary: {
-      entity: {
+      resource: {
         meta: {
           id: 'blockset1',
         },
@@ -45,7 +45,7 @@ describe('mapDataReducer', () => {
       tiles: [1, 2, 3],
     },
     secondary: {
-      entity: {
+      resource: {
         meta: {
           id: 'blockset2',
         },

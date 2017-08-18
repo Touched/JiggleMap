@@ -1,5 +1,5 @@
 {
-  "id": "http://example.com/schema/entity",
+  "id": "http://example.com/schema/resource",
   "type": "object",
   "required": ["meta", "data"],
   "additionalProperties": false,

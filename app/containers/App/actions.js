@@ -8,7 +8,7 @@ import {
   LOAD_PROJECT,
   LOAD_PROJECT_ERROR,
   LOAD_PROJECT_SUCCESS,
-  ADD_ENTITY,
+  ADD_RESOURCE,
   SET_SIDEBAR_ITEM,
 } from './constants';
 
@@ -31,10 +31,10 @@ export function loadProjectSuccess() {
   };
 }
 
-export function addEntity(path, meta) {
+export function addResource(path, meta) {
   return {
-    type: ADD_ENTITY,
-    entity: {
+    type: ADD_RESOURCE,
+    resource: {
       type: meta.format.type,
       id: meta.id,
       name: meta.name,

@@ -1,5 +1,5 @@
 {
-  "id": "http://example.com/schema/entity/types/reference/script",
+  "id": "http://example.com/schema/resource/types/reference/script",
   "type": "object",
   "required": ["path", "symbol"],
   "additionalProperties": false,
