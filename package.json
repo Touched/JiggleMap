@@ -1,6 +1,6 @@
 {
-  "name": "@touched/jigglemap",
-  "productName": "JiggleMap",
+  "name": "jigglemap",
+  "productName": "jigglemap",
   "version": "3.4.0",
   "description": "A map editor for the Game Boy Advance Pokémon games",
   "repository": {
@@ -60,8 +60,8 @@
     "package:clean": "rimraf dist"
   },
   "build": {
-    "productName": "JiggleMap",
-    "appId": "org.touched.JiggleMap",
+    "productName": "jigglemap",
+    "appId": "org.touched.jigglemap",
     "dmg": {
       "contents": [
         {
