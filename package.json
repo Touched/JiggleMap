@@ -60,6 +60,7 @@
     "package:clean": "rimraf dist"
   },
   "build": {
+    "name": "jigglemap",
     "productName": "jigglemap",
     "appId": "org.touched.jigglemap",
     "dmg": {
