@@ -24,7 +24,7 @@ install:
   # Install chrome
   - choco install -y googlechrome
   # Install the latest stable version of Node
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node $env:nodejs_version x64
   - set PATH=%APPDATA%\yarn;%PATH%
   - yarn
 
