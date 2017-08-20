@@ -49,5 +49,7 @@ cache:
 #on_success:
 #- yarn run coveralls
 artifacts:
+  - path: build
+    name: Build
   - path: dist
     name: JiggleMap
