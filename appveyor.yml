@@ -36,7 +36,7 @@ test_script:
   # Output debugging info
   - node --version
   # run tests and run build
-  - yarn run test
+  # yarn run test
   - yarn run package:windows
 
 # Cache node_modules for faster builds
