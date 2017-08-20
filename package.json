@@ -1,5 +1,6 @@
 {
   "name": "@touched/jigglemap",
+  "productName": "JiggleMap",
   "version": "3.4.0",
   "description": "A map editor for the Game Boy Advance Pokémon games",
   "repository": {
