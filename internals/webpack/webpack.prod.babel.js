@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 module.exports = require('./webpack.base.babel')({
   // In production, we skip all hot-reloading stuff
@@ -23,6 +24,8 @@ module.exports = require('./webpack.base.babel')({
       minChunks: 2,
       async: true,
     }),
+
+    new MinifyPlugin(),
 
     // Minify and optimize the index.html
     new HtmlWebpackPlugin({
