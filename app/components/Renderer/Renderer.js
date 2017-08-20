@@ -98,6 +98,8 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
     }
   };
 
+  redispatchMouseEvent: Function;
+
   handleClick = this.redispatchMouseEvent.bind(this);
   handleMouseDown = this.redispatchMouseEvent.bind(this);
 
