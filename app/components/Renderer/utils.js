@@ -4,8 +4,6 @@ import svgMesh3d from 'svg-mesh-3d';
 import threeSimplicialComplex from 'three-simplicial-complex';
 import * as THREE from 'three';
 
-import { FOV_RADIANS, DISTANCE } from './constants';
-
 const Complex = threeSimplicialComplex(THREE);
 
 export function calculateBoundingRectangle(
@@ -16,16 +14,11 @@ export function calculateBoundingRectangle(
   x: number,
   y: number,
 ) {
-  const aspect = containerWidth / containerHeight;
-
-  const verticalFraction = 2 * Math.tan(FOV_RADIANS / 2) * DISTANCE;
-  const horizontalFraction = verticalFraction * aspect;
-
   return {
-    width: (width * horizontalFraction) / containerWidth,
-    height: (height * verticalFraction) / containerHeight,
-    top: (-(y + (height / 2)) * verticalFraction) / containerHeight,
-    left: ((x + (width / 2)) * horizontalFraction) / containerWidth,
+    width,
+    height,
+    top: -(y + (height / 2)),
+    left: (x + (width / 2)),
   };
 }
 

@@ -168,8 +168,8 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
   render() {
     const { camera, measureRef, contentRect } = this.props;
 
-    const near = 0.25;
-    const far = 2;
+    const zoomMin = 0.25;
+    const zoomMax = 2;
 
     return (
       <div className="MapEditor">
@@ -177,8 +177,8 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
           <div className="MapEditor__Overlay">
             <ToolBox tabDispatch={this.props.tabDispatch} />
             <MapControls
-              zoomMin={near}
-              zoomMax={far}
+              zoomMin={zoomMin}
+              zoomMaxx={zoomMax}
               zoom={camera.z}
               onToggleLayer={this.props.setActiveLayer}
               onRecenterClick={this.recenterMap}
@@ -189,11 +189,11 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
           <Renderer
             x={this.state.pan ? this.state.pan.position.x : camera.x}
             y={this.state.pan ? this.state.pan.position.y : camera.y}
-            z={camera.z}
+            zoom={camera.z}
             width={contentRect.bounds.width}
             height={contentRect.bounds.height}
-            near={near}
-            far={far}
+            zoomMin={zoomMin}
+            zoomMax={zoomMax}
             onMouseDown={this.handleMouseDown}
             onMouseMove={this.handleMouseMove}
             onMouseUp={this.handleMouseUp}

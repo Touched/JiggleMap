@@ -125,11 +125,11 @@ export default class BlockPicker extends React.Component {
         <Renderer
           x={left}
           y={top}
-          z={1 / zoom}
+          zoom={zoom}
           width={containerWidth}
           height={containerHeight}
-          near={0.25}
-          far={2}
+          zoomMin={0.25}
+          zoomMax={2}
           customRenderer={this.customRenderer}
           canvasRef={(ref) => { this.canvas = ref; }}
         >

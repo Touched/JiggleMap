@@ -10,11 +10,11 @@ import { FOV, FOV_RADIANS, DISTANCE } from './constants';
 type Props = {
   x: number,
   y: number,
-  z: number,
+  zoom: number,
   width: number,
   height: number,
-  near: number,
-  far: number,
+  zoomMin: number,
+  zoomMax: number,
   customRenderer: Function,
   children: React$Component<*, *, *>,
   cameraRef: (THREE.Camera) => void,
@@ -62,6 +62,9 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
     cameraRef: null,
     canvasRef: null,
     customRenderer: null,
+    zoom: 1,
+    zoomMin: 1,
+    zoomMax: 1,
   };
 
   static contextTypes = {
@@ -190,9 +193,18 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
   camera: THREE.Camera;
 
   render() {
-    const { x, y, z, width, height, near, far, children } = this.props;
+    const { x, y, zoom, width, height, zoomMin, zoomMax, children } = this.props;
 
     const cursor = this.state.cursor || 'default';
+
+    // Calculate z coordinate for the camera such that the 3D world coordinates
+    // are 1:1 with DOM pixel coordinates.
+    const distance = height / (2 * Math.tan(FOV_RADIANS / 2));
+    const z = distance * Math.min(Math.max(zoomMin, 1 / zoom), zoomMax);
+
+    // Near/far must be smaller/greater than z (respectively)
+    const near = distance * zoomMin * 0.9;
+    const far = distance * zoomMax * 1.1;
 
     return (
       <div
@@ -217,7 +229,7 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
               name="camera"
               fov={FOV}
               aspect={width / height}
-              near={near - 0.0001}
+              near={near}
               far={far}
               position={new THREE.Vector3(x, y, z)}
               ref={this.setCameraRef}
