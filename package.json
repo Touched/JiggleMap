@@ -206,6 +206,7 @@
     "styled-components": "1.1.2",
     "svg-mesh-3d": "^1.1.0",
     "three": "^0.85.2",
+    "three-renderer-css3d": "^1.0.0",
     "three-simplicial-complex": "^69.0.6",
     "warning": "^3.0.0",
     "whatwg-fetch": "2.0.1"

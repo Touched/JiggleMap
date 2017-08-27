@@ -8326,6 +8326,10 @@ text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
+three-renderer-css3d@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/three-renderer-css3d/-/three-renderer-css3d-1.0.0.tgz#a0eebe89dc86cece7651b6a59925967008dd709f"
+
 three-simplicial-complex@^69.0.6:
   version "69.0.6"
   resolved "https://registry.yarnpkg.com/three-simplicial-complex/-/three-simplicial-complex-69.0.6.tgz#43eda7474d18173129895a5e9e416d627af1031f"

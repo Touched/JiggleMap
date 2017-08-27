@@ -2,6 +2,7 @@
 
 import React from 'react';
 import React3 from 'react-three-renderer';
+import { CSS3DRenderer } from 'three-renderer-css3d';
 import * as THREE from 'three';
 
 import ContainerProvider from './ContainerProvider';
@@ -89,10 +90,30 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
     window.addEventListener('mousemove', this.redispatchMouseEvent);
   }
 
+  componentDidUpdate() {
+    this.cssRenderer.setSize(this.props.width, this.props.height);
+  }
+
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.redispatchMouseEvent);
     window.removeEventListener('mousemove', this.redispatchMouseEvent);
   }
+
+  onUpdateRenderer = (renderer: THREE.WebGLRenderer) => {
+    // Monkey-patch renderer
+    const { render } = renderer;
+    this.cssRenderer = new CSS3DRenderer();
+
+    renderer.render = (scene: THREE.Scene, camera: THREE.Camera) => { // eslint-disable-line no-param-reassign
+      render.call(renderer, scene, camera);
+      this.cssRenderer.render(scene, camera);
+    };
+
+    this.cssRendererContainer.appendChild(this.cssRenderer.domElement);
+    this.cssRenderer.domElement.style.position = 'absolute';
+    this.cssRenderer.domElement.style.top = '0';
+    this.cssRenderer.setSize(this.props.width, this.props.height);
+  };
 
   setCameraRef = (ref: THREE.Camera) => {
     this.camera = ref;
@@ -191,6 +212,8 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
   raycaster: THREE.Raycaster;
   scene: THREE.Scene;
   camera: THREE.Camera;
+  cssRendererContainer: HTMLElement;
+  cssRenderer: CSS3DRenderer;
 
   render() {
     const { x, y, zoom, width, height, zoomMin, zoomMax, children } = this.props;
@@ -213,12 +236,14 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, S
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
         className={this.props.className}
-        style={{ cursor }}
+        style={{ cursor, position: 'relative' }}
       >
+        <div ref={(ref) => { this.cssRendererContainer = ref; }} />
         <React3
           mainCamera="camera"
           canvasRef={(ref) => this.props.canvasRef && this.props.canvasRef(ref)}
           customRenderer={this.props.customRenderer}
+          onRendererUpdated={this.onUpdateRenderer}
           width={width}
           height={height}
           pixelRatio={window.devicePixelRatio}
