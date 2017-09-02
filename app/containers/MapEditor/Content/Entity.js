@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DraggableArea, Group, Icon, svgPathToMesh } from 'components/Renderer';
+import { Group, Icon, svgPathToMesh } from 'components/Renderer';
 
 /* eslint-disable react/no-unused-prop-types */
 export type EntityData = {
@@ -39,12 +39,10 @@ const entityTypes = {
 export default class Entity extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   props: {
     entity: EntityData;
-    onDrag: () => void;
-    onDragEnd: () => void;
   };
 
   render() {
-    const { entity, onDrag, onDragEnd } = this.props;
+    const { entity } = this.props;
     const { mesh, color } = entityTypes[entity.type] || entityTypes.unknown;
 
     return (
@@ -56,15 +54,6 @@ export default class Entity extends React.PureComponent { // eslint-disable-line
           height={16}
           color={color}
           mesh={mesh}
-        />
-        <DraggableArea
-          x={entity.x}
-          y={entity.y}
-          width={1}
-          height={1}
-          onDrag={onDrag}
-          onDragEnd={onDragEnd}
-          name="entity"
         />
       </Group>
     );

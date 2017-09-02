@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
-import { GridArea, Renderer } from 'components/Renderer';
+import { Renderer } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 import { nativeImage } from 'electron';
 
@@ -140,12 +140,12 @@ export default class BlockPicker extends React.Component {
             tilemaps={blocks}
             palette={palette}
           />
-          <GridArea
-            width={width}
-            height={height}
-            onMouseDown={this.handleMouseDown}
-            bounded
-          />
+          {/* <GridArea
+              width={width}
+              height={height}
+              onMouseDown={this.handleMouseDown}
+              bounded
+              /> */}
         </Renderer>
       </div>
     );

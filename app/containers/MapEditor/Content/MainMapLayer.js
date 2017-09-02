@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStructuredSelector } from 'reselect';
 
-import { Group, GridArea } from 'components/Renderer';
+import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import Map from '../Map';
@@ -13,10 +13,10 @@ import {
   makeSelectMainMapTilemaps,
   makeSelectMainMapCollisionMap,
   makeSelectMainMapHeightMap,
-  makeSelectToolState,
   makeSelectActiveLayer,
 } from '../selectors';
 import { editMap, commitMapEdit } from '../actions';
+import ToolHitBox from './ToolHitBox';
 
 export class MainMapLayer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   props: {
@@ -25,22 +25,9 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
     tilemaps: Array<Uint8Array>,
     heightMap: Uint8Array,
     collisionMap: Uint8Array,
-    editMap: Function,
-    commitMapEdit: Function,
     dimensions: [number, number],
-    toolState: Object,
     activeLayer: string,
   }
-
-  handleMouseMove = (start, end, event) => {
-    this.props.editMap(this.props.toolState, start, end, event);
-    event.stopPropagation();
-  };
-
-  handleMouseUp = (start, end, event) => {
-    this.props.commitMapEdit();
-    event.stopPropagation();
-  };
 
   render() {
     const { activeLayer, dimensions: [width, height] } = this.props;
@@ -59,16 +46,7 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
           heightMap={activeLayer === 'height' && this.props.heightMap}
           collisionMap={activeLayer === 'collision' && this.props.collisionMap}
         />
-        <GridArea
-          x={0}
-          y={0}
-          width={width}
-          height={height}
-          onMouseDown={this.handleMouseMove}
-          onMouseMove={this.handleMouseMove}
-          onMouseUp={this.handleMouseUp}
-          bounded
-        />
+        <ToolHitBox objectType="main-map" width={width * 16} height={height * 16} />
       </Group>
     );
   }
@@ -79,7 +57,6 @@ const mapTabStateToProps = createStructuredSelector({
   palette: makeSelectMainMapPalette(),
   tileset: makeSelectMainMapTileset(),
   tilemaps: makeSelectMainMapTilemaps(),
-  toolState: makeSelectToolState(),
   collisionMap: makeSelectMainMapCollisionMap(),
   heightMap: makeSelectMainMapHeightMap(),
   activeLayer: makeSelectActiveLayer(),

@@ -27,6 +27,11 @@ export default class HTML3D extends React.PureComponent<*, *, *> {
     this.group.add(object);
   }
 
+
+  componentDidUpdate() {
+    ReactDOM.render(this.props.children, this.element);
+  }
+
   props: {
     name: string,
     width: number,

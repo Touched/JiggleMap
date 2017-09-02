@@ -1,12 +1,7 @@
 import React from 'react';
 
-import { DraggableArea, Group } from 'components/Renderer';
+import { Group } from 'components/Renderer';
 import Map from './Map';
-
-type Position = {
-  x: number;
-  y: number;
-};
 
 type Props = {
   width: number;
@@ -20,8 +15,6 @@ type Props = {
   heightMap: Uint8Array,
   collisionMap: Uint8Array,
   darken: boolean;
-  onDrag: (Position, Position, AreaEvent) => void;
-  onDragEnd: (Position, Position, AreaEvent) => void;
 };
 
 export default function DraggableMap(props: Props) {
@@ -35,8 +28,6 @@ export default function DraggableMap(props: Props) {
     tilemaps,
     palette,
     darken,
-    onDrag,
-    onDragEnd,
     heightMap,
     collisionMap,
   } = props;
@@ -55,15 +46,6 @@ export default function DraggableMap(props: Props) {
         collisionMap={collisionMap}
         heightMap={heightMap}
         darken={darken}
-      />
-      <DraggableArea
-        x={x}
-        y={y}
-        z={z}
-        width={width}
-        height={height}
-        onDrag={onDrag}
-        onDragEnd={onDragEnd}
       />
     </Group>
   );

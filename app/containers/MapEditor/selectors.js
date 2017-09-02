@@ -2,6 +2,8 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import { createArraySelector } from 'reselect-map';
 import R from 'ramda';
 
+import { lineTool } from './tools';
+
 const selectMapBlocksetPalette = (type) => (state) => state.blocksets[type].palette;
 const selectMapBlocksetBlocks = (type) => (state) => state.blocksets[type].blocks;
 const selectMapBlocksetTileset = (type) => (state) => state.blocksets[type].tiles;
@@ -15,6 +17,7 @@ const makeSelectCameraPosition = () => (state) => state.editing.camera;
 const makeSelectViewportSize = () => (state) => state.editing.viewportSize;
 const makeSelectToolState = () => (state) => state.editing.toolState;
 const makeSelectActiveLayer = () => (state) => state.editing.activeLayer;
+const makeSelectActiveTool = () => () => lineTool;
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -216,4 +219,5 @@ export {
   makeSelectMapPalette,
   makeSelectMapBlocks,
   makeSelectActiveLayer,
+  makeSelectActiveTool,
 };

@@ -29,6 +29,7 @@ $iconHeight: 42px;
     justify-content: flex-start;
     padding: $overlayPadding;
     flex-direction: column;
+    z-index: 1;
   }
 
   .MapEditor__OverlayBox {

@@ -10,23 +10,19 @@ import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
 import MapControls from './MapControls';
 import ToolBox from './ToolBox';
-import BlockPicker from './BlockPicker';
 import './styles.scss';
+import type { Tool, Dispatch } from './tools/types';
 
 import {
   makeSelectMainMapDimensions,
-  makeSelectMainMapPalette,
-  makeSelectMainMapTileset,
-  makeSelectMainMapTilemaps,
   makeSelectCameraPosition,
-  makeSelectMainMapBlockset,
   makeSelectToolState,
   makeSelectActiveLayer,
+  makeSelectActiveTool,
 } from './selectors';
 import {
   setCameraPosition,
   resizeViewport,
-  setCurrentBlock,
   setActiveLayer,
 } from './actions';
 
@@ -40,15 +36,20 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
     };
   }
 
-  camera: THREE.Camera;
+  componentDidMount() {
+    window.addEventListener('mouseup', this.handleMouseUp);
+    window.addEventListener('mousemove', this.handleMouseMove);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handleMouseMove);
+  }
+
   props: {
-    palette: Uint8Array,
-    tileset: Uint8Array,
-    blocks: Array<Uint8Array>,
     setCameraPosition: Function,
-    setCurrentBlock: Function,
     setActiveLayer: Function,
-    tabDispatch: Function,
+    tabDispatch: Dispatch,
     measureRef: Function,
     dimensions: [number, number],
     activeLayer: string,
@@ -64,7 +65,11 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
       },
     },
     children: React.Element,
+    activeTool: Tool<Object>,
+    toolState: Object,
   }
+
+  camera: THREE.Camera;
 
   handleMouseDown = (event: { nativeEvent: MouseEvent } & SyntheticMouseEvent) => {
     if (event.buttons & 4) { // eslint-disable-line no-bitwise
@@ -118,6 +123,8 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
           },
         },
       }));
+    } else if (this.props.activeTool) {
+      this.props.activeTool.onMouseMove(this.props.toolState, this.props.tabDispatch, event);
     }
   };
 
@@ -129,6 +136,8 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
         ...state,
         pan: null,
       }));
+    } else if (this.props.activeTool) {
+      this.props.activeTool.onMouseUp(this.props.toolState, this.props.tabDispatch, event);
     }
   };
 
@@ -186,30 +195,32 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
               onZoomChanged={({ target }) => this.props.setCameraPosition(camera.x, camera.y, target.value)}
             />
           </div>
-          <Renderer
-            x={this.state.pan ? this.state.pan.position.x : camera.x}
-            y={this.state.pan ? this.state.pan.position.y : camera.y}
-            zoom={camera.z}
-            width={contentRect.bounds.width}
-            height={contentRect.bounds.height}
-            zoomMin={zoomMin}
-            zoomMax={zoomMax}
+          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
             onMouseDown={this.handleMouseDown}
-            onMouseMove={this.handleMouseMove}
-            onMouseUp={this.handleMouseUp}
-            cameraRef={(ref) => { this.camera = ref; }}
-            className="MapEditor__MapViewport"
           >
-            {React.Children.only(this.props.children)}
-          </Renderer>
+            <Renderer
+              x={this.state.pan ? this.state.pan.position.x : camera.x}
+              y={this.state.pan ? this.state.pan.position.y : camera.y}
+              zoom={camera.z}
+              width={contentRect.bounds.width}
+              height={contentRect.bounds.height}
+              zoomMin={zoomMin}
+              zoomMax={zoomMax}
+              onMouseMove={this.handleMouseMove}
+              onMouseUp={this.handleMouseUp}
+              cameraRef={(ref) => { this.camera = ref; }}
+              className="MapEditor__MapViewport"
+            >
+              {React.Children.only(this.props.children)}
+            </Renderer>
+          </div>
         </div>
         <div className="ToolControls">
-          <BlockPicker
-            tileset={this.props.tileset}
-            palette={this.props.palette}
-            blocks={this.props.blocks}
-            onChange={this.props.setCurrentBlock}
-          />
+          {this.props.activeTool && this.props.activeTool.component && (
+          <this.props.activeTool.component
+            tabDispatch={this.props.tabDispatch}
+            state={this.props.toolState}
+          />)}
         </div>
       </div>
     );
@@ -219,12 +230,9 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
 const mapTabStateToProps = createStructuredSelector({
   dimensions: makeSelectMainMapDimensions(),
   camera: makeSelectCameraPosition(),
-  palette: makeSelectMainMapPalette(),
-  tileset: makeSelectMainMapTileset(),
-  tilemaps: makeSelectMainMapTilemaps(),
-  blocks: makeSelectMainMapBlockset(),
   toolState: makeSelectToolState(),
   activeLayer: makeSelectActiveLayer(),
+  activeTool: makeSelectActiveTool(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {
@@ -234,9 +242,6 @@ function mapTabDispatchToProps(tabDispatch) {
     },
     onResize({ bounds: { width, height } }) {
       tabDispatch(resizeViewport(width, height));
-    },
-    setCurrentBlock(block) {
-      tabDispatch(setCurrentBlock(block));
     },
     setActiveLayer(layer) {
       tabDispatch(setActiveLayer(layer));
