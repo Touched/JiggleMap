@@ -46,7 +46,7 @@ export default buildTool({
     tabDispatch(commitMapEdit());
   },
   onMouseDown(object, state, tabDispatch, mouseEvent) {
-    if (object.type === 'main-map') {
+    if (object.type === 'main-map' && mouseEvent.button === 0) {
       const { nativeEvent: { offsetX, offsetY }, clientX, clientY } = mouseEvent;
       const position = toGridCoordinates(offsetX, offsetY);
 
