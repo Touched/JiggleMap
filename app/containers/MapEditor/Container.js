@@ -27,6 +27,8 @@ import {
 } from './actions';
 
 const PAN_SPEED = 1;
+const ZOOM_MIN = 0.25;
+const ZOOM_MAX = 2;
 
 export class Container extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -153,12 +155,12 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
     vector.sub(currentPosition);
 
     if (deltaY < 0) {
-      vector.addVectors(currentPosition, vector.setLength(0.25));
-    } else {
       vector.subVectors(currentPosition, vector.setLength(0.25));
+    } else {
+      vector.addVectors(currentPosition, vector.setLength(0.25));
     }
 
-    if (vector.z > this.camera.near && vector.z < this.camera.far) {
+    if (vector.z > ZOOM_MIN && vector.z < ZOOM_MAX) {
       this.props.setCameraPosition(vector.x, vector.y, vector.z);
     }
   };
@@ -177,17 +179,14 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
   render() {
     const { camera, measureRef, contentRect } = this.props;
 
-    const zoomMin = 0.25;
-    const zoomMax = 2;
-
     return (
       <div className="MapEditor">
         <div className="MapEditor__Container" ref={measureRef} onWheel={this.handleWheel}>
           <div className="MapEditor__Overlay">
             <ToolBox tabDispatch={this.props.tabDispatch} />
             <MapControls
-              zoomMin={zoomMin}
-              zoomMaxx={zoomMax}
+              zoomMin={ZOOM_MIN}
+              zoomMax={ZOOM_MAX}
               zoom={camera.z}
               onToggleLayer={this.props.setActiveLayer}
               onRecenterClick={this.recenterMap}
@@ -204,8 +203,8 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
               zoom={camera.z}
               width={contentRect.bounds.width}
               height={contentRect.bounds.height}
-              zoomMin={zoomMin}
-              zoomMax={zoomMax}
+              zoomMin={ZOOM_MIN}
+              zoomMax={ZOOM_MAX}
               onMouseMove={this.handleMouseMove}
               onMouseUp={this.handleMouseUp}
               cameraRef={(ref) => { this.camera = ref; }}
