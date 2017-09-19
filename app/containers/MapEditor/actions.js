@@ -52,13 +52,10 @@ export function loadConnectedMap({ map, blocksets, direction, offset }) {
   };
 }
 
-export function editMap(toolState, start, end, modifiers) {
+export function editMap(patch) {
   return {
     type: EDIT_MAP,
-    toolState,
-    start,
-    end,
-    modifiers,
+    patch,
   };
 }
 

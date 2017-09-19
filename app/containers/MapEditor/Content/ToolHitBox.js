@@ -22,13 +22,19 @@ export class ToolHitBox extends React.PureComponent {
 
   render() {
     const { width, height, objectType } = this.props;
+
+    const object = {
+      type: objectType,
+    };
+
     const style = {
       width,
       height,
-      cursor: this.props.activeTool ? this.props.activeTool.getCursorForObject(objectType) : 'auto',
+      cursor: this.props.activeTool ? this.props.activeTool.getCursorForObject(object) : 'auto',
     };
+
     const onMouseDown = (event) => this.props.activeTool.onMouseDown(
-      objectType,
+      object,
       this.props.toolState,
       this.props.tabDispatch,
       event,

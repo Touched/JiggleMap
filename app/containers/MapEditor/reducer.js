@@ -9,6 +9,7 @@ import { combineReducers } from 'redux';
 import undoable, { includeAction } from 'redux-undo';
 import * as THREE from 'three';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
+import { getToolById } from './utils';
 
 import {
   LOAD_MAIN_MAP,
@@ -25,8 +26,6 @@ import {
   COMMIT_ENTITY_MOVE,
   SET_ACTIVE_LAYER,
 } from './constants';
-
-import { drawLine } from './tools/helpers';
 
 const mapData = {
   dimensions: [0, 0],
@@ -73,10 +72,8 @@ const initialEditingState = {
     y: 0,
     z: 1,
   },
-  toolState: {
-    currentBlock: 0,
-  },
   activeLayer: 'map',
+  activeTool: 'line-tool',
 };
 
 function loadMapData(data) {
@@ -121,13 +118,7 @@ function setMapDataValue(oldData, newData, index, value) {
   return dataCopy;
 }
 
-function editMap(toolState, data, start, end) {
-  const patch = drawLine(start.x, start.y, end.x, end.y, (x, y) => ({
-    x,
-    y,
-    block: toolState.currentBlock,
-  }));
-
+function editMap(data, patch) {
   let mapBlockData = null;
   const [width] = data.dimensions;
 
@@ -190,7 +181,7 @@ export function mapDataReducer(state = initialDataState, action) {
         ...state,
         // Changes are applied to the canonical map, but saved in the map so that they are
         // visible to the user.
-        map: editMap(action.toolState, state.canonicalMap, action.start, action.end, action.modifiers),
+        map: editMap(state.canonicalMap, action.patch),
       };
     case COMMIT_MAP_EDIT:
       return {
@@ -307,8 +298,14 @@ export function mapEditingReducer(state = initialEditingState, action) {
         ...state,
         activeLayer: action.layer,
       };
-    default:
-      return state;
+    default: {
+      const tool = getToolById(state.activeTool);
+
+      return {
+        ...state,
+        toolState: tool.reducer(state.toolState, action),
+      };
+    }
   }
 }
 
