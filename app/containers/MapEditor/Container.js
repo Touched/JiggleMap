@@ -19,6 +19,7 @@ import {
   makeSelectToolState,
   makeSelectActiveLayer,
   makeSelectActiveTool,
+  makeSelectToolMeta,
 } from './selectors';
 import {
   setCameraPosition,
@@ -69,6 +70,7 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
     children: React.Element,
     activeTool: Tool<Object>,
     toolState: Object,
+    toolMeta: Object,
   }
 
   camera: THREE.Camera;
@@ -126,7 +128,12 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
         },
       }));
     } else if (this.props.activeTool) {
-      this.props.activeTool.onMouseMove(this.props.toolState, this.props.tabDispatch, event);
+      this.props.activeTool.onMouseMove(
+        this.props.toolState,
+        this.props.toolMeta,
+        this.props.tabDispatch,
+        event,
+      );
     }
   };
 
@@ -139,7 +146,7 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
         pan: null,
       }));
     } else if (this.props.activeTool) {
-      this.props.activeTool.onMouseUp(this.props.toolState, this.props.tabDispatch, event);
+      this.props.activeTool.onMouseUp(this.props.toolState, this.props.toolMeta, this.props.tabDispatch, event);
     }
   };
 
@@ -232,6 +239,7 @@ const mapTabStateToProps = createStructuredSelector({
   toolState: makeSelectToolState(),
   activeLayer: makeSelectActiveLayer(),
   activeTool: makeSelectActiveTool(),
+  toolMeta: makeSelectToolMeta(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

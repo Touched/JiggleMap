@@ -5,7 +5,7 @@ import { HTML3D } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import type { Tool, Dispatch } from '../tools/types';
-import { makeSelectActiveTool, makeSelectToolState } from '../selectors';
+import { makeSelectActiveTool, makeSelectToolState, makeSelectToolMeta } from '../selectors';
 
 /**
  * A component that runs the majority of tool events
@@ -18,6 +18,7 @@ export class ToolHitBox extends React.PureComponent {
     tabDispatch: Dispatch;
     activeTool: Tool<Object>;
     toolState: Object;
+    toolMeta: Object;
   };
 
   render() {
@@ -36,6 +37,7 @@ export class ToolHitBox extends React.PureComponent {
     const onMouseDown = (event) => this.props.activeTool.onMouseDown(
       object,
       this.props.toolState,
+      this.props.toolMeta,
       this.props.tabDispatch,
       event,
     );
@@ -54,6 +56,7 @@ export class ToolHitBox extends React.PureComponent {
 const mapTabStateToProps = createStructuredSelector({
   activeTool: makeSelectActiveTool(),
   toolState: makeSelectToolState(),
+  toolMeta: makeSelectToolMeta(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

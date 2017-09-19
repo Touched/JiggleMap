@@ -45,7 +45,7 @@ export default buildTool({
   onDrawEnd(state, tabDispatch) {
     tabDispatch(commitMapEdit());
   },
-  onMouseDown(object, state, tabDispatch, mouseEvent) {
+  onMouseDown(object, state, meta, tabDispatch, mouseEvent) {
     if (object.type === 'main-map' && mouseEvent.button === 0) {
       const { nativeEvent: { offsetX, offsetY }, clientX, clientY } = mouseEvent;
       const position = toGridCoordinates(offsetX, offsetY);
@@ -53,8 +53,8 @@ export default buildTool({
       tabDispatch({
         type: DRAW_START,
         clientOffset: {
-          x: clientX - offsetX,
-          y: clientY - offsetY,
+          x: (clientX / meta.zoomLevel) - offsetX,
+          y: (clientY / meta.zoomLevel) - offsetY,
         },
         position,
         object,
@@ -66,11 +66,12 @@ export default buildTool({
       }, tabDispatch);
     }
   },
-  onMouseMove(state, tabDispatch, mouseEvent) {
+  onMouseMove(state, meta, tabDispatch, mouseEvent) {
     if (state.startingPosition) {
-      const x = mouseEvent.clientX - state.clientOffset.x;
-      const y = mouseEvent.clientY - state.clientOffset.y;
+      const x = (mouseEvent.clientX / meta.zoomLevel) - state.clientOffset.x;
+      const y = (mouseEvent.clientY / meta.zoomLevel) - state.clientOffset.y;
 
+      // FIXME: Check for changes based on grid coordinates, not mouse coordinates
       if (state.currentPosition.x !== x || state.currentPosition.y !== y) {
         const position = toGridCoordinates(x, y);
 
@@ -83,7 +84,7 @@ export default buildTool({
       }
     }
   },
-  onMouseUp(state, tabDispatch) {
+  onMouseUp(state, meta, tabDispatch) {
     if (state.startingPosition) {
       tabDispatch({
         type: DRAW_END,

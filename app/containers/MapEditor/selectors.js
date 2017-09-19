@@ -18,6 +18,9 @@ const makeSelectViewportSize = () => (state) => state.editing.viewportSize;
 const makeSelectToolState = () => (state) => state.editing.toolState;
 const makeSelectActiveLayer = () => (state) => state.editing.activeLayer;
 const makeSelectActiveTool = () => (state) => getToolById(state.editing.activeTool);
+const makeSelectToolMeta = () => (state) => ({
+  zoomLevel: state.editing.camera.z,
+});
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -220,4 +223,5 @@ export {
   makeSelectMapBlocks,
   makeSelectActiveLayer,
   makeSelectActiveTool,
+  makeSelectToolMeta,
 };

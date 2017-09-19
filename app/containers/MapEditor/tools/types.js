@@ -21,6 +21,10 @@ export type Object = {
   type: ObjectType;
 };
 
+export type Meta = {
+  zoomLevel: number;
+};
+
 export type Tool<State> = {
   id: string;
   name: Message;
@@ -30,7 +34,7 @@ export type Tool<State> = {
   component: React.Component<*, *, *>;
   reducer: (state: State, action: Action) => State;
   getCursorForObjectType: (object: Object) => string;
-  onMouseDown: (object: Object, state: State, tabDispatch: Dispatch, mouseEvent: Event) => void;
-  onMouseMove: (state: State, tabDispatch: Dispatch, mouseEvent: Event) => void;
-  onMouseUp: (state: State, tabDispatch: Dispatch, mouseEvent: Event) => void;
+  onMouseDown: (object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: Event) => void;
+  onMouseMove: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: Event) => void;
+  onMouseUp: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: Event) => void;
 };
