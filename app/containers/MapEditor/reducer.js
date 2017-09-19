@@ -120,11 +120,13 @@ function setMapDataValue(oldData, newData, index, value) {
 
 function editMap(data, patch) {
   let mapBlockData = null;
-  const [width] = data.dimensions;
+  const [width, height] = data.dimensions;
 
   patch.forEach(({ x, y, block }) => {
-    const index = x + (y * width);
-    mapBlockData = setMapDataValue(data.block, mapBlockData, index, block);
+    if (x >= 0 && x < width && y >= 0 && y < height) {
+      const index = x + (y * width);
+      mapBlockData = setMapDataValue(data.block, mapBlockData, index, block);
+    }
   });
 
   if (mapBlockData) {
