@@ -57,6 +57,7 @@ export default buildTool({
           y: clientY - offsetY,
         },
         position,
+        object,
       });
 
       this.onDraw(position, {
@@ -99,6 +100,7 @@ export default buildTool({
           clientOffset: action.clientOffset,
           startingPosition: action.position,
           currentPosition: action.position,
+          object: action.object,
         };
       case DRAW:
         return {
