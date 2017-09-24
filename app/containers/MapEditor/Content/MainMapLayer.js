@@ -13,8 +13,8 @@ import {
   makeSelectMainMapTilemaps,
   makeSelectMainMapCollisionMap,
   makeSelectMainMapHeightMap,
-  makeSelectActiveLayer,
-} from '../selectors';
+} from '../selectors/mapSelectors';
+import { makeSelectActiveLayer } from '../selectors/editingSelectors';
 import { editMap, commitMapEdit } from '../actions';
 import ToolHitBox from './ToolHitBox';
 

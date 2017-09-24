@@ -3,7 +3,7 @@ import {
   makeSelectMapBlocks,
   makeSelectMapTileset,
   buildLayersForMap,
-} from '../selectors';
+} from '../mapSelectors';
 
 const fill = (n, f) => [...Array(n)].map(f);
 

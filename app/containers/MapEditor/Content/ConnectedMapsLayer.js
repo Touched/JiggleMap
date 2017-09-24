@@ -5,11 +5,9 @@ import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import ConnectedMap from './ConnectedMap';
+import { makeSelectConnectedMaps } from '../selectors/mapSelectors';
+import { makeSelectActiveLayer } from '../selectors/editingSelectors';
 
-import {
-  makeSelectConnectedMaps,
-  makeSelectActiveLayer,
-} from '../selectors';
 import {
   moveConnection,
   commitConnectionMove,

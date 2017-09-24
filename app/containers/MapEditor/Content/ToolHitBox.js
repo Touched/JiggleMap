@@ -5,7 +5,7 @@ import { HTML3D } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import type { Tool, Dispatch } from '../tools/types';
-import { makeSelectActiveTool, makeSelectToolState, makeSelectToolMeta } from '../selectors';
+import { makeSelectActiveTool, makeSelectToolState, makeSelectToolMeta } from '../selectors/editingSelectors';
 
 /**
  * A component that runs the majority of tool events

@@ -2,8 +2,6 @@ import { createSelector, createStructuredSelector } from 'reselect';
 import { createArraySelector } from 'reselect-map';
 import R from 'ramda';
 
-import { getToolById } from './utils';
-
 const selectMapBlocksetPalette = (type) => (state) => state.blocksets[type].palette;
 const selectMapBlocksetBlocks = (type) => (state) => state.blocksets[type].blocks;
 const selectMapBlocksetTileset = (type) => (state) => state.blocksets[type].tiles;
@@ -12,15 +10,6 @@ const selectMapBlockData = () => (state) => state.map.block;
 const selectMapCollisionData = () => (state) => Uint8Array.from(state.map.collision);
 const selectMapHeightData = () => (state) => Uint8Array.from(state.map.height);
 const selectMapDimensions = () => (state) => state.map.dimensions;
-
-const makeSelectCameraPosition = () => (state) => state.editing.camera;
-const makeSelectViewportSize = () => (state) => state.editing.viewportSize;
-const makeSelectToolState = () => (state) => state.editing.toolState;
-const makeSelectActiveLayer = () => (state) => state.editing.activeLayer;
-const makeSelectActiveTool = () => (state) => getToolById(state.editing.activeTool);
-const makeSelectToolMeta = () => (state) => ({
-  zoomLevel: state.editing.camera.z,
-});
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -206,22 +195,16 @@ const makeSelectConnectedMaps = () => createArraySelector(
 );
 
 export {
-  makeSelectCameraPosition,
   makeSelectMapTileset,
-  makeSelectViewportSize,
   makeSelectConnectedMaps,
   makeSelectMainMapBlockset,
   makeSelectMainMapDimensions,
   makeSelectMainMapPalette,
   makeSelectMainMapTileset,
   makeSelectMainMapTilemaps,
-  makeSelectToolState,
   makeSelectMainMapEntities,
   makeSelectMainMapCollisionMap,
   makeSelectMainMapHeightMap,
   makeSelectMapPalette,
   makeSelectMapBlocks,
-  makeSelectActiveLayer,
-  makeSelectActiveTool,
-  makeSelectToolMeta,
 };

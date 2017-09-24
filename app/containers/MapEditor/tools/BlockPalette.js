@@ -13,7 +13,7 @@ import {
   makeSelectMainMapTileset,
   makeSelectMainMapTilemaps,
   makeSelectMainMapBlockset,
-} from '../selectors';
+} from '../selectors/mapSelectors';
 
 const BLOCK_SIZE = 16;
 const WIDTH_IN_BLOCKS = 8;

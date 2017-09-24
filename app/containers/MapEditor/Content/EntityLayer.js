@@ -3,7 +3,8 @@ import { createStructuredSelector } from 'reselect';
 
 import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
-import { makeSelectMainMapEntities, makeSelectActiveLayer } from '../selectors';
+import { makeSelectMainMapEntities } from '../selectors/mapSelectors';
+import { makeSelectActiveLayer } from '../selectors/editingSelectors';
 import { moveEntity, commitEntityMove } from '../actions';
 
 import Entity from './Entity';

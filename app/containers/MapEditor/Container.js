@@ -13,14 +13,15 @@ import ToolBox from './ToolBox';
 import './styles.scss';
 import type { Tool, Dispatch } from './tools/types';
 
+import { makeSelectMainMapDimensions } from './selectors/mapSelectors';
 import {
-  makeSelectMainMapDimensions,
   makeSelectCameraPosition,
   makeSelectToolState,
   makeSelectActiveLayer,
   makeSelectActiveTool,
   makeSelectToolMeta,
-} from './selectors';
+} from './selectors/editingSelectors';
+
 import {
   setCameraPosition,
   resizeViewport,
