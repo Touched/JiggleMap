@@ -1,26 +1,27 @@
 import React from 'react';
 import * as THREE from 'three';
-import { Renderer } from 'components/Renderer';
-import { calculateBoundingRectangle } from 'components/Renderer/utils';
+import { createStructuredSelector } from 'reselect';
 import { nativeImage } from 'electron';
 
-import Map from './Map';
+import { Renderer, HTML3D } from 'components/Renderer';
+import { calculateBoundingRectangle } from 'components/Renderer/utils';
+import connectTab from 'containers/EditorTabs/connectTab';
+
+import Map from '../Map';
+import {
+  makeSelectMainMapPalette,
+  makeSelectMainMapTileset,
+  makeSelectMainMapTilemaps,
+  makeSelectMainMapBlockset,
+} from '../selectors';
 
 const BLOCK_SIZE = 16;
 const WIDTH_IN_BLOCKS = 8;
 
-export default class BlockPicker extends React.Component {
+export class BlockPalette extends React.Component {
   static defaultProps = {
     zoom: 2,
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      src: '',
-    };
-  }
 
   getBlockImage(block: number) {
     const { blocks, zoom } = this.props;
@@ -83,20 +84,36 @@ export default class BlockPicker extends React.Component {
       preserveDrawingBuffer: true,
     });
 
+    const originalRender = this.renderer.render.bind(this.renderer);
+    let intialUpdateCompleted = false;
+
+    this.renderer.render = (...args) => {
+      originalRender(...args);
+
+      // Set the initial image
+      if (!intialUpdateCompleted) {
+        const block = this.props.value;
+        const image = this.getBlockImage(block);
+
+        if (image && this.props.onChange) {
+          this.props.onChange(block, image.toDataURL());
+          intialUpdateCompleted = true;
+        }
+      }
+    };
+
     return this.renderer;
   };
 
-  handleMouseDown = ({ x, y }) => {
+  handleClick = ({ nativeEvent }: MouseEvent) => {
+    const x = Math.floor(nativeEvent.offsetX / BLOCK_SIZE);
+    const y = Math.floor(nativeEvent.offsetY / BLOCK_SIZE);
     const block = (y * WIDTH_IN_BLOCKS) + x;
 
-    this.setState(() => ({
-      src: this.getBlockImage(block).toDataURL(),
-    }));
-
     if (this.props.onChange) {
-      this.props.onChange(block);
+      this.props.onChange(block, this.getBlockImage(block).toDataURL());
     }
-  }
+  };
 
   render() {
     const { tileset, palette, blocks, zoom } = this.props;
@@ -119,36 +136,47 @@ export default class BlockPicker extends React.Component {
       0,
     );
 
+    const style = {
+      width: containerWidth,
+      height: containerHeight,
+      cursor: 'pointer',
+    };
+
     return (
-      <div>
-        <img alt="Selected Block" src={this.state.src} width={64} height={64} style={{ imageRendering: 'pixelated' }} />
-        <Renderer
-          x={left}
-          y={top}
-          zoom={zoom}
-          width={containerWidth}
-          height={containerHeight}
-          zoomMin={0.25}
-          zoomMax={2}
-          customRenderer={this.customRenderer}
-          canvasRef={(ref) => { this.canvas = ref; }}
-        >
-          <Map
-            width={width}
-            height={height}
-            tileset={tileset}
-            tilemaps={blocks}
-            palette={palette}
+      <Renderer
+        x={left}
+        y={top}
+        zoom={zoom}
+        width={containerWidth}
+        height={containerHeight}
+        zoomMin={0.25}
+        zoomMax={2}
+        customRenderer={this.customRenderer}
+        canvasRef={(ref) => { this.canvas = ref; }}
+      >
+        <Map
+          width={width}
+          height={height}
+          tileset={tileset}
+          tilemaps={blocks}
+          palette={palette}
+        />
+        <HTML3D width={containerWidth} height={containerHeight}>
+          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+            onClick={this.handleClick}
+            style={style}
           />
-          {/* <GridArea
-              width={width}
-              height={height}
-              onMouseDown={this.handleMouseDown}
-              bounded
-              /> */}
-        </Renderer>
-      </div>
+        </HTML3D>
+      </Renderer>
     );
   }
 }
 
+const mapTabStateToProps = createStructuredSelector({
+  palette: makeSelectMainMapPalette(),
+  tileset: makeSelectMainMapTileset(),
+  tilemaps: makeSelectMainMapTilemaps(),
+  blocks: makeSelectMainMapBlockset(),
+});
+
+export default connectTab(null, mapTabStateToProps, null, null)(BlockPalette);

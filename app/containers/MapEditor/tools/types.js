@@ -25,13 +25,15 @@ export type Meta = {
   zoomLevel: number;
 };
 
+export type ReactMouseEvent = { nativeEvent: MouseEvent } & SyntheticMouseEvent;
+
 export type Tool<State> = {
   id: string;
   name: Message;
   description: Message;
   layers: Array<Layer>;
   icon: React.Element<*>;
-  component: React.Component<*, *, *>;
+  component: React.ComponentType<any>;
   reducer: (state: State, action: Action) => State;
   getCursorForObjectType: (object: Object) => string;
   onMouseDown: (object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: Event) => void;
