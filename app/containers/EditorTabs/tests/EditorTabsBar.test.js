@@ -65,8 +65,10 @@ describe('<EditorTabsBar />', () => {
     it('sets the dragging state on mouse down', () => {
       const wrapper = shallow(<EditorTabsBar tabs={tabs} />);
       const tabWrapper = wrapper.find(EditorTab).first();
+
       tabWrapper.simulate('mousedown', {
         currentTarget: {
+          __proto__: HTMLDivElement.prototype,
           getBoundingClientRect: () => ({
             left: 0,
             width: 200,

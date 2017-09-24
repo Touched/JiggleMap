@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import React3 from 'react-three-renderer';
-import { CSS3DRenderer } from 'three-renderer-css3d';
 import * as THREE from 'three';
 
+import { CSS3DRenderer } from './css3dRenderer';
 import ContainerProvider from './ContainerProvider';
 import { FOV, FOV_RADIANS } from './constants';
 

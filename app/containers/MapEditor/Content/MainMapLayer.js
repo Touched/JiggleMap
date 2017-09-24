@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
-import Map from '../Map';
+import Map from './Map';
 
 import {
   makeSelectMainMapDimensions,

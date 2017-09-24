@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
-import DraggableMap from '../DraggableMap';
+import ConnectedMap from './ConnectedMap';
 
 import {
   makeSelectConnectedMaps,
@@ -40,7 +40,7 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
     return (
       <Group>
         {connections.map(({ dimensions, tilemaps, tileset, palette, position, heightMap, collisionMap }, i) => (
-          <DraggableMap
+          <ConnectedMap
             key={i} // eslint-disable-line react/no-array-index-key
             x={position.x}
             y={position.y}

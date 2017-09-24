@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Group } from 'components/Renderer';
 import Map from './Map';
+import ToolHitBox from './ToolHitBox';
 
 type Props = {
   width: number;
@@ -17,7 +18,7 @@ type Props = {
   darken: boolean;
 };
 
-export default function DraggableMap(props: Props) {
+export default function ConnectedMap(props: Props) {
   const {
     x,
     y,
@@ -47,6 +48,7 @@ export default function DraggableMap(props: Props) {
         heightMap={heightMap}
         darken={darken}
       />
+      <ToolHitBox objectType="connected-map" width={width * 16} height={height * 16} />
     </Group>
   );
 }

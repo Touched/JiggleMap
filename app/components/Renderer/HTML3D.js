@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { CSS3DObject } from 'three-renderer-css3d';
 import * as THREE from 'three';
 
+import { CSS3DObject } from './css3dRenderer';
 import { containerShape } from './ContainerProvider';
 import { calculateBoundingRectangle } from './utils';
 

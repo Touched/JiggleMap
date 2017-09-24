@@ -159,8 +159,20 @@ describe('mapDataReducer', () => {
   });
 
   describe('EDIT_MAP', () => {
-    it('draws a line', () => {
-      const action = editMap({ currentBlock: 1 }, { x: 0, y: 1 }, { x: 2, y: 1 }, {});
+    it('applies a patch', () => {
+      const action = editMap([{
+        x: 0,
+        y: 1,
+        block: 1,
+      }, {
+        x: 1,
+        y: 1,
+        block: 1,
+      }, {
+        x: 2,
+        y: 1,
+        block: 1,
+      }]);
 
       const newState = mapDataReducer({
         canonicalMap: {

@@ -7,7 +7,7 @@ import { Renderer, HTML3D } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 import connectTab from 'containers/EditorTabs/connectTab';
 
-import Map from '../Map';
+import Map from '../Content/Map';
 import {
   makeSelectMainMapPalette,
   makeSelectMainMapTileset,

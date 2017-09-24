@@ -53,14 +53,15 @@ Object {
 
 exports[`mapEditingReducer LOAD_MAIN_MAP recenters the map 1`] = `
 Object {
-  "x": 0.64,
-  "y": -0.5333333333333332,
+  "x": 192,
+  "y": -160,
 }
 `;
 
 exports[`mapEditingReducer returns the initial state 1`] = `
 Object {
   "activeLayer": "map",
+  "activeTool": "line-tool",
   "camera": Object {
     "x": 0,
     "y": 0,
@@ -69,7 +70,10 @@ Object {
   "linked": false,
   "loading": false,
   "toolState": Object {
+    "clientOffset": null,
     "currentBlock": 0,
+    "currentPosition": null,
+    "startingPosition": null,
   },
   "viewportSize": Object {
     "height": 0,

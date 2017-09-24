@@ -1,11 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { DraggableArea } from 'components/Renderer';
-import DraggableMap from '../DraggableMap';
+import ConnectedMap from '../ConnectedMap';
+import ToolHitBox from '../ToolHitBox';
 import Map from '../Map';
 
-describe('<DraggableMap />', () => {
+describe('<ConnectedMap />', () => {
   it('renders a <Map />', () => {
     const tilemap = new Uint8Array();
     const tilemaps = [tilemap, tilemap, tilemap];
@@ -15,7 +15,7 @@ describe('<DraggableMap />', () => {
     const collisionMap = new Uint8Array();
 
     const wrapper = shallow(
-      <DraggableMap
+      <ConnectedMap
         tilemaps={tilemaps}
         tileset={tileset}
         palette={palette}
@@ -46,12 +46,12 @@ describe('<DraggableMap />', () => {
     });
   });
 
-  it('renders a DraggableArea', () => {
+  it('renders an HTML element', () => {
     const onDrag = () => null;
     const onDragEnd = () => null;
 
     const wrapper = shallow(
-      <DraggableMap
+      <ConnectedMap
         onDrag={onDrag}
         onDragEnd={onDragEnd}
         x={1}
@@ -62,13 +62,11 @@ describe('<DraggableMap />', () => {
       />
     );
 
-    expect(wrapper.find(DraggableArea).node).toBeDefined();
-    expect(wrapper.find(DraggableArea).props()).toMatchObject({
-      x: 1,
-      y: 2,
-      z: 3,
-      width: 10,
-      height: 15,
+    expect(wrapper.find(ToolHitBox).node).toBeDefined();
+    expect(wrapper.find(ToolHitBox).props()).toMatchObject({
+      width: 160,
+      height: 240,
+      objectType: 'connected-map',
     });
   });
 });
