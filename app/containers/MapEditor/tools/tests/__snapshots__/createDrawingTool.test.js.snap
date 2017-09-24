@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createDrawingTool reducer sets the intial state 1`] = `
+Object {
+  "drawing": Object {
+    "clientOffset": null,
+    "currentBlock": 0,
+    "currentPosition": null,
+    "startingPosition": null,
+  },
+  "tool": Object {
+    "foo": "bar",
+  },
+}
+`;
+
+exports[`createDrawingTool reducer sets the intial state 2`] = `
+Object {
+  "drawing": Object {
+    "clientOffset": null,
+    "currentBlock": 0,
+    "currentPosition": null,
+    "startingPosition": null,
+  },
+  "tool": Object {},
+}
+`;
