@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 
 export type Action = {
   type: string;
@@ -25,7 +25,7 @@ export type Meta = {
   zoomLevel: number;
 };
 
-export type ReactMouseEvent = { nativeEvent: MouseEvent } & SyntheticMouseEvent;
+export type ReactMouseEvent = { nativeEvent: MouseEvent } & SyntheticMouseEvent<*>;
 
 export type Tool<State> = {
   id: string;
@@ -35,8 +35,8 @@ export type Tool<State> = {
   icon: React.Element<*>;
   component: React.ComponentType<any>;
   reducer: (state: State, action: Action) => State;
-  getCursorForObjectType: (object: Object) => string;
-  onMouseDown: (object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: Event) => void;
-  onMouseMove: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: Event) => void;
-  onMouseUp: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: Event) => void;
+  getCursorForObject: (object: Object) => string;
+  onMouseDown: (object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
+  onMouseMove: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
+  onMouseUp: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
 };

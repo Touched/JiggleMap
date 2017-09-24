@@ -1,13 +1,13 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
 import CloseIcon from 'mdi-react/CloseIcon';
 import AsteriskIcon from 'mdi-react/AsteriskIcon';
 
 import nop from 'utils/nop';
 
-export default class EditorTab extends React.PureComponent {
+export default class EditorTab extends React.PureComponent<*, *> {
   static defaultProps = {
     onClose: nop,
     onSelect: nop,
@@ -20,7 +20,7 @@ export default class EditorTab extends React.PureComponent {
 
   props: {
     title: string,
-    tabRef: (HTMLElement) => void,
+    tabRef: (React.ElementRef<*> | null) => void,
     onClose: (Event) => void,
     onSelect: (Event) => void,
     onMouseDown: (MouseEvent) => void,

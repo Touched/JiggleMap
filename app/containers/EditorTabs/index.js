@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { PropTypes } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import warning from 'warning';
@@ -9,13 +9,13 @@ import NewTab from 'components/NewTab';
 import WelcomeTab from 'components/WelcomeTab';
 import { makeSelectEditorTabsActive } from './selectors';
 
-export class EditorTabs extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class EditorTabs extends React.Component<*, *> { // eslint-disable-line react/prefer-stateless-function
   static defaultProps = {
     activeTab: null,
   };
 
   static childContextTypes = {
-    tabId: PropTypes.string,
+    tabId: React.PropTypes.string,
   };
 
   getChildContext() {
@@ -27,7 +27,7 @@ export class EditorTabs extends React.Component { // eslint-disable-line react/p
   }
 
   props: {
-    routes: { [string]: Class<React$Component<*, *, *>> },
+    routes: { [string]: React.ComponentType<*> },
     activeTab: ?{
       id: string,
       kind: string,

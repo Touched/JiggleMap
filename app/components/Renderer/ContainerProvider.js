@@ -10,7 +10,7 @@ export const containerShape = PropTypes.shape({
 // This is a helper to prevent a bug where context was not being passed down
 // through the React3 component. This simply passes the props down as context
 // to the child components.
-export default class ContainerProvider extends React.Component {
+export default class ContainerProvider extends React.Component<*, *> {
   static propTypes = {
     container: containerShape.isRequired,
     children: PropTypes.node.isRequired,

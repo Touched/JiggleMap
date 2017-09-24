@@ -22,6 +22,29 @@ type State = {
   currentBlock: number;
 };
 
+type DrawStartAction = {
+  type: typeof DRAW_START;
+  clientOffset: Position;
+  position: Position;
+  object: Object;
+};
+
+type DrawAction = {
+  type: typeof DRAW;
+  position: Position;
+};
+
+type DrawEndAction = {
+  type: typeof DRAW_END;
+};
+
+type SetBlockAction = {
+  type: typeof SET_BLOCK;
+  block: number;
+};
+
+type Action = DrawStartAction | DrawAction | DrawEndAction | SetBlockAction;
+
 const initialState = {
   startingPosition: null,
   currentPosition: null,
@@ -125,7 +148,7 @@ export default {
       this.onDrawEnd(state, tabDispatch);
     }
   },
-  reducer(state: State = initialState, action: Dispatch) {
+  reducer(state: State = initialState, action: Action) {
     switch (action.type) {
       case DRAW_START:
         return {

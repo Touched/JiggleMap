@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { CSS3DObject } from 'three-renderer-css3d';
 import * as THREE from 'three';
@@ -8,7 +8,7 @@ import * as THREE from 'three';
 import { containerShape } from './ContainerProvider';
 import { calculateBoundingRectangle } from './utils';
 
-export default class HTML3D extends React.PureComponent<*, *, *> {
+export default class HTML3D extends React.PureComponent<*, *> {
   static contextTypes = {
     container: containerShape,
   };
@@ -39,7 +39,7 @@ export default class HTML3D extends React.PureComponent<*, *, *> {
     x: number,
     y: number,
     z: number,
-    children: React.Children,
+    children: React.Element<*>,
   };
   group: THREE.Group;
   element: HTMLElement;

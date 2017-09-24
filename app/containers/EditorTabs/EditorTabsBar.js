@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import invariant from 'invariant';
 import { connect } from 'react-redux';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { createStructuredSelector } from 'reselect';
@@ -41,7 +42,7 @@ type Tab = {
   dirty: bool,
 };
 
-export class EditorTabsBar extends React.PureComponent {
+export class EditorTabsBar extends React.PureComponent<*, *> {
   static defaultProps = {
     onCloseTab: null,
     onNewTab: null,
@@ -86,7 +87,7 @@ export class EditorTabsBar extends React.PureComponent {
   }
 
   tabRef: HTMLElement;
-  ref: HTMLElement;
+  ref: ?HTMLElement;
 
   handleClose = (event: Event, id: string) => {
     this.props.onCloseTab(id);
@@ -102,6 +103,8 @@ export class EditorTabsBar extends React.PureComponent {
 
   handleDragStart = (event: MouseEvent & { currentTarget: HTMLElement }, id: string) => {
     const { currentTarget, clientX } = event;
+    invariant(currentTarget instanceof HTMLElement, 'Event target was not an HTML element');
+
     const rect = currentTarget.getBoundingClientRect();
     const order = this.props.tabs.map(({ id: tabId }) => tabId);
 
@@ -129,6 +132,8 @@ export class EditorTabsBar extends React.PureComponent {
     const { dragging } = this.state;
 
     if (dragging) {
+      invariant(this.ref, 'The tab bar ref was not properly set');
+
       const { clientX } = event;
       const { left, right } = this.ref.getBoundingClientRect();
 

@@ -1,10 +1,7 @@
 /* @flow */
 
 import lineTool from './lineTool';
-import type { Tool } from './types';
 
-const allTools: { [string]: Tool<*> } = {
+export default [
   lineTool,
-};
-
-export default allTools;
+];

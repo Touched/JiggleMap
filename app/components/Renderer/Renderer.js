@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 import React3 from 'react-three-renderer';
 import { CSS3DRenderer } from 'three-renderer-css3d';
 import * as THREE from 'three';
@@ -17,7 +17,7 @@ type Props = {
   zoomMin: number,
   zoomMax: number,
   customRenderer: Function,
-  children: React$Component<*, *, *>,
+  children: React.Node,
   cameraRef: (THREE.Camera) => void,
   canvasRef: (HTMLCanvasElement) => void,
   onMouseDown: (Event) => void, // eslint-disable-line react/no-unused-prop-types
@@ -26,16 +26,7 @@ type Props = {
   className: string,
 };
 
-type DefaultProps = {
-  onMouseDown: ?(Event) => void,
-  onMouseMove: ?(Event) => void,
-  onMouseUp: ?(Event) => void,
-  cameraRef: ?(THREE.Camera) => void,
-  canvasRef: ?(HTMLCanvasElement) => void,
-  customRenderer: ?Function,
-};
-
-export default class Renderer extends React.PureComponent<DefaultProps, Props, *> {
+export default class Renderer extends React.PureComponent<Props, *> {
   static defaultProps = {
     onMouseDown: null,
     onMouseMove: null,
@@ -67,7 +58,10 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, *
       this.cssRenderer.render(scene, camera);
     };
 
-    this.cssRendererContainer.appendChild(this.cssRenderer.domElement);
+    if (this.cssRendererContainer) {
+      this.cssRendererContainer.appendChild(this.cssRenderer.domElement);
+    }
+
     this.cssRenderer.domElement.style.position = 'absolute';
     this.cssRenderer.domElement.style.top = '0';
     this.cssRenderer.setSize(this.props.width, this.props.height);
@@ -84,7 +78,7 @@ export default class Renderer extends React.PureComponent<DefaultProps, Props, *
   raycaster: THREE.Raycaster;
   scene: THREE.Scene;
   camera: THREE.Camera;
-  cssRendererContainer: HTMLElement;
+  cssRendererContainer: ?HTMLElement;
   cssRenderer: CSS3DRenderer;
 
   render() {

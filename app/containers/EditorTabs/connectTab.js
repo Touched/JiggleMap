@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { PropTypes } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { makeSelectEditorTabsTabStateDomain } from './selectors';
@@ -89,16 +89,16 @@ export default function connectTab(
 
   const connectComponent = connect(wrappedMapStateToProps, wrappedMapDispatchToProps, mergeProps);
 
-  return (WrappedComponent: Class<React$Component<*, *, *>>) => {
+  return (WrappedComponent: React.ComponentType<*>) => {
     const wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
     const ConnectedComponent = connectComponent(WrappedComponent);
 
-    class ConnectTab extends React.Component { // eslint-disable-line react/prefer-stateless-function
+    class ConnectTab extends React.Component<*, *> { // eslint-disable-line react/prefer-stateless-function
       static displayName = `ConnectTab(${wrappedComponentName})`;
 
       static contextTypes = {
-        tabId: PropTypes.string,
+        tabId: React.PropTypes.string,
       };
 
       render() {
