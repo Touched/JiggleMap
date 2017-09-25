@@ -73,7 +73,7 @@ const initialEditingState = {
     z: 1,
   },
   activeLayer: 'map',
-  activeTool: 'auto-tile-tool',
+  activeTool: 'line-tool',
 };
 
 function loadMapData(data) {

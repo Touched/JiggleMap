@@ -1,9 +1,9 @@
 /* @flow */
 
 import lineTool from './lineTool';
-import autoTileTool from './autoTileTool';
+import autoBlockTool from './autoBlockTool';
 
 export default [
   lineTool,
-  autoTileTool,
+  autoBlockTool,
 ];

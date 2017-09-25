@@ -61,7 +61,7 @@ Object {
 exports[`mapEditingReducer returns the initial state 1`] = `
 Object {
   "activeLayer": "map",
-  "activeTool": "auto-tile-tool",
+  "activeTool": "line-tool",
   "camera": Object {
     "x": 0,
     "y": 0,
@@ -70,14 +70,10 @@ Object {
   "linked": false,
   "loading": false,
   "toolState": Object {
-    "drawing": Object {
-      "clientOffset": null,
-      "currentBlock": 0,
-      "currentPosition": null,
-      "object": null,
-      "startingPosition": null,
-    },
-    "tool": Object {},
+    "clientOffset": null,
+    "currentBlock": 0,
+    "currentPosition": null,
+    "startingPosition": null,
   },
   "viewportSize": Object {
     "height": 0,
