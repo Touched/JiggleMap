@@ -36,10 +36,10 @@ export default function createBasicDrawingTool(definition: BasicDrawingTool): To
     getCursorForObject() {
       return this.cursor;
     },
-    onDrawStart(object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch) {
-      this.onDraw(position, state, tabDispatch);
+    onDrawStart(object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
+      this.onDraw(position, state, tabDispatch, mouseEvent);
     },
-    onDraw(position: Position, state: CombinedState<State>, tabDispatch: Dispatch) {
+    onDraw(position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
       invariant(state.drawing.object, 'onDrawStart did not set the object');
 
       const patch = this.buildPatch(
@@ -47,6 +47,7 @@ export default function createBasicDrawingTool(definition: BasicDrawingTool): To
         state.drawing.startingPosition,
         position,
         state.tool.previousPatch,
+        mouseEvent,
       );
 
       tabDispatch(editMap(patch));

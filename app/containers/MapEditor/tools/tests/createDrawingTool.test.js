@@ -147,7 +147,7 @@ describe('createDrawingTool', () => {
 
     it('calls onDrawStart when onMouseDown is called with a main-map object', () => {
       drawingTool.onMouseDown(object, state, meta, dispatch, event);
-      expect(drawingTool.onDrawStart).toHaveBeenCalledWith(position, updatedState, dispatch);
+      expect(drawingTool.onDrawStart).toHaveBeenCalledWith(position, updatedState, dispatch, event);
     });
 
     it('dispatches a DRAW_START action', () => {
@@ -200,7 +200,7 @@ describe('createDrawingTool', () => {
       expect(drawingTool.onDraw).toHaveBeenCalledWith({
         x: 7,
         y: 1,
-      }, state, dispatch);
+      }, state, dispatch, event);
     });
 
     it('does not call onDraw if the cursor has not moved to a different grid cell', () => {
@@ -228,6 +228,7 @@ describe('createDrawingTool', () => {
 
   describe('draw end', () => {
     const position = {};
+    const event = {};
 
     const state = {
       drawing: {
@@ -241,8 +242,8 @@ describe('createDrawingTool', () => {
     });
 
     it('calls onDrawEnd if there was a onDrawStart', () => {
-      drawingTool.onMouseUp(state, meta, dispatch);
-      expect(drawingTool.onDrawEnd).toHaveBeenCalledWith(state, dispatch);
+      drawingTool.onMouseUp(state, meta, dispatch, event);
+      expect(drawingTool.onDrawEnd).toHaveBeenCalledWith(state, dispatch, event);
     });
 
     it('dispatches a DRAW_END action', () => {

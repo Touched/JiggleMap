@@ -21,6 +21,7 @@ describe('createBasicDrawingTool', () => {
   it('calls onDraw on draw start (starts drawing immediately when the mouse button is pressed)', () => {
     const dispatch = jest.fn();
     const object = {};
+    const event = {};
     const state = {
       drawing: {
         startingPosition: { x: 5, y: 4 },
@@ -34,9 +35,9 @@ describe('createBasicDrawingTool', () => {
 
     jest.spyOn(tool, 'onDraw');
 
-    tool.onDrawStart(object, position, state, dispatch);
+    tool.onDrawStart(object, position, state, dispatch, event);
 
-    expect(tool.onDraw).toHaveBeenCalledWith(position, state, dispatch);
+    expect(tool.onDraw).toHaveBeenCalledWith(position, state, dispatch, event);
   });
 
   it('calls EDIT_MAP with the result of calling buildPatch on draw', () => {
@@ -45,6 +46,7 @@ describe('createBasicDrawingTool', () => {
     const dispatch = jest.fn();
     const object = {};
     const previousPatch = [{ x: 5, y: 10, block: 7 }];
+    const event = {};
     const state = {
       drawing: {
         startingPosition: start,
@@ -55,9 +57,9 @@ describe('createBasicDrawingTool', () => {
       },
     };
 
-    tool.onDraw(end, state, dispatch);
+    tool.onDraw(end, state, dispatch, event);
 
-    expect(tool.buildPatch).toHaveBeenLastCalledWith(object, start, end, previousPatch);
+    expect(tool.buildPatch).toHaveBeenLastCalledWith(object, start, end, previousPatch, event);
     expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({
       type: EDIT_MAP,
       patch: [{

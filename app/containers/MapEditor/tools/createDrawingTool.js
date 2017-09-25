@@ -63,9 +63,9 @@ export type DrawingTool<State> = {
   component: React.ComponentType<any>;
   reducer?: (state: CombinedState<State>, action: Action) => CombinedState<State>;
   getCursorForObject: (object: Object) => string;
-  onDrawStart: (object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch) => void;
-  onDraw: (position: Position, state: CombinedState<State>, tabDispatch: Dispatch) => void;
-  onDrawEnd: (state: CombinedState<State>, tabDispatch: Dispatch) => void;
+  onDrawStart: (object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
+  onDraw: (position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
+  onDrawEnd: (state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
 };
 
 function toGridCoordinates(x, y) {
@@ -135,7 +135,7 @@ export default function createDrawingTool<T: Object>(definition: DrawingTool<T>)
           },
         };
 
-        this.onDrawStart(position, updatedState, tabDispatch);
+        this.onDrawStart(position, updatedState, tabDispatch, mouseEvent);
       }
     },
     onMouseMove(state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
@@ -155,17 +155,17 @@ export default function createDrawingTool<T: Object>(definition: DrawingTool<T>)
             position,
           });
 
-          this.onDraw(position, state, tabDispatch);
+          this.onDraw(position, state, tabDispatch, mouseEvent);
         }
       }
     },
-    onMouseUp(state: State, meta: Meta, tabDispatch: Dispatch) {
+    onMouseUp(state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
       if (state.drawing.startingPosition) {
         tabDispatch({
           type: DRAW_END,
         });
 
-        this.onDrawEnd(state, tabDispatch);
+        this.onDrawEnd(state, tabDispatch, mouseEvent);
       }
     },
     reducer: combinedReducer,
