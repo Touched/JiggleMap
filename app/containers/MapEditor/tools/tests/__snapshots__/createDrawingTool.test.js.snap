@@ -6,6 +6,7 @@ Object {
     "clientOffset": null,
     "currentBlock": 0,
     "currentPosition": null,
+    "object": null,
     "startingPosition": null,
   },
   "tool": Object {
@@ -20,6 +21,7 @@ Object {
     "clientOffset": null,
     "currentBlock": 0,
     "currentPosition": null,
+    "object": null,
     "startingPosition": null,
   },
   "tool": Object {},

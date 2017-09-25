@@ -10,6 +10,7 @@ const selectMapBlockData = () => (state) => state.map.block;
 const selectMapCollisionData = () => (state) => Uint8Array.from(state.map.collision);
 const selectMapHeightData = () => (state) => Uint8Array.from(state.map.height);
 const selectMapDimensions = () => (state) => state.map.dimensions;
+const selectMapObject = () => (state) => state.map;
 
 /**
  * Concatenate the palettes of the primary and secondary blocksets
@@ -177,6 +178,10 @@ const makeSelectMainMapHeightMap = () => createSelector(
   makeSelectMainMap(),
   selectMapHeightData(),
 );
+const makeSelectMainMapObject = () => createSelector(
+  makeSelectMainMap(),
+  selectMapObject(),
+);
 
 const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
   tilemaps: makeSelectMapTilemaps(),
@@ -205,6 +210,7 @@ export {
   makeSelectMainMapEntities,
   makeSelectMainMapCollisionMap,
   makeSelectMainMapHeightMap,
+  makeSelectMainMapObject,
   makeSelectMapPalette,
   makeSelectMapBlocks,
 };

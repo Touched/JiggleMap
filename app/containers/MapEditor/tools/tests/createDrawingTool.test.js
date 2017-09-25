@@ -150,11 +150,6 @@ describe('createDrawingTool', () => {
       expect(drawingTool.onDrawStart).toHaveBeenCalledWith(position, updatedState, dispatch);
     });
 
-    it('calls onDraw when onMouseDown is called with a main-map object', () => {
-      drawingTool.onMouseDown(object, state, meta, dispatch, event);
-      expect(drawingTool.onDraw).toHaveBeenCalledWith(position, updatedState, dispatch);
-    });
-
     it('dispatches a DRAW_START action', () => {
       drawingTool.onMouseDown(object, updatedState, meta, dispatch, event);
       expect(dispatch).toHaveBeenLastCalledWith({

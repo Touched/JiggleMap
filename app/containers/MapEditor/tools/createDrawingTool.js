@@ -15,44 +15,46 @@ export const initialState = {
   currentPosition: null,
   clientOffset: null,
   currentBlock: 0,
+  object: null,
 };
 
-type Position = {
+export type Position = {
   x: number;
   y: number;
 };
 
-type DrawingToolState = {
+export type DrawingToolState = {
   startingPosition: ?Position;
   currentPosition: ?Position;
   clientOffset: ?Position;
   currentBlock: number;
+  object: ?Object;
 };
 
-type DrawStartAction = {
+export type DrawStartAction = {
   type: typeof DRAW_START;
   clientOffset: Position;
   position: Position;
   object: Object;
 };
 
-type DrawAction = {
+export type DrawAction = {
   type: typeof DRAW;
   position: Position;
 };
 
-type DrawEndAction = {
+export type DrawEndAction = {
   type: typeof DRAW_END;
 };
 
-type Action = DrawStartAction | DrawAction | DrawEndAction;
+export type Action = DrawStartAction | DrawAction | DrawEndAction;
 
-type CombinedState<State> = {
+export type CombinedState<State> = {
   drawing: DrawingToolState;
   tool: State;
 };
 
-type DrawingTool<State> = {
+export type DrawingTool<State> = {
   id: string;
   name: Message;
   description: Message;
@@ -61,9 +63,9 @@ type DrawingTool<State> = {
   component: React.ComponentType<any>;
   reducer?: (state: CombinedState<State>, action: Action) => CombinedState<State>;
   getCursorForObject: (object: Object) => string;
-  onDrawStart: (object: Object, position: Position, state: State, tabDispatch: Dispatch) => void;
-  onDraw: (position: Position, state: State, tabDispatch: Dispatch) => void;
-  onDrawEnd: (state: State, tabDispatch: Dispatch) => void;
+  onDrawStart: (object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch) => void;
+  onDraw: (position: Position, state: CombinedState<State>, tabDispatch: Dispatch) => void;
+  onDrawEnd: (state: CombinedState<State>, tabDispatch: Dispatch) => void;
 };
 
 function toGridCoordinates(x, y) {
@@ -134,7 +136,6 @@ export default function createDrawingTool<T: Object>(definition: DrawingTool<T>)
         };
 
         this.onDrawStart(position, updatedState, tabDispatch);
-        this.onDraw(position, updatedState, tabDispatch);
       }
     },
     onMouseMove(state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {

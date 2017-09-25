@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import ConnectedMap from '../ConnectedMap';
-import ToolHitBox from '../ToolHitBox';
 import Map from '../Map';
 
 describe('<ConnectedMap />', () => {
@@ -43,30 +42,6 @@ describe('<ConnectedMap />', () => {
       tileset,
       tilemaps,
       palette,
-    });
-  });
-
-  it('renders an HTML element', () => {
-    const onDrag = () => null;
-    const onDragEnd = () => null;
-
-    const wrapper = shallow(
-      <ConnectedMap
-        onDrag={onDrag}
-        onDragEnd={onDragEnd}
-        x={1}
-        y={2}
-        z={3}
-        width={10}
-        height={15}
-      />
-    );
-
-    expect(wrapper.find(ToolHitBox).node).toBeDefined();
-    expect(wrapper.find(ToolHitBox).props()).toMatchObject({
-      width: 160,
-      height: 240,
-      objectType: 'connected-map',
     });
   });
 });

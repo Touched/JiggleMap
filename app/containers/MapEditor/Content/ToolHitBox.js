@@ -19,13 +19,15 @@ export class ToolHitBox extends React.PureComponent {
     activeTool: Tool<Object>;
     toolState: Object;
     toolMeta: Object;
+    object: Object,
   };
 
   render() {
-    const { width, height, objectType } = this.props;
+    const { width, height, objectType, object: objectData } = this.props;
 
     const object = {
       type: objectType,
+      ...objectData,
     };
 
     const style = {

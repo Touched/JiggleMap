@@ -13,6 +13,7 @@ import {
   makeSelectMainMapTilemaps,
   makeSelectMainMapCollisionMap,
   makeSelectMainMapHeightMap,
+  makeSelectMainMapObject,
 } from '../selectors/mapSelectors';
 import { makeSelectActiveLayer } from '../selectors/editingSelectors';
 import { editMap, commitMapEdit } from '../actions';
@@ -27,10 +28,11 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
     collisionMap: Uint8Array,
     dimensions: [number, number],
     activeLayer: string,
+    object: Object,
   }
 
   render() {
-    const { activeLayer, dimensions: [width, height] } = this.props;
+    const { activeLayer, dimensions: [width, height], object } = this.props;
 
     return (
       <Group>
@@ -46,7 +48,7 @@ export class MainMapLayer extends React.PureComponent { // eslint-disable-line r
           heightMap={activeLayer === 'height' && this.props.heightMap}
           collisionMap={activeLayer === 'collision' && this.props.collisionMap}
         />
-        <ToolHitBox objectType="main-map" width={width * 16} height={height * 16} />
+        <ToolHitBox objectType="main-map" width={width * 16} height={height * 16} object={object} />
       </Group>
     );
   }
@@ -60,6 +62,7 @@ const mapTabStateToProps = createStructuredSelector({
   collisionMap: makeSelectMainMapCollisionMap(),
   heightMap: makeSelectMainMapHeightMap(),
   activeLayer: makeSelectActiveLayer(),
+  object: makeSelectMainMapObject(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Group } from 'components/Renderer';
 import Map from './Map';
-import ToolHitBox from './ToolHitBox';
 
 type Props = {
   width: number;
@@ -48,7 +47,6 @@ export default function ConnectedMap(props: Props) {
         heightMap={heightMap}
         darken={darken}
       />
-      <ToolHitBox objectType="connected-map" width={width * 16} height={height * 16} />
     </Group>
   );
 }
