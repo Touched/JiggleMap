@@ -27,8 +27,19 @@ export type Meta = {
 
 export type ReactMouseEvent = { nativeEvent: MouseEvent } & SyntheticMouseEvent<*>;
 
-export type Tool<State> = {
+export type ActionTool = {|
+ id: string;
+ type: 'action';
+ name: Message;
+ description: Message;
+ layers: Array<Layer>;
+ icon: React.Element<*>;
+ action: () => Action;
+|};
+
+export type MouseTool<State> = {|
   id: string;
+  type: 'mouse';
   name: Message;
   description: Message;
   layers: Array<Layer>;
@@ -39,4 +50,6 @@ export type Tool<State> = {
   onMouseDown: (object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
   onMouseMove: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
   onMouseUp: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
-};
+|};
+
+export type Tool<State> = ActionTool | MouseTool<State>;

@@ -73,6 +73,7 @@ function setBlock(block) {
 
 export default {
   id: 'line-tool',
+  type: 'mouse',
   name: messages.lineToolName,
   description: messages.lineToolDescription,
   layers: ['map'],

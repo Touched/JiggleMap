@@ -4,7 +4,7 @@ import * as React from 'react';
 import invariant from 'invariant';
 import createDrawingTool from './createDrawingTool';
 import { commitMapEdit, editMap } from '../actions';
-import type { Dispatch, Layer, Message, Object, ReactMouseEvent, Tool } from './types';
+import type { Dispatch, Layer, Message, Object, ReactMouseEvent, MouseTool } from './types';
 import type { Position, CombinedState } from './createDrawingTool';
 
 type Patch = {
@@ -30,7 +30,7 @@ type BasicDrawingTool = {
   buildPatch: (object: Object, start: Position, end: Position, previousPatch: Array<Patch>) => Array<Patch>;
 };
 
-export default function createBasicDrawingTool(definition: BasicDrawingTool): Tool<CombinedState<State>> {
+export default function createBasicDrawingTool(definition: BasicDrawingTool): MouseTool<CombinedState<State>> {
   return createDrawingTool({
     ...definition,
     getCursorForObject() {

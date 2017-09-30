@@ -1,49 +1,38 @@
 import React from 'react';
-import { ActionCreators } from 'redux-undo';
 import classNames from 'classnames';
-import VectorLineIcon from 'mdi-react/VectorLineIcon';
-import VectorRectangleIcon from 'mdi-react/VectorRectangleIcon';
-import UndoIcon from 'mdi-react/UndoIcon';
-import RedoIcon from 'mdi-react/RedoIcon';
+
+import allTools from './tools';
+import { setActiveTool } from './actions';
 
 type Props = {
   tabDispatch: ({ type: string }) => void,
   selectedTool: string
 };
 
-const TOOLS = [{
-  id: 'line',
-  type: 'toggle',
-  icon: <VectorLineIcon />,
-}, {
-  id: 'rectangle',
-  type: 'toggle',
-  icon: <VectorRectangleIcon />,
-}, {
-  type: 'separator',
-}, {
-  id: 'undo',
-  type: 'click',
-  icon: <UndoIcon />,
-  action: ActionCreators.undo,
-}, {
-  id: 'redo',
-  type: 'click',
-  icon: <RedoIcon />,
-  action: ActionCreators.redo,
-}];
+function handleToolClick(tool, tabDispatch) {
+  switch (tool.type) {
+    case 'action':
+      tabDispatch(tool.action());
+      break;
+    case 'mouse':
+      tabDispatch(setActiveTool(tool.id));
+      break;
+    default:
+      break;
+  }
+}
 
 export default function ToolBox(props: Props) {
   const { selectedTool, tabDispatch } = props;
 
   return (
     <div className="MapEditor__OverlayBox ToolBox">
-      {TOOLS.map((layer) => layer.type === 'separator' ? <div className="ToolBox__separator" /> : (
+      {allTools.map((tool) => tool.type === 'separator' ? <div className="ToolBox__separator" /> : (
         <button
-          className={classNames({ active: selectedTool === layer.id })}
-          onClick={() => layer.action && tabDispatch(layer.action())}
+          className={classNames({ active: selectedTool === tool.id })}
+          onClick={() => handleToolClick(tool, tabDispatch)}
         >
-          {layer.icon}
+          {tool.icon}
         </button>
       ))}
     </div>

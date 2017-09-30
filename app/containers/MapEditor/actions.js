@@ -19,6 +19,7 @@ import {
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
   SET_ACTIVE_LAYER,
+  SET_ACTIVE_TOOL,
 } from './constants';
 
 export function loadMapResource(resource) {
@@ -125,5 +126,12 @@ export function setActiveLayer(layer) {
   return {
     type: SET_ACTIVE_LAYER,
     layer,
+  };
+}
+
+export function setActiveTool(tool) {
+  return {
+    type: SET_ACTIVE_TOOL,
+    tool,
   };
 }

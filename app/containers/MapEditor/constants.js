@@ -21,3 +21,4 @@ export const MOVE_ENTITY = 'jigglemap/MapEditor/MOVE_ENTITY';
 export const COMMIT_ENTITY_MOVE = 'jigglemap/MapEditor/COMMIT_ENTITY_MOVE';
 
 export const SET_ACTIVE_LAYER = 'jigglemap/MapEditor/SET_ACTIVE_LAYER';
+export const SET_ACTIVE_TOOL = 'jigglemap/MapEditor/SET_ACTIVE_TOOL';

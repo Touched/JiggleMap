@@ -25,6 +25,7 @@ import {
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
   SET_ACTIVE_LAYER,
+  SET_ACTIVE_TOOL,
 } from './constants';
 
 const mapData = {
@@ -299,6 +300,11 @@ export function mapEditingReducer(state = initialEditingState, action) {
       return {
         ...state,
         activeLayer: action.layer,
+      };
+    case SET_ACTIVE_TOOL:
+      return {
+        ...state,
+        activeTool: action.tool,
       };
     default: {
       const tool = getToolById(state.activeTool);

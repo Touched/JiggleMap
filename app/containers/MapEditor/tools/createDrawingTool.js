@@ -4,7 +4,7 @@ import * as React from 'react';
 import { combineReducers } from 'redux';
 import invariant from 'invariant';
 
-import type { Dispatch, Layer, Message, Meta, Object, ReactMouseEvent, Tool } from './types';
+import type { Dispatch, Layer, Message, Meta, Object, ReactMouseEvent, MouseTool } from './types';
 
 export const DRAW_START = 'jigglemap/MapEditor/DrawingTool/DRAW_START';
 export const DRAW = 'jigglemap/MapEditor/DrawingTool/DRAW';
@@ -101,7 +101,7 @@ function reducer(state: DrawingToolState = initialState, action: Action): Drawin
   }
 }
 
-export default function createDrawingTool<T: Object>(definition: DrawingTool<T>): Tool<CombinedState<T>> {
+export default function createDrawingTool<T: Object>(definition: DrawingTool<T>): MouseTool<CombinedState<T>> {
   type State = CombinedState<T>;
 
   const combinedReducer = combineReducers({
@@ -111,6 +111,7 @@ export default function createDrawingTool<T: Object>(definition: DrawingTool<T>)
 
   return {
     ...definition,
+    type: 'mouse',
     getCursorForObject: (object) => object.type === 'main-map' ? definition.getCursorForObject(object) : 'auto',
     onMouseDown(object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
       if (object.type === 'main-map') {
