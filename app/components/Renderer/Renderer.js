@@ -48,7 +48,11 @@ export default class Renderer extends React.PureComponent<Props, *> {
     this.cssRenderer.setSize(this.props.width, this.props.height);
   }
 
-  onUpdateRenderer = (renderer: THREE.WebGLRenderer) => {
+  onUpdateRenderer = (renderer: ?THREE.WebGLRenderer) => {
+    if (!renderer) {
+      return;
+    }
+
     // Monkey-patch renderer
     const { render } = renderer;
     this.cssRenderer = new CSS3DRenderer();

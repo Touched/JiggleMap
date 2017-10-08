@@ -1,8 +1,7 @@
 import React from 'react';
+import EyeIcon from 'mdi-react/EyeIcon';
 import createBasicDrawingTool from './createBasicDrawingTool';
-
-// TODO: Allow secondary layers
-// TODO: Force rectangle to be at least 2x2
+import AutoBlockCreator from './AutoBlockCreator';
 
 const autoBlock = {
   // Main blocks
@@ -24,7 +23,36 @@ const autoBlock = {
 
   // Other
   g: 0x71, // Ground
+
+  // Configuration
+  enableLayering: true,
 };
+
+const autoBlock2 = {
+  // Main blocks
+  nw: 0x122, // north-west
+  n: 0x123,  // north
+  ne: 0x124, // north-east
+  w: 0x12a,  // west
+  c: 0x12b,  // centre
+  e: 0x12c,  // east
+  sw: 0x132, // south-west
+  s: 0x133,  // south
+  se: 0x134, // south-east
+
+  // Inside corners
+  inw: 0x128, // inside north-west
+  ine: 0x129, // inside north-east
+  isw: 0x130, // inside south-west
+  ise: 0x131, // inside south-east
+
+  // Other
+  g: 0x1, // Ground
+
+  // Configuration
+  enableLayering: false,
+};
+
 
 function drawRectangle(a, b, drawPoint) {
   const nwx = Math.min(a.x, b.x);
@@ -105,166 +133,158 @@ export function getRoleForBlock(block, autoBlockConfig) {
   return Object.keys(autoBlockConfig).find((x) => autoBlockConfig[x] === block);
 }
 
-const roleInteractionPairings = {
-  // Right-angle pairs
-  'w-n': 'ise',
-  'w-s': 'ine',
-  'w-ne': 'ise',
-  'w-se': 'ine',
-  'e-n': 'isw',
-  'e-s': 'inw',
-  'e-nw': 'isw',
-  'e-sw': 'inw',
-  'n-e': 'isw',
-  'n-w': 'ise',
-  'n-se': 'isw',
-  'n-sw': 'ise',
-  's-e': 'inw',
-  's-w': 'ine',
-  's-ne': 'inw',
-  's-nw': 'ine',
-
-  // Right angle-corner pairs
-  'ne-s': 'inw', // same as e-s
-  'ne-w': 'ise', // same as n-w
-  'nw-s': 'ine', // same as w-s
-  'nw-e': 'isw', // same as n-e
-  'se-n': 'isw', // same as e-n
-  'se-w': 'ine', // same as s-w
-  'sw-e': 'inw', // same as s-e
-  'sw-n': 'ise', // same as w-n
-
-  // Corner pairs
-  'nw-n': 'n',
-  'ne-n': 'n',
-  'sw-s': 's',
-  'se-s': 's',
-  'nw-w': 'w',
-  'sw-w': 'w',
-  'ne-e': 'e',
-  'se-e': 'e',
-  'n-nw': 'n',
-  'n-ne': 'n',
-  's-sw': 's',
-  's-se': 's',
-  'w-nw': 'w',
-  'w-sw': 'w',
-  'e-ne': 'e',
-  'e-se': 'e',
-  'sw-se': 's',
-  'se-sw': 's',
-  'nw-ne': 'n',
-  'ne-nw': 'n',
-  'ne-se': 'e',
-  'nw-sw': 'w',
-  'se-ne': 'e',
-  'sw-nw': 'w',
-
-  // Explicit center
-  'c-n': 'c',
-  'c-s': 'c',
-  'c-e': 'c',
-  'c-w': 'c',
-  'c-ne': 'c',
-  'c-se': 'c',
-  'c-nw': 'c',
-  'c-sw': 'c',
-  'n-c': 'c',
-  's-c': 'c',
-  'e-c': 'c',
-  'w-c': 'c',
-  'ne-c': 'c',
-  'se-c': 'c',
-  'nw-c': 'c',
-  'sw-c': 'c',
-  'ine-c': 'c',
-  'inw-c': 'c',
-  'ise-c': 'c',
-  'isw-c': 'c',
-  'e-w': 'c',
-  'w-e': 'c',
-  's-n': 'c',
-  'n-s': 'c',
-  'inw-nw': 'c',
-  'ine-ne': 'c',
-  'isw-sw': 'c',
-  'ise-se': 'c',
-  'ise-s': 'c',
-  'ise-e': 'c',
-  'isw-s': 'c',
-  'isw-w': 'c',
-  'ine-e': 'c',
-  'ine-n': 'c',
-  'inw-w': 'c',
-  'inw-n': 'c',
-
-  // Explicit same
-  'e-e': 'e',
-  'n-n': 'n',
-  's-s': 's',
-  'w-w': 'w',
-  'ne-ne': 'ne',
-  'sw-sw': 'sw',
-  'nw-nw': 'nw',
-  'se-se': 'se',
-
-  // These Corners stay the same
-  'ine-nw': 'ine',
-  'ine-s': 'ine',
-  'ine-se': 'ine',
-  'ine-sw': 'ine',
-  'ine-w': 'ine',
-  'inw-e': 'inw',
-  'inw-ne': 'inw',
-  'inw-s': 'inw',
-  'inw-se': 'inw',
-  'inw-sw': 'inw',
-  'ise-n': 'ise',
-  'ise-ne': 'ise',
-  'ise-nw': 'ise',
-  'ise-sw': 'ise',
-  'ise-w': 'ise',
-  'isw-e': 'isw',
-  'isw-n': 'isw',
-  'isw-ne': 'isw',
-  'isw-nw': 'isw',
-  'isw-se': 'isw',
-
-  // TODO: These don't actually have tiles
-  'nw-se': 'g',
-  'ne-sw': 'g',
-  'se-nw': 'g',
-  'sw-ne': 'g',
+const roleBearings = {
+  n: 0,
+  ne: 45,
+  e: 90,
+  se: 135,
+  s: 180,
+  sw: 225,
+  w: 270,
+  nw: 315,
 };
 
-function determineRoleInteraction(currentRole, suggestedRole) {
+const roleComponents = {
+  w: ['w'],
+  n: ['n'],
+  e: ['e'],
+  s: ['s'],
+  ne: ['n', 'e'],
+  nw: ['n', 'w'],
+  sw: ['s', 'w'],
+  se: ['s', 'e'],
+};
+
+const oppositeRoles = {
+  w: 'e',
+  n: 's',
+  e: 'w',
+  s: 'n',
+};
+
+const roleTypes = {
+  n: 'wall',
+  s: 'wall',
+  e: 'wall',
+  w: 'wall',
+  ne: 'corner',
+  nw: 'corner',
+  se: 'corner',
+  sw: 'corner',
+  ine: 'inner-corner',
+  inw: 'inner-corner',
+  ise: 'inner-corner',
+  isw: 'inner-corner',
+};
+
+function checkRole(role) {
+  return roleTypes[role] === 'wall' && (roleTypes[role] === 'corner' || roleTypes[role] === 'wall');
+}
+
+function angleBetweenRoles(a, b) {
+  return Math.abs(roleBearings[a] - roleBearings[b]) % 180;
+}
+
+function hasTypes(role, types) {
+  return types.some((type) => roleTypes[role] === type);
+}
+
+export function determineRoleInteraction(currentRole, suggestedRole) {
   if (currentRole === undefined || currentRole === suggestedRole) {
     return suggestedRole;
   }
 
-  const result = roleInteractionPairings[`${currentRole}-${suggestedRole}`] || 'g';
-
-  if (result === 'g') {
-    console.log(currentRole, suggestedRole, '->', `'${result}'`);
+  // Center
+  if (currentRole === 'c' || suggestedRole === 'c' || suggestedRole === 'g' || currentRole === 'g') {
+    // return 'c';
+    return suggestedRole;
   }
 
-  return result;
+  if (hasTypes(suggestedRole, ['wall']) && hasTypes(currentRole, ['wall', 'corner'])) {
+    if (oppositeRoles[suggestedRole] === currentRole) {
+      return 'c';
+    }
+  }
+
+  if (hasTypes(currentRole, ['inner-corner']) && hasTypes(suggestedRole, ['wall', 'corner'])) {
+    return 'c';
+  }
+
+  // A straight wall gets overlayed on another straight wall becoming the inner corner wall opposite it
+  if (checkRole(currentRole) || checkRole(suggestedRole)) {
+    const [maybeCornerRole, nonCornerRole] = roleTypes[suggestedRole] === 'corner'
+          ? [suggestedRole, currentRole]
+          : [currentRole, suggestedRole];
+
+    const [verticalPart, horizontalPart] = roleComponents[maybeCornerRole];
+    const [perpendicular, parallel] = angleBetweenRoles(verticalPart, nonCornerRole)
+          ? [verticalPart, horizontalPart]
+          : [horizontalPart, verticalPart];
+
+    // If both walls are straight or if the parallel component of the corner role is opposite to the non-corner
+    if (roleTypes[maybeCornerRole] === 'wall' || oppositeRoles[parallel] === nonCornerRole) {
+      const pieces = [oppositeRoles[perpendicular], oppositeRoles[nonCornerRole]];
+
+      // North/south come first
+      if (pieces[0] === 'w' || pieces[0] === 'e') {
+        pieces.reverse();
+      }
+
+      return `i${pieces.join('')}`;
+    }
+
+    if (suggestedRole === parallel || currentRole === parallel) {
+      return parallel;
+    }
+  }
+
+  if (roleTypes[suggestedRole] === 'corner' && roleTypes[currentRole] === 'corner') {
+    const [suggestedVerticalPart, suggestedHorizontalPart] = roleComponents[suggestedRole];
+    const [currentVerticalPart, currentHorizontalPart] = roleComponents[currentRole];
+
+    if (suggestedVerticalPart === currentVerticalPart) {
+      if (oppositeRoles[currentHorizontalPart] === suggestedHorizontalPart) {
+        return currentVerticalPart;
+      }
+    } else if (suggestedHorizontalPart === currentHorizontalPart) {
+      if (oppositeRoles[currentVerticalPart] === suggestedVerticalPart) {
+        return currentHorizontalPart;
+      }
+    }
+  }
+
+  return 'g';
 }
+
+const MODIFY_AUTOBLOCK = 'jigglemap/MapEditor/tools/AutoBlock/MODIFY_AUTOBLOCK';
 
 export default createBasicDrawingTool({
   id: 'auto-block-tool',
   name: '',
   description: '',
   layers: ['map'],
-  icon: <div />,
-  component: () => <div>Hello</div>,
+  icon: <EyeIcon />,
   cursor: 'pointer',
+  component: ({ tabDispatch, state }: { tabDispatch: Dispatch, state: { tool: Object } }) => ( // eslint-disable-line react/no-unused-prop-types
+    <AutoBlockCreator
+      autoBlock={state.tool || autoBlock2}
+      onChangeAutoBlock={(property, value) => tabDispatch({ type: MODIFY_AUTOBLOCK, property, value })}
+    />
+  ),
   buildPatch(object, start, end, previousPatch, event) {
     const autoBlockConfig = event.ctrlKey ? invertAutoBlockConfiguration(autoBlock) : autoBlock;
 
+    const width = Math.abs(start.x - end.x) + 1;
+    const height = Math.abs(start.y - end.y) + 1;
+
+    // Force rectangle to be at least 2x2
+    if (width < 2 || height < 2) {
+      return [];
+    }
+
     return drawRectangle(start, end, (x, y, nw, se) => {
-      const width = object.dimensions[0];
-      const index = (y * width) + x;
+      const rectangleWidth = object.dimensions[0];
+      const index = (y * rectangleWidth) + x;
       const oldBlock = object.block[index];
 
       const suggestedRole = getRoleForPoint(x, y, nw, se);
@@ -279,5 +299,16 @@ export default createBasicDrawingTool({
         block: newBlock,
       };
     });
+  },
+  reducer(state = autoBlock2, action) {
+    switch (action.type) {
+      case MODIFY_AUTOBLOCK:
+        return {
+          ...state,
+          [action.property]: action.value,
+        };
+      default:
+        return state;
+    }
   },
 });

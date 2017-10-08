@@ -1,9 +1,24 @@
+/* @flow */
+
 import React from 'react';
+import { createStructuredSelector } from 'reselect';
+
+import connectTab from 'containers/EditorTabs/connectTab';
+
 import BlockPalette from './BlockPalette';
+import {
+  makeSelectMainMapPalette,
+  makeSelectMainMapTileset,
+  makeSelectMainMapTilemaps,
+  makeSelectMainMapBlockset,
+} from '../selectors/mapSelectors';
 
 type Props = {
   currentBlock: number;
   onChange: Function;
+  tileset: Uint8Array;
+  palette: Uint8Array;
+  blocks: Array<Uint8Array>;
 };
 
 type SelectedTile = {
@@ -35,7 +50,7 @@ export function Tile({ size, image, onClick }: { size: number, image: string, on
   );
 }
 
-export default class BlockPicker extends React.PureComponent<*, Props, State> { // eslint-disable-line react/prefer-stateless-function
+export class BlockPicker extends React.PureComponent<*, Props, State> { // eslint-disable-line react/prefer-stateless-function
   constructor(props: Props) {
     super(props);
 
@@ -79,8 +94,25 @@ export default class BlockPicker extends React.PureComponent<*, Props, State> { 
         {this.state.tileHistory.map(({ block, image }, i) => (
           <Tile key={i} size={32} image={image} onClick={() => this.handleRecentBlockSelected(i)} /> // eslint-disable-line react/no-array-index-key
         ))}
-        <BlockPalette value={this.props.currentBlock} onChange={this.handleChange} />
+        <BlockPalette
+          width={8}
+          height={this.props.blocks[0].length / 16 / 8}
+          value={this.props.currentBlock}
+          onChange={this.handleChange}
+          tileset={this.props.tileset}
+          palette={this.props.palette}
+          tilemap={this.props.blocks}
+        />
       </div>
     );
   }
 }
+
+const mapTabStateToProps = createStructuredSelector({
+  palette: makeSelectMainMapPalette(),
+  tileset: makeSelectMainMapTileset(),
+  tilemaps: makeSelectMainMapTilemaps(),
+  blocks: makeSelectMainMapBlockset(),
+});
+
+export default connectTab(null, mapTabStateToProps, null, null)(BlockPicker);

@@ -28,6 +28,7 @@ type BasicDrawingTool = {
   component: React.ComponentType<any>;
   cursor: string;
   buildPatch: (object: Object, start: Position, end: Position, previousPatch: Array<Patch>) => Array<Patch>;
+  reducer?: (state: CombinedState<State>, action: Action) => CombinedState<State>;
 };
 
 export default function createBasicDrawingTool(definition: BasicDrawingTool): MouseTool<CombinedState<State>> {
@@ -55,5 +56,6 @@ export default function createBasicDrawingTool(definition: BasicDrawingTool): Mo
     onDrawEnd(state: CombinedState<State>, tabDispatch: Dispatch) {
       tabDispatch(commitMapEdit());
     },
+    reducer: definition.reducer,
   });
 }

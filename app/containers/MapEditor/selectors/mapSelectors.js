@@ -105,6 +105,13 @@ const makeSelectMapTilemaps = () => createSelector(
   buildLayersForMap,
 );
 
+const makeSelectMapTilemapsForBlocks = (blocks, width, height) => createSelector(
+  () => blocks,
+  () => [width, height],
+  makeSelectMapBlocks(),
+  buildLayersForMap,
+);
+
 const makeSelectMapBlockset = () => createSelector(
   makeSelectMapBlocks(),
   (blocks) => buildLayersForMap(R.range(0, blocks.length), [8, blocks.length / 8], blocks),
@@ -182,6 +189,10 @@ const makeSelectMainMapObject = () => createSelector(
   makeSelectMainMap(),
   selectMapObject(),
 );
+const makeSelectMainMapTilemapsForBlocks = (blocks, width, height) => createSelector(
+  makeSelectMainMap(),
+  makeSelectMapTilemapsForBlocks(blocks, width, height),
+);
 
 const makeSelectConnectedMap = (dimensions) => createStructuredSelector({
   tilemaps: makeSelectMapTilemaps(),
@@ -213,4 +224,5 @@ export {
   makeSelectMainMapObject,
   makeSelectMapPalette,
   makeSelectMapBlocks,
+  makeSelectMainMapTilemapsForBlocks,
 };

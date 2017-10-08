@@ -1,39 +1,31 @@
 import React from 'react';
 import * as THREE from 'three';
-import { createStructuredSelector } from 'reselect';
 import { nativeImage } from 'electron';
 
-import { Renderer, HTML3D } from 'components/Renderer';
+import { Renderer, Box, HTML3D } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
-import connectTab from 'containers/EditorTabs/connectTab';
 
 import Map from '../Content/Map';
-import {
-  makeSelectMainMapPalette,
-  makeSelectMainMapTileset,
-  makeSelectMainMapTilemaps,
-  makeSelectMainMapBlockset,
-} from '../selectors/mapSelectors';
 
 const BLOCK_SIZE = 16;
-const WIDTH_IN_BLOCKS = 8;
 
-export class BlockPalette extends React.Component {
+export default class BlockPalette extends React.Component {
   static defaultProps = {
     zoom: 2,
+    value: 0,
   };
 
   getBlockImage(block: number) {
-    const { blocks, zoom } = this.props;
-    const blockCount = blocks[0].length / 16;
+    const { width, height, zoom } = this.props;
+    const blockCount = width * height;
 
     if (block >= blockCount) {
       return null;
     }
 
     const blockSize = BLOCK_SIZE * zoom;
-    const blockX = block % WIDTH_IN_BLOCKS;
-    const blockY = Math.floor(block / WIDTH_IN_BLOCKS);
+    const blockX = block % width;
+    const blockY = Math.floor(block / width);
 
     const gl = this.renderer.context;
     const buffer = new Uint8Array(blockSize * blockSize * 4);
@@ -108,7 +100,7 @@ export class BlockPalette extends React.Component {
   handleClick = ({ nativeEvent }: MouseEvent) => {
     const x = Math.floor(nativeEvent.offsetX / BLOCK_SIZE);
     const y = Math.floor(nativeEvent.offsetY / BLOCK_SIZE);
-    const block = (y * WIDTH_IN_BLOCKS) + x;
+    const block = (y * this.props.width) + x;
 
     if (this.props.onChange) {
       this.props.onChange(block, this.getBlockImage(block).toDataURL());
@@ -116,25 +108,13 @@ export class BlockPalette extends React.Component {
   };
 
   render() {
-    const { tileset, palette, blocks, zoom } = this.props;
-    const blockCount = blocks[0].length / 16;
-
-    const width = WIDTH_IN_BLOCKS;
-    const height = blockCount / width;
+    const { tileset, palette, tilemap, zoom, width, height, value } = this.props;
 
     const objectWidth = width * BLOCK_SIZE;
     const objectHeight = height * BLOCK_SIZE;
     const containerWidth = objectWidth * zoom;
     const containerHeight = objectHeight * zoom;
-
-    const { left, top } = calculateBoundingRectangle(
-      containerWidth,
-      containerHeight,
-      objectWidth,
-      objectHeight,
-      0,
-      0,
-    );
+    const { left, top } = calculateBoundingRectangle(0, 0, objectWidth, objectHeight, 0, 0);
 
     const style = {
       width: containerWidth,
@@ -142,6 +122,7 @@ export class BlockPalette extends React.Component {
       cursor: 'pointer',
     };
 
+    // TODO: Grid
     return (
       <Renderer
         x={left}
@@ -153,13 +134,21 @@ export class BlockPalette extends React.Component {
         zoomMax={2}
         customRenderer={this.customRenderer}
         canvasRef={(ref) => { this.canvas = ref; }}
+        className={this.props.className}
       >
         <Map
           width={width}
           height={height}
           tileset={tileset}
-          tilemaps={blocks}
+          tilemaps={tilemap}
           palette={palette}
+        />
+        <Box
+          color="#ff0000"
+          x={16 * (value % width)}
+          y={16 * Math.floor(value / width)}
+          width={16}
+          height={16}
         />
         <HTML3D width={containerWidth} height={containerHeight}>
           <div // eslint-disable-line jsx-a11y/no-static-element-interactions
@@ -171,12 +160,3 @@ export class BlockPalette extends React.Component {
     );
   }
 }
-
-const mapTabStateToProps = createStructuredSelector({
-  palette: makeSelectMainMapPalette(),
-  tileset: makeSelectMainMapTileset(),
-  tilemaps: makeSelectMainMapTilemaps(),
-  blocks: makeSelectMainMapBlockset(),
-});
-
-export default connectTab(null, mapTabStateToProps, null, null)(BlockPalette);
