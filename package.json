@@ -56,7 +56,9 @@
     "package:windows": "npm run build:electron && build --win --x64",
     "package:linux": "npm run build:electron && build --linux",
     "package:mac": "npm run build:electron && build --mac",
-    "package:clean": "rimraf dist"
+    "package:clean": "rimraf dist",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "build": {
     "productName": "JiggleMap",
@@ -275,6 +277,9 @@
     "url-loader": "0.5.7",
     "webpack": "^2.6.1",
     "webpack-dev-middleware": "1.9.0",
-    "webpack-hot-middleware": "2.15.0"
+    "webpack-hot-middleware": "2.15.0",
+    "@storybook/react": "^3.2.12",
+    "@storybook/addon-actions": "^3.2.12",
+    "@storybook/addon-links": "^3.2.12"
   }
 }
