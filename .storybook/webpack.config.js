@@ -15,4 +15,7 @@ module.exports = {
       // add your custom rules.
     ],
   },
+  resolve: {
+    modules: ['app', 'node_modules'],
+  }
 };

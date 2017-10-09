@@ -224,5 +224,8 @@ export {
   makeSelectMainMapObject,
   makeSelectMapPalette,
   makeSelectMapBlocks,
+  makeSelectMapTilemaps,
   makeSelectMainMapTilemapsForBlocks,
+  selectMapCollisionData,
+  selectMapHeightData,
 };
