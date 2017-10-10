@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 import { Renderer, calculateBoundingRectangle } from 'components/Renderer';
 import Map from 'containers/MapEditor/Content/Map';
+import BlockPalette from 'containers/MapEditor/tools/BlockPalette';
 
 import map from './data';
 
@@ -30,3 +32,32 @@ storiesOf('Map', module)
   .add('with collision map', () => <SampleMap collisionMap={map.collisionMap} />)
   .add('with height map', () => <SampleMap heightMap={map.heightMap} />);
 
+function SamplePalette(props) {
+  return (
+    <BlockPalette
+      width={map.width}
+      height={map.height}
+      palette={map.palette}
+      tileset={map.tileset}
+      tilemaps={map.tilemaps}
+      onChange={action('select-block')}
+      zoom={1}
+      {...props}
+    />
+  );
+}
+
+
+storiesOf('BlockPalette', module)
+  .add('normal', () => (
+    <SamplePalette />
+  ))
+  .add('with multiselect', () => (
+    <SamplePalette multiselect />
+  ))
+  .add('with value', () => (
+    <SamplePalette value={{ x: 1, y: 1, width: 5, height: 4 }} />
+  ))
+  .add('with a size limitation', () => (
+    <SamplePalette multiselect minWidth={2} maxWidth={5} />
+  ));

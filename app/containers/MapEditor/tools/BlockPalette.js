@@ -1,6 +1,5 @@
 import React from 'react';
-import * as THREE from 'three';
-import { nativeImage } from 'electron';
+import invariant from 'invariant';
 
 import { Renderer, Box, HTML3D } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
@@ -12,103 +11,151 @@ const BLOCK_SIZE = 16;
 export default class BlockPalette extends React.Component {
   static defaultProps = {
     zoom: 2,
-    value: 0,
+    minWidth: 1,
+    maxWidth: Infinity,
+    minHeight: 1,
+    maxHeight: Infinity,
+    multiselect: false,
   };
 
-  getBlockImage(block: number) {
-    const { width, height, zoom } = this.props;
-    const blockCount = width * height;
+  constructor(props) {
+    super(props);
+    this.state = {
+      start: { x: 0, y: 0 },
+      end: { x: 0, y: 0 },
+      selecting: false,
+    };
+  }
 
-    if (block >= blockCount) {
-      return null;
+  componentDidMount() {
+    window.addEventListener('mouseup', this.handleMouseUp);
+    window.addEventListener('mousemove', this.handleMouseMove);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handleMouseMove);
+  }
+
+  getSelectionMinMax() {
+    if (this.props.multiselect) {
+      const { minWidth, minHeight, maxWidth, maxHeight } = this.props;
+
+      invariant(minWidth <= maxWidth, 'The minimum selection width must be smaller or equal to the maximum');
+      invariant(minHeight <= maxHeight, 'The minimum selection height must be smaller or equal to the maximum');
+      invariant(minWidth > 0, 'The minimum selection width must be at least 1');
+      invariant(minHeight > 0, 'The minimum selection height must be at least 1');
+
+      return {
+        minWidth,
+        maxWidth,
+        minHeight,
+        maxHeight,
+      };
     }
 
-    const blockSize = BLOCK_SIZE * zoom;
-    const blockX = block % width;
-    const blockY = Math.floor(block / width);
+    return {
+      minWidth: 1,
+      maxWidth: 1,
+      minHeight: 1,
+      maxHeight: 1,
+    };
+  }
 
-    const gl = this.renderer.context;
-    const buffer = new Uint8Array(blockSize * blockSize * 4);
-    gl.readPixels(
-      blockX * blockSize,
-      gl.drawingBufferHeight - ((blockY + 1) * blockSize),
-      blockSize,
-      blockSize,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      buffer,
-    );
+  getBoundingBox() {
+    if (this.props.value && !this.state.selecting) {
+      return this.props.value;
+    }
 
-    // The pixels read from the WebGL buffer are vertically flipped and in BGRA
-    // and need to be flipped and converted.
-    const bufferConverted = new Uint8Array(blockSize * blockSize * 4);
-    for (let y = 0; y < blockSize; y++) { // eslint-disable-line no-plusplus
-      for (let x = 0; x < blockSize; x++) { // eslint-disable-line no-plusplus
-        const i = ((y * blockSize) + x) * 4;
-        const j = (((blockSize - y - 1) * blockSize) + x) * 4;
-        bufferConverted[i] = buffer[j + 2];
-        bufferConverted[i + 1] = buffer[j + 1];
-        bufferConverted[i + 2] = buffer[j];
-        bufferConverted[i + 3] = buffer[j + 3];
+    const { x: x1, y: y1 } = this.state.start;
+    const { x: x2, y: y2 } = this.state.end;
+    const { maxWidth, minWidth, maxHeight, minHeight } = this.getSelectionMinMax();
+
+    const width = Math.max(Math.min(Math.abs(x2 - x1), maxWidth), minWidth);
+    const height = Math.max(Math.min(Math.abs(y2 - y1), maxHeight), minHeight);
+
+    const minX = Math.max(x1, x2) - width;
+    const minY = Math.max(y1, y2) - height;
+
+    return {
+      x: x1 > x2 ? minX : x1,
+      y: y1 > y2 ? minY : y1,
+      width,
+      height,
+    };
+  }
+
+  handleMouseDown = ({ nativeEvent }: MouseEvent) => {
+    const x = Math.floor(nativeEvent.offsetX / BLOCK_SIZE);
+    const y = Math.floor(nativeEvent.offsetY / BLOCK_SIZE);
+
+    this.setState((state) => ({
+      ...state,
+      start: { x, y },
+      end: { x: x + 1, y: y + 1 },
+      selecting: true,
+    }));
+  };
+
+  handleMouseMove = (nativeEvent: MouseEvent) => {
+    if (this.state.selecting && this.props.multiselect) {
+      const x = Math.floor(nativeEvent.offsetX / BLOCK_SIZE);
+      const y = Math.floor(nativeEvent.offsetY / BLOCK_SIZE);
+
+      this.setState((state) => ({
+        ...state,
+        end: { x, y },
+      }));
+    }
+  };
+
+  handleMouseUp = () => {
+    if (this.props.onChange) {
+      const box = this.getBoundingBox();
+      const clampedBox = {
+        x: Math.max(box.x, 0),
+        y: Math.max(box.y, 0),
+        width: Math.min(box.width + box.x, this.props.width - 1) - box.x,
+        height: Math.min(box.height + box.y, this.props.height - 1) - box.y,
+      };
+
+      // Don't report selections that are too small
+      if (clampedBox.width >= this.props.minWidth && clampedBox.height >= this.props.minHeight) {
+        this.props.onChange(clampedBox);
       }
     }
 
-    const image = nativeImage.createFromBuffer(bufferConverted, {
-      width: blockSize,
-      height: blockSize,
-    });
-
-    return image.resize({ width: BLOCK_SIZE, height: BLOCK_SIZE });
-  }
+    this.setState((state) => ({
+      ...state,
+      selecting: false,
+    }));
+  };
 
   props: {
     palette: Uint8Array;
     tileset: Uint8Array;
-    blocks: Array<Uint8Array>;
+    tilemaps: Array<Uint8Array>;
     zoom: number;
-    onChange: (value) => void,
+    onChange: (value) => void;
+    value: {
+      x: number; // eslint-disable-line react/no-unused-prop-types
+      y: number; // eslint-disable-line react/no-unused-prop-types
+      width: number;
+      height: number;
+    };
+    minWidth: number;
+    maxWidth: number;
+    minHeight: number;
+    maxHeight: number;
+    width: number;
+    height: number;
+    multiselect: boolean;
+    className: string;
   };
   canvas: HtmlCanvasElement;
 
-  customRenderer = (rendererArgs) => {
-    this.renderer = new THREE.WebGLRenderer({
-      ...rendererArgs,
-      preserveDrawingBuffer: true,
-    });
-
-    const originalRender = this.renderer.render.bind(this.renderer);
-    let intialUpdateCompleted = false;
-
-    this.renderer.render = (...args) => {
-      originalRender(...args);
-
-      // Set the initial image
-      if (!intialUpdateCompleted) {
-        const block = this.props.value;
-        const image = this.getBlockImage(block);
-
-        if (image && this.props.onChange) {
-          this.props.onChange(block, image.toDataURL());
-          intialUpdateCompleted = true;
-        }
-      }
-    };
-
-    return this.renderer;
-  };
-
-  handleClick = ({ nativeEvent }: MouseEvent) => {
-    const x = Math.floor(nativeEvent.offsetX / BLOCK_SIZE);
-    const y = Math.floor(nativeEvent.offsetY / BLOCK_SIZE);
-    const block = (y * this.props.width) + x;
-
-    if (this.props.onChange) {
-      this.props.onChange(block, this.getBlockImage(block).toDataURL());
-    }
-  };
-
   render() {
-    const { tileset, palette, tilemap, zoom, width, height, value } = this.props;
+    const { tileset, palette, tilemaps, zoom, width, height, value } = this.props;
 
     const objectWidth = width * BLOCK_SIZE;
     const objectHeight = height * BLOCK_SIZE;
@@ -122,6 +169,8 @@ export default class BlockPalette extends React.Component {
       cursor: 'pointer',
     };
 
+    const box = this.getBoundingBox();
+
     // TODO: Grid
     return (
       <Renderer
@@ -132,27 +181,25 @@ export default class BlockPalette extends React.Component {
         height={containerHeight}
         zoomMin={0.25}
         zoomMax={2}
-        customRenderer={this.customRenderer}
-        canvasRef={(ref) => { this.canvas = ref; }}
         className={this.props.className}
       >
         <Map
           width={width}
           height={height}
           tileset={tileset}
-          tilemaps={tilemap}
+          tilemaps={tilemaps}
           palette={palette}
         />
-        <Box
+        {(value || this.state.selecting) && <Box
           color="#ff0000"
-          x={16 * (value % width)}
-          y={16 * Math.floor(value / width)}
-          width={16}
-          height={16}
-        />
+          x={BLOCK_SIZE * box.x}
+          y={BLOCK_SIZE * box.y}
+          width={BLOCK_SIZE * box.width}
+          height={BLOCK_SIZE * box.height}
+        />}
         <HTML3D width={containerWidth} height={containerHeight}>
           <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-            onClick={this.handleClick}
+            onMouseDown={this.handleMouseDown}
             style={style}
           />
         </HTML3D>
