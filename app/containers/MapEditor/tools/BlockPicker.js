@@ -21,34 +21,9 @@ type Props = {
   blocks: Array<Uint8Array>;
 };
 
-type SelectedTile = {
-  block: ?number;
-  image: string;
-};
-
 type State = {
-  currentTile: SelectedTile;
-  tileHistory: Array<SelectedTile>;
+  currentTile: number;
 };
-
-const HISTORY_SIZE = 7;
-
-export function appendToHistory(history, item) {
-  return item.block === null ? history : [item, ...history].slice(0, HISTORY_SIZE - 1);
-}
-
-export function Tile({ size, image, onClick }: { size: number, image: string, onClick: ?Function }) {
-  return (
-    <img // eslint-disable-line jsx-a11y/no-noninteractive-element-interactions
-      alt="Selected Block"
-      src={image}
-      width={size}
-      height={size}
-      style={{ imageRendering: 'pixelated' }}
-      onClick={onClick}
-    />
-  );
-}
 
 export class BlockPicker extends React.PureComponent<*, Props, State> { // eslint-disable-line react/prefer-stateless-function
   constructor(props: Props) {
@@ -59,21 +34,17 @@ export class BlockPicker extends React.PureComponent<*, Props, State> { // eslin
         block: null,
         image: '',
       },
-      tileHistory: [],
     };
   }
 
   state: State;
   props: Props;
 
-  handleChange = (block: number, dataURL: string) => {
+  handleChange = ({ x, y }) => {
+    const block = (y * 8) + x;
     this.setState((state) => ({
       ...state,
-      currentTile: {
-        block,
-        image: dataURL,
-      },
-      tileHistory: appendToHistory(state.tileHistory, state.currentTile),
+      currentTile: block,
     }));
 
     this.props.onChange(block);
@@ -83,25 +54,23 @@ export class BlockPicker extends React.PureComponent<*, Props, State> { // eslin
     this.setState((state) => ({
       ...state,
       currentTile: state.tileHistory[historyIndex],
-      tileHistory: appendToHistory(state.tileHistory, state.currentTile),
     }));
   };
 
   render() {
+    const x = this.props.currentBlock % 8;
+    const y = Math.floor(this.props.currentBlock / 8);
+
     return (
       <div>
-        <Tile size={64} image={this.state.currentTile.image} />
-        {this.state.tileHistory.map(({ block, image }, i) => (
-          <Tile key={i} size={32} image={image} onClick={() => this.handleRecentBlockSelected(i)} /> // eslint-disable-line react/no-array-index-key
-        ))}
         <BlockPalette
           width={8}
           height={this.props.blocks[0].length / 16 / 8}
-          value={this.props.currentBlock}
+          value={{ x, y }}
           onChange={this.handleChange}
           tileset={this.props.tileset}
           palette={this.props.palette}
-          tilemap={this.props.blocks}
+          tilemaps={this.props.blocks}
         />
       </div>
     );

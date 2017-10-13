@@ -96,11 +96,14 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
     autoBlock: AutoBlock;
   }
 
-  handleAutoBlockModifyBlockIndex = (blockIndex) => {
+  handleAutoBlockModifyBlockIndex = ({ x, y }) => {
+    const blockIndex = (y * 8) + x;
     this.props.onChangeAutoBlock(positionToAutoBlockPiece[this.state.selectedPosition], blockIndex);
   };
 
-  handleAutoBlockModifyBlockPosition = (blockPosition) => {
+  handleAutoBlockModifyBlockPosition = ({ x, y }) => {
+    const blockPosition = (5 * y) + x;
+
     if (positionToAutoBlockPiece[blockPosition]) {
       this.setState((state) => ({
         ...state,
@@ -130,7 +133,7 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
           zoom={2}
           tileset={this.props.tileset}
           palette={this.props.palette}
-          tilemap={this.props.editor}
+          tilemaps={this.props.editor}
           value={this.state.selectedPosition}
           onChange={(blockPosition) => this.handleAutoBlockModifyBlockPosition(blockPosition)}
         />
@@ -143,7 +146,7 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
           onChange={(blockIndex) => this.handleAutoBlockModifyBlockIndex(blockIndex)}
           tileset={this.props.tileset}
           palette={this.props.palette}
-          tilemap={this.props.blocks}
+          tilemaps={this.props.blocks}
           value={this.props.autoBlock[positionToAutoBlockPiece[this.state.selectedPosition]]}
         />
       </div>
