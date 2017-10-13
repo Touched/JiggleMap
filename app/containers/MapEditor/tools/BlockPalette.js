@@ -1,7 +1,7 @@
 import React from 'react';
 import invariant from 'invariant';
 
-import { Renderer, Box, HTML3D } from 'components/Renderer';
+import { Grid, Renderer, Box, HTML3D } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
 import Map from '../Content/Map';
@@ -171,7 +171,6 @@ export default class BlockPalette extends React.Component {
 
     const box = this.getBoundingBox();
 
-    // TODO: Grid
     return (
       <Renderer
         x={left}
@@ -197,6 +196,7 @@ export default class BlockPalette extends React.Component {
           width={BLOCK_SIZE * box.width}
           height={BLOCK_SIZE * box.height}
         />}
+        <Grid width={width * BLOCK_SIZE} height={height * BLOCK_SIZE} gridSize={BLOCK_SIZE} />
         <HTML3D width={containerWidth} height={containerHeight}>
           <div // eslint-disable-line jsx-a11y/no-static-element-interactions
             onMouseDown={this.handleMouseDown}
