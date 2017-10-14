@@ -19,7 +19,6 @@ import {
   SET_CAMERA_POSITION,
   MOVE_CONNECTION,
   COMMIT_CONNECTION_MOVE,
-  RESIZE_VIEWPORT,
   SET_CURRENT_BLOCK,
   MAP_LOADED,
   MOVE_ENTITY,
@@ -64,10 +63,6 @@ const initialDataState = {
 const initialEditingState = {
   loading: false,
   linked: false,
-  viewportSize: {
-    width: 0,
-    height: 0,
-  },
   camera: {
     x: 0,
     y: 0,
@@ -254,9 +249,8 @@ export function mapDataReducer(state = initialDataState, action) {
 export function mapEditingReducer(state = initialEditingState, action) {
   switch (action.type) {
     case LOAD_MAIN_MAP: {
-      const { viewportSize: { width, height } } = state;
       const { width: mapWidth, height: mapHeight } = action.map.data.map;
-      const boundingBox = calculateBoundingRectangle(width, height, mapWidth * 16, mapHeight * 16, 0, 0);
+      const boundingBox = calculateBoundingRectangle(0, 0, mapWidth * 16, mapHeight * 16, 0, 0);
       const min = new THREE.Vector3(0, 0, 0);
       const max = new THREE.Vector3(boundingBox.width, boundingBox.height, 0);
       const box = new THREE.Box3(min, max);
@@ -278,14 +272,6 @@ export function mapEditingReducer(state = initialEditingState, action) {
           x: action.x,
           y: action.y,
           z: action.z,
-        },
-      };
-    case RESIZE_VIEWPORT:
-      return {
-        ...state,
-        viewportSize: {
-          width: action.width,
-          height: action.height,
         },
       };
     case SET_CURRENT_BLOCK:

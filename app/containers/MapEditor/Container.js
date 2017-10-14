@@ -24,7 +24,6 @@ import {
 
 import {
   setCameraPosition,
-  resizeViewport,
   setActiveLayer,
 } from './actions';
 
@@ -209,8 +208,8 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
               x={this.state.pan ? this.state.pan.position.x : camera.x}
               y={this.state.pan ? this.state.pan.position.y : camera.y}
               zoom={camera.z}
-              width={contentRect.bounds.width}
-              height={contentRect.bounds.height}
+              width={contentRect.bounds.width || 0}
+              height={contentRect.bounds.height || 0}
               zoomMin={ZOOM_MIN}
               zoomMax={ZOOM_MAX}
               onMouseMove={this.handleMouseMove}
@@ -247,9 +246,6 @@ function mapTabDispatchToProps(tabDispatch) {
   return {
     setCameraPosition(x, y, z) {
       tabDispatch(setCameraPosition(x, y, z));
-    },
-    onResize({ bounds: { width, height } }) {
-      tabDispatch(resizeViewport(width, height));
     },
     setActiveLayer(layer) {
       tabDispatch(setActiveLayer(layer));
