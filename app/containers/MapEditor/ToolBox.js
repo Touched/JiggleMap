@@ -51,16 +51,22 @@ export function buildToolListForLayer(tools, layer) {
   }, []);
 }
 
+export function getFirstAllowedToolIdForLayer(layer) {
+  const firstToolForLayer = buildToolListForLayer(allTools, layer).filter((tool) => tool.type === 'mouse')[0];
+  return firstToolForLayer && firstToolForLayer.id;
+}
+
 export default function ToolBox(props: Props) {
   const { tabDispatch, activeLayer } = props;
 
   const allowedTools = buildToolListForLayer(allTools, activeLayer);
+  const activeToolId = props.selectedTool && props.selectedTool.id;
 
   return (
     <div className="MapEditor__OverlayBox ToolBox">
       {allowedTools.map((tool) => tool.type === 'separator' ? <div className="ToolBox__separator" /> : (
         <button
-          className={classNames({ active: props.selectedTool.id === tool.id })}
+          className={classNames({ active: activeToolId === tool.id })}
           onClick={() => handleToolClick(tool, tabDispatch)}
         >
           {tool.icon}

@@ -10,6 +10,7 @@ import undoable, { includeAction } from 'redux-undo';
 import * as THREE from 'three';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 import { getToolById } from './utils';
+import { getFirstAllowedToolIdForLayer } from './ToolBox';
 
 import {
   LOAD_MAIN_MAP,
@@ -59,6 +60,8 @@ const initialDataState = {
   canonicalEntityCoordinates: [],
 };
 
+const layerIds = ['map', 'collision', 'height', 'entities'];
+
 const initialEditingState = {
   loading: false,
   linked: false,
@@ -68,7 +71,12 @@ const initialEditingState = {
     z: 1,
   },
   activeLayer: 'map',
-  activeTool: 'line-tool',
+
+  // Maintain a separate active tool ID for each layer
+  activeTool: layerIds.reduce((acc, layer) => ({
+    ...acc,
+    [layer]: getFirstAllowedToolIdForLayer(layer),
+  }), {}),
   toolState: {},
 };
 
@@ -282,10 +290,13 @@ export function mapEditingReducer(state = initialEditingState, action) {
     case SET_ACTIVE_TOOL:
       return {
         ...state,
-        activeTool: action.tool,
+        activeTool: {
+          ...state.activeTool,
+          [state.activeLayer]: action.tool,
+        },
       };
     default: {
-      const toolId = state.activeTool;
+      const toolId = state.activeTool[state.activeLayer];
       const tool = getToolById(toolId);
 
       return {
