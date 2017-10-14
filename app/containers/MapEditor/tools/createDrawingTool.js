@@ -62,7 +62,7 @@ export type DrawingTool<State> = {
   icon: React.Element<*>;
   component: React.ComponentType<any>;
   reducer?: (state: CombinedState<State>, action: Action) => CombinedState<State>;
-  getCursorForObject: (object: Object) => string;
+  getCursorForObject: (object: Object, state: State) => string;
   onDrawStart: (object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
   onDraw: (position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
   onDrawEnd: (state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;

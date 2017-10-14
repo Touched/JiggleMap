@@ -14,6 +14,8 @@ export class ToolHitBox extends React.PureComponent {
   props: {
     width: number;
     height: number;
+    x: number;
+    y: number;
     objectType: string;
     tabDispatch: Dispatch;
     activeTool: Tool<Object>;
@@ -23,7 +25,7 @@ export class ToolHitBox extends React.PureComponent {
   };
 
   render() {
-    const { width, height, objectType, object: objectData } = this.props;
+    const { x, y, width, height, objectType, object: objectData } = this.props;
 
     const object = {
       type: objectType,
@@ -33,7 +35,9 @@ export class ToolHitBox extends React.PureComponent {
     const style = {
       width,
       height,
-      cursor: this.props.activeTool ? this.props.activeTool.getCursorForObject(object) : 'auto',
+      cursor: this.props.activeTool
+        ? this.props.activeTool.getCursorForObject(object, this.props.toolState)
+        : 'auto',
     };
 
     const onMouseDown = (event) => this.props.activeTool.onMouseDown(
@@ -45,7 +49,7 @@ export class ToolHitBox extends React.PureComponent {
     );
 
     return (
-      <HTML3D width={width} height={height}>
+      <HTML3D width={width} height={height} x={x} y={y}>
         <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           onMouseDown={this.props.activeTool && onMouseDown}
           style={style}

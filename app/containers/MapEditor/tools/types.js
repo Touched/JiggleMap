@@ -46,7 +46,7 @@ export type MouseTool<State> = {|
   icon: React.Element<*>;
   component: React.ComponentType<any>;
   reducer: (state: State, action: Action) => State;
-  getCursorForObject: (object: Object) => string;
+  getCursorForObject: (object: Object, state: State) => string;
   onMouseDown: (object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
   onMouseMove: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
   onMouseUp: (state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;

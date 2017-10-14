@@ -5,7 +5,7 @@ import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 
 import ConnectedMap from './ConnectedMap';
-import { makeSelectConnectedMaps } from '../selectors/mapSelectors';
+import { makeSelectConnectedMaps, makeSelectConnectedMapObjects } from '../selectors/mapSelectors';
 import { makeSelectActiveLayer } from '../selectors/editingSelectors';
 
 import {
@@ -30,10 +30,11 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
       },
     },
     /* eslint-enable */
+    objects: [Object],
   }
 
   render() {
-    const { connections, activeLayer } = this.props;
+    const { connections, activeLayer, objects } = this.props;
 
     return (
       <Group>
@@ -52,6 +53,7 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
             collisionMap={activeLayer === 'collision' && collisionMap}
             onDrag={(start, end) => this.props.moveConnection(i, end.x - start.x, end.y - start.y)}
             onDragEnd={() => this.props.commitConnectionMove(i)}
+            object={{ ...objects[i], id: i }}
             darken
           />
         ))}
@@ -63,6 +65,7 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
 const mapTabStateToProps = createStructuredSelector({
   connections: makeSelectConnectedMaps(),
   activeLayer: makeSelectActiveLayer(),
+  objects: makeSelectConnectedMapObjects(),
 });
 
 function mapTabDispatchToProps(tabDispatch) {

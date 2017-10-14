@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Group } from 'components/Renderer';
 import Map from './Map';
+import ToolHitBox from './ToolHitBox';
 
 type Props = {
   width: number;
@@ -15,6 +16,7 @@ type Props = {
   heightMap: Uint8Array,
   collisionMap: Uint8Array,
   darken: boolean;
+  object: Object,
 };
 
 export default function ConnectedMap(props: Props) {
@@ -30,6 +32,7 @@ export default function ConnectedMap(props: Props) {
     darken,
     heightMap,
     collisionMap,
+    object,
   } = props;
 
   return (
@@ -46,6 +49,14 @@ export default function ConnectedMap(props: Props) {
         collisionMap={collisionMap}
         heightMap={heightMap}
         darken={darken}
+      />
+      <ToolHitBox
+        objectType="connected-map"
+        x={x * 16}
+        y={y * 16}
+        width={width * 16}
+        height={height * 16}
+        object={object}
       />
     </Group>
   );

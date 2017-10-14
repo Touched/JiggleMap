@@ -287,14 +287,23 @@ export function mapEditingReducer(state = initialEditingState, action) {
         ...state,
         activeLayer: action.layer,
       };
-    case SET_ACTIVE_TOOL:
+    case SET_ACTIVE_TOOL: {
+      const toolId = action.tool;
+      const tool = getToolById(toolId);
+
       return {
         ...state,
         activeTool: {
           ...state.activeTool,
-          [state.activeLayer]: action.tool,
+          [state.activeLayer]: toolId,
+        },
+        // Initialise the tool state
+        toolState: {
+          ...state.toolState,
+          [toolId]: tool.reducer(state.toolState[toolId], action),
         },
       };
+    }
     default: {
       const toolId = state.activeTool[state.activeLayer];
       const tool = getToolById(toolId);

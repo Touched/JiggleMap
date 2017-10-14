@@ -209,10 +209,12 @@ const makeSelectConnectedMaps = () => createArraySelector(
   makeSelectMainMapDimensions(),
   (connection, dimensions) => makeSelectConnectedMap(dimensions)(connection),
 );
+const makeSelectConnectedMapObjects = () => (state) => state.data.present.connections;
 
 export {
   makeSelectMapTileset,
   makeSelectConnectedMaps,
+  makeSelectConnectedMapObjects,
   makeSelectMainMapBlockset,
   makeSelectMainMapDimensions,
   makeSelectMainMapPalette,
