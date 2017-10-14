@@ -190,7 +190,11 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
       <div className="MapEditor">
         <div className="MapEditor__Container" ref={measureRef} onWheel={this.handleWheel}>
           <div className="MapEditor__Overlay">
-            <ToolBox tabDispatch={this.props.tabDispatch} />
+            <ToolBox
+              tabDispatch={this.props.tabDispatch}
+              selectedTool={this.props.activeTool}
+              activeLayer={this.props.activeLayer}
+            />
             <MapControls
               zoomMin={ZOOM_MIN}
               zoomMax={ZOOM_MAX}
