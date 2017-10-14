@@ -24,6 +24,7 @@ type Props = {
   onMouseMove: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   onMouseUp: (Event) => void, // eslint-disable-line react/no-unused-prop-types
   className: string,
+  manualRendering: boolean,
 };
 
 export default class Renderer extends React.PureComponent<Props, *> {
@@ -37,6 +38,7 @@ export default class Renderer extends React.PureComponent<Props, *> {
     zoom: 1,
     zoomMin: 1,
     zoomMax: 1,
+    manualRendering: false,
   };
 
   static contextTypes = {
@@ -78,6 +80,10 @@ export default class Renderer extends React.PureComponent<Props, *> {
     }
   };
 
+  handleManualRenderTriggerCreated = (trigger: Function) => {
+    this.rerender = trigger;
+  };
+
   props: Props;
   raycaster: THREE.Raycaster;
   scene: THREE.Scene;
@@ -113,6 +119,8 @@ export default class Renderer extends React.PureComponent<Props, *> {
           width={width}
           height={height}
           pixelRatio={window.devicePixelRatio}
+          forceManualRender={this.props.manualRendering}
+          onManualRenderTriggerCreated={this.handleManualRenderTriggerCreated}
           alpha
         >
           <scene ref={(ref) => { this.scene = ref; }}>

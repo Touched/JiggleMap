@@ -30,6 +30,11 @@ export default class BlockPalette extends React.Component {
   componentDidMount() {
     window.addEventListener('mouseup', this.handleMouseUp);
     window.addEventListener('mousemove', this.handleMouseMove);
+    this.renderer.rerender();
+  }
+
+  componentDidUpdate() {
+    this.renderer.rerender();
   }
 
   componentWillUnmount() {
@@ -181,6 +186,8 @@ export default class BlockPalette extends React.Component {
         zoomMin={0.25}
         zoomMax={2}
         className={this.props.className}
+        manualRendering
+        ref={(ref) => { this.renderer = ref; }}
       >
         <Map
           width={width}
