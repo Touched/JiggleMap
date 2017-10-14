@@ -70,14 +70,12 @@ Object {
   "linked": false,
   "loading": false,
   "toolState": Object {
-    "clientOffset": null,
-    "currentBlock": 0,
-    "currentPosition": null,
-    "startingPosition": null,
-  },
-  "viewportSize": Object {
-    "height": 0,
-    "width": 0,
+    "line-tool": Object {
+      "clientOffset": null,
+      "currentBlock": 0,
+      "currentPosition": null,
+      "startingPosition": null,
+    },
   },
 }
 `;

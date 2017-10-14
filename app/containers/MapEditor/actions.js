@@ -13,7 +13,6 @@ import {
   SET_CAMERA_POSITION,
   MOVE_CONNECTION,
   COMMIT_CONNECTION_MOVE,
-  SET_CURRENT_BLOCK,
   MAP_LOADED,
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
@@ -87,13 +86,6 @@ export function commitConnectionMove(connection) {
   return {
     type: COMMIT_CONNECTION_MOVE,
     connection,
-  };
-}
-
-export function setCurrentBlock(block) {
-  return {
-    type: SET_CURRENT_BLOCK,
-    block,
   };
 }
 

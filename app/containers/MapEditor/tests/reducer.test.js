@@ -6,8 +6,6 @@ import {
   setCameraPosition,
   moveConnection,
   commitConnectionMove,
-  resizeViewport,
-  setCurrentBlock,
   moveEntity,
   commitEntityMove,
   setActiveLayer,
@@ -418,29 +416,6 @@ describe('mapEditingReducer', () => {
         x: 1,
         y: 2,
         z: 3,
-      });
-    });
-  });
-
-  describe('RESIZE_VIEWPORT', () => {
-    it('changes the viewport size', () => {
-      const action = resizeViewport(150, 300);
-
-      const newState = mapEditingReducer(undefined, action);
-      expect(newState.viewportSize).toEqual({
-        width: 150,
-        height: 300,
-      });
-    });
-  });
-
-  describe('SET_CURRENT_BLOCK', () => {
-    it('changes the current block', () => {
-      const action = setCurrentBlock(123);
-
-      const newState = mapEditingReducer(undefined, action);
-      expect(newState.toolState).toEqual({
-        currentBlock: 123,
       });
     });
   });

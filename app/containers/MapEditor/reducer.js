@@ -19,7 +19,6 @@ import {
   SET_CAMERA_POSITION,
   MOVE_CONNECTION,
   COMMIT_CONNECTION_MOVE,
-  SET_CURRENT_BLOCK,
   MAP_LOADED,
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
@@ -70,6 +69,7 @@ const initialEditingState = {
   },
   activeLayer: 'map',
   activeTool: 'line-tool',
+  toolState: {},
 };
 
 function loadMapData(data) {
@@ -274,14 +274,6 @@ export function mapEditingReducer(state = initialEditingState, action) {
           z: action.z,
         },
       };
-    case SET_CURRENT_BLOCK:
-      return {
-        ...state,
-        toolState: {
-          ...state.toolState,
-          currentBlock: action.block,
-        },
-      };
     case SET_ACTIVE_LAYER:
       return {
         ...state,
@@ -293,11 +285,15 @@ export function mapEditingReducer(state = initialEditingState, action) {
         activeTool: action.tool,
       };
     default: {
-      const tool = getToolById(state.activeTool);
+      const toolId = state.activeTool;
+      const tool = getToolById(toolId);
 
       return {
         ...state,
-        toolState: tool.reducer(state.toolState, action),
+        toolState: {
+          ...state.toolState,
+          [toolId]: tool.reducer(state.toolState[toolId], action),
+        },
       };
     }
   }
