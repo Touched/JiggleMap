@@ -18,7 +18,7 @@ type Patch = {
 type State = {
 };
 
-type BasicDrawingTool = {
+type DrawingTool = {
   id: string;
   name: Message;
   description: Message;
@@ -30,7 +30,7 @@ type BasicDrawingTool = {
   reducer?: (state: CombinedState<State>, action: Action) => CombinedState<State>;
 };
 
-export default function createBasicDrawingTool(definition: BasicDrawingTool): MouseTool<State> {
+export default function createDrawingTool(definition: DrawingTool): MouseTool<State> {
   return createMouseTool({
     ...definition,
     handlesType(type) {

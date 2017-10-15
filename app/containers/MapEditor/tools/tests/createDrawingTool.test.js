@@ -1,8 +1,8 @@
-import createBasicDrawingTool from '../createBasicDrawingTool';
+import createDrawingTool from '../createDrawingTool';
 import { COMMIT_MAP_EDIT, EDIT_MAP } from '../../constants';
 
-describe('createBasicDrawingTool', () => {
-  const tool = createBasicDrawingTool({
+describe('createDrawingTool', () => {
+  const tool = createDrawingTool({
     cursor: 'pointer',
     buildPatch: jest.fn((object, s, e) => [{
       ...s,

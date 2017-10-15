@@ -1,6 +1,6 @@
 import React from 'react';
 import EyeIcon from 'mdi-react/EyeIcon';
-import createBasicDrawingTool from './createBasicDrawingTool';
+import createDrawingTool from './createDrawingTool';
 import AutoBlockCreator from './AutoBlockCreator';
 
 const autoBlock = {
@@ -258,7 +258,7 @@ export function determineRoleInteraction(currentRole, suggestedRole) {
 
 const MODIFY_AUTOBLOCK = 'jigglemap/MapEditor/tools/AutoBlock/MODIFY_AUTOBLOCK';
 
-export default createBasicDrawingTool({
+export default createDrawingTool({
   id: 'auto-block-tool',
   name: '',
   description: '',
