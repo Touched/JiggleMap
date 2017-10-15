@@ -120,8 +120,8 @@ export default class BlockPalette extends React.Component {
       const clampedBox = {
         x: Math.max(box.x, 0),
         y: Math.max(box.y, 0),
-        width: Math.min(box.width + box.x, this.props.width - 1) - box.x,
-        height: Math.min(box.height + box.y, this.props.height - 1) - box.y,
+        width: Math.min(box.width + box.x, this.props.width) - box.x,
+        height: Math.min(box.height + box.y, this.props.height) - box.y,
       };
 
       // Don't report selections that are too small
