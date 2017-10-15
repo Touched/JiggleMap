@@ -65,7 +65,7 @@ Object {
     "collision": undefined,
     "entities": undefined,
     "height": undefined,
-    "map": "line-tool",
+    "map": "drag-connection-tool",
   },
   "camera": Object {
     "x": 0,
@@ -75,11 +75,15 @@ Object {
   "linked": false,
   "loading": false,
   "toolState": Object {
-    "line-tool": Object {
-      "clientOffset": null,
-      "currentBlock": 0,
-      "currentPosition": null,
-      "startingPosition": null,
+    "drag-connection-tool": Object {
+      "mouse": Object {
+        "clientOffset": null,
+        "currentBlock": 0,
+        "currentPosition": null,
+        "object": null,
+        "startingPosition": null,
+      },
+      "tool": Object {},
     },
   },
 }

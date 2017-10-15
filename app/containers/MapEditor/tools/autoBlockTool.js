@@ -271,7 +271,7 @@ export default createBasicDrawingTool({
       onChangeAutoBlock={(property, value) => tabDispatch({ type: MODIFY_AUTOBLOCK, property, value })}
     />
   ),
-  buildPatch(object, start, end, previousPatch, event) {
+  buildPatch(object, start, end, event) {
     const autoBlockConfig = event.ctrlKey ? invertAutoBlockConfiguration(autoBlock) : autoBlock;
 
     const width = Math.abs(start.x - end.x) + 1;

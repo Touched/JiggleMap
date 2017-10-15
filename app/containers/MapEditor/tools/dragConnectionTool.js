@@ -15,9 +15,8 @@ export default createDraggingTool({
   handlesType(type) {
     return type === 'connected-map';
   },
-  onDrag(object, position, state, tabDispatch) {
-    const { x, y } = state.dragging.startingPosition;
-    tabDispatch(moveConnection(object.id, position.x - x, position.y - y));
+  onDrag(object, { x: startX, y: startY }, { x: endX, y: endY }, state, tabDispatch) {
+    tabDispatch(moveConnection(object.id, endX - startX, endY - startY));
   },
   onDragEnd(object, tabDispatch) {
     tabDispatch(commitConnectionMove(object.id));

@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import invariant from 'invariant';
-import createDrawingTool from './createDrawingTool';
+import createMouseTool from './createMouseTool';
 import { commitMapEdit, editMap } from '../actions';
 import type { Dispatch, Layer, Message, Object, ReactMouseEvent, MouseTool } from './types';
-import type { Position, CombinedState } from './createDrawingTool';
+import type { Position, MouseToolState } from './createMouseTool';
 
 type Patch = {
   x: number;
@@ -16,7 +16,6 @@ type Patch = {
 };
 
 type State = {
-  previousPatch: Array<Patch>;
 };
 
 type BasicDrawingTool = {
@@ -27,33 +26,35 @@ type BasicDrawingTool = {
   icon: React.Element<*>;
   component: React.ComponentType<any>;
   cursor: string;
-  buildPatch: (object: Object, start: Position, end: Position, previousPatch: Array<Patch>) => Array<Patch>;
+  buildPatch: (object: Object, start: Position, end: Position) => Array<Patch>;
   reducer?: (state: CombinedState<State>, action: Action) => CombinedState<State>;
 };
 
-export default function createBasicDrawingTool(definition: BasicDrawingTool): MouseTool<CombinedState<State>> {
-  return createDrawingTool({
+export default function createBasicDrawingTool(definition: BasicDrawingTool): MouseTool<State> {
+  return createMouseTool({
     ...definition,
+    handlesType(type) {
+      return type === 'main-map';
+    },
     getCursorForObject() {
       return this.cursor;
     },
-    onDrawStart(object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
-      this.onDraw(position, state, tabDispatch, mouseEvent);
+    onMousePress(position: Position, mouseState: MouseToolState, state: State, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
+      this.onMouse(position, mouseState, state, tabDispatch, mouseEvent);
     },
-    onDraw(position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
-      invariant(state.drawing.object, 'onDrawStart did not set the object');
+    onMouse(position: Position, mouseState: MouseToolState, state: State, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
+      invariant(mouseState.object, 'onMousePress did not set the object');
 
       const patch = this.buildPatch(
-        state.drawing.object,
-        state.drawing.startingPosition,
+        mouseState.object,
+        mouseState.startingPosition,
         position,
-        state.tool.previousPatch,
         mouseEvent,
       );
 
       tabDispatch(editMap(patch));
     },
-    onDrawEnd(state: CombinedState<State>, tabDispatch: Dispatch) {
+    onMouseRelease(mouseState: MouseToolState, state: State, tabDispatch: Dispatch) {
       tabDispatch(commitMapEdit());
     },
     reducer: definition.reducer,

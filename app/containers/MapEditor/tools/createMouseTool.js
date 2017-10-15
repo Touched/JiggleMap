@@ -1,14 +1,9 @@
-/* @flow */
-
-import * as React from 'react';
 import { combineReducers } from 'redux';
 import invariant from 'invariant';
 
-import type { Dispatch, Layer, Message, Meta, Object, ReactMouseEvent, MouseTool } from './types';
-
-export const DRAW_START = 'jigglemap/MapEditor/DrawingTool/DRAW_START';
-export const DRAW = 'jigglemap/MapEditor/DrawingTool/DRAW';
-export const DRAW_END = 'jigglemap/MapEditor/DrawingTool/DRAW_END';
+export const MOUSE_PRESS = 'jigglemap/MapEditor/MouseTool/MOUSE_PRESS';
+export const MOUSE = 'jigglemap/MapEditor/MouseTool/MOUSE';
+export const MOUSE_RELEASE = 'jigglemap/MapEditor/MouseTool/MOUSE_RELEASE';
 
 export const initialState = {
   startingPosition: null,
@@ -23,7 +18,7 @@ export type Position = {
   y: number;
 };
 
-export type DrawingToolState = {
+export type MouseToolState = {
   startingPosition: ?Position;
   currentPosition: ?Position;
   clientOffset: ?Position;
@@ -31,30 +26,30 @@ export type DrawingToolState = {
   object: ?Object;
 };
 
-export type DrawStartAction = {
-  type: typeof DRAW_START;
+export type MousePressAction = {
+  type: typeof MOUSE_PRESS;
   clientOffset: Position;
   position: Position;
   object: Object;
 };
 
-export type DrawAction = {
-  type: typeof DRAW;
+export type MouseAction = {
+  type: typeof MOUSE;
   position: Position;
 };
 
-export type DrawEndAction = {
-  type: typeof DRAW_END;
+export type MouseReleaseAction = {
+  type: typeof MOUSE_RELEASE;
 };
 
-export type Action = DrawStartAction | DrawAction | DrawEndAction;
+export type Action = MousePressAction | MouseAction | MouseReleaseAction;
 
 export type CombinedState<State> = {
-  drawing: DrawingToolState;
+  mouse: MouseToolState;
   tool: State;
 };
 
-export type DrawingTool<State> = {
+export type MouseTool<State> = {
   id: string;
   name: Message;
   description: Message;
@@ -62,10 +57,10 @@ export type DrawingTool<State> = {
   icon: React.Element<*>;
   component: React.ComponentType<any>;
   reducer?: (state: CombinedState<State>, action: Action) => CombinedState<State>;
-  getCursorForObject: (object: Object, state: State) => string;
-  onDrawStart: (object: Object, position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
-  onDraw: (position: Position, state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
-  onDrawEnd: (state: CombinedState<State>, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
+  getCursorForObject: (object: Object, mouseState: CombinedState, state: State) => string;
+  onMousePress: (object: Object, position: Position, mouseState: MouseToolState, state: State, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
+  onMouse: (position: Position, mouseState: MouseToolState, state: State, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
+  onMouseRelease: (mouseState: MouseToolState, state: State, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) => void;
 };
 
 function toGridCoordinates(x, y) {
@@ -75,9 +70,9 @@ function toGridCoordinates(x, y) {
   };
 }
 
-function reducer(state: DrawingToolState = initialState, action: Action): DrawingToolState {
+function reducer(state: MouseToolState = initialState, action: Action): MouseToolState {
   switch (action.type) {
-    case DRAW_START:
+    case MOUSE_PRESS:
       return {
         ...state,
         clientOffset: action.clientOffset,
@@ -85,12 +80,12 @@ function reducer(state: DrawingToolState = initialState, action: Action): Drawin
         currentPosition: action.position,
         object: action.object,
       };
-    case DRAW:
+    case MOUSE:
       return {
         ...state,
         currentPosition: action.position,
       };
-    case DRAW_END:
+    case MOUSE_RELEASE:
       return {
         ...state,
         startingPosition: null,
@@ -101,25 +96,31 @@ function reducer(state: DrawingToolState = initialState, action: Action): Drawin
   }
 }
 
-export default function createDrawingTool<T: Object>(definition: DrawingTool<T>): MouseTool<CombinedState<T>> {
+export default function createMouseTool(definition): MouseTool<CombinedState<State>> {
   type State = CombinedState<T>;
 
   const combinedReducer = combineReducers({
-    drawing: reducer,
+    mouse: reducer,
     tool: definition.reducer || ((state = {}) => state),
   });
 
   return {
     ...definition,
     type: 'mouse',
-    getCursorForObject: (object) => object.type === 'main-map' ? definition.getCursorForObject(object) : 'auto',
+    getCursorForObject(object, state) {
+      if (this.handlesType(object.type)) {
+        return definition.getCursorForObject(object, state.mouse, state.tool);
+      }
+
+      return 'auto';
+    },
     onMouseDown(object: Object, state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
-      if (object.type === 'main-map') {
+      if (this.handlesType(object.type)) {
         const { nativeEvent: { offsetX, offsetY }, clientX, clientY } = mouseEvent;
         const position = toGridCoordinates(offsetX, offsetY);
 
         tabDispatch({
-          type: DRAW_START,
+          type: MOUSE_PRESS,
           clientOffset: {
             x: (clientX / meta.zoomLevel) - offsetX,
             y: (clientY / meta.zoomLevel) - offsetY,
@@ -128,20 +129,17 @@ export default function createDrawingTool<T: Object>(definition: DrawingTool<T>)
           object,
         });
 
-        const updatedState = {
-          ...state,
-          drawing: {
-            ...state.drawing,
-            startingPosition: position,
-          },
+        const mouseState = {
+          ...state.mouse,
+          startingPosition: position,
         };
 
-        this.onDrawStart(position, updatedState, tabDispatch, mouseEvent);
+        this.onMousePress(position, mouseState, state.tool, tabDispatch, mouseEvent);
       }
     },
     onMouseMove(state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
-      if (state.drawing.startingPosition) {
-        const { clientOffset, currentPosition } = state.drawing;
+      if (state.mouse.startingPosition) {
+        const { clientOffset, currentPosition } = state.mouse;
 
         invariant(clientOffset, 'mousedown event did not set the clientOffset');
         invariant(currentPosition, 'mousedown event did not set the currentPosition');
@@ -152,21 +150,21 @@ export default function createDrawingTool<T: Object>(definition: DrawingTool<T>)
 
         if (currentPosition.x !== position.x || currentPosition.y !== position.y) {
           tabDispatch({
-            type: DRAW,
+            type: MOUSE,
             position,
           });
 
-          this.onDraw(position, state, tabDispatch, mouseEvent);
+          this.onMouse(position, state.mouse, state.tool, tabDispatch, mouseEvent);
         }
       }
     },
     onMouseUp(state: State, meta: Meta, tabDispatch: Dispatch, mouseEvent: ReactMouseEvent) {
-      if (state.drawing.startingPosition) {
+      if (state.mouse.startingPosition) {
         tabDispatch({
-          type: DRAW_END,
+          type: MOUSE_RELEASE,
         });
 
-        this.onDrawEnd(state, tabDispatch, mouseEvent);
+        this.onMouseRelease(state.mouse, state.tool, tabDispatch, mouseEvent);
       }
     },
     reducer: combinedReducer,

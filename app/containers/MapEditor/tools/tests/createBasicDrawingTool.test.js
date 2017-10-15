@@ -14,30 +14,28 @@ describe('createBasicDrawingTool', () => {
   });
 
   it('sets the cursor for the main map', () => {
-    expect(tool.getCursorForObject({ type: 'main-map' })).toEqual('pointer');
-    expect(tool.getCursorForObject({ type: 'other' })).toEqual('auto');
+    expect(tool.getCursorForObject({ type: 'main-map' }, {})).toEqual('pointer');
+    expect(tool.getCursorForObject({ type: 'other' }, {})).toEqual('auto');
   });
 
-  it('calls onDraw on draw start (starts drawing immediately when the mouse button is pressed)', () => {
+  it('calls onMouse on draw start (starts drawing immediately when the mouse button is pressed)', () => {
     const dispatch = jest.fn();
     const object = {};
     const event = {};
     const state = {
-      drawing: {
+      mouse: {
         startingPosition: { x: 5, y: 4 },
         object,
       },
-      tool: {
-        previousPatch: [],
-      },
+      tool: {},
     };
     const position = {};
 
-    jest.spyOn(tool, 'onDraw');
+    jest.spyOn(tool, 'onMouse');
 
-    tool.onDrawStart(object, position, state, dispatch, event);
+    tool.onMousePress(position, state.mouse, state.tool, dispatch, event);
 
-    expect(tool.onDraw).toHaveBeenCalledWith(position, state, dispatch, event);
+    expect(tool.onMouse).toHaveBeenCalledWith(position, state.mouse, state.tool, dispatch, event);
   });
 
   it('calls EDIT_MAP with the result of calling buildPatch on draw', () => {
@@ -45,21 +43,18 @@ describe('createBasicDrawingTool', () => {
     const end = { x: 7, y: 9 };
     const dispatch = jest.fn();
     const object = {};
-    const previousPatch = [{ x: 5, y: 10, block: 7 }];
     const event = {};
     const state = {
-      drawing: {
+      mouse: {
         startingPosition: start,
         object,
       },
-      tool: {
-        previousPatch,
-      },
+      tool: {},
     };
 
-    tool.onDraw(end, state, dispatch, event);
+    tool.onMouse(end, state.mouse, state.tool, dispatch, event);
 
-    expect(tool.buildPatch).toHaveBeenLastCalledWith(object, start, end, previousPatch, event);
+    expect(tool.buildPatch).toHaveBeenLastCalledWith(object, start, end, event);
     expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({
       type: EDIT_MAP,
       patch: [{
@@ -74,7 +69,7 @@ describe('createBasicDrawingTool', () => {
 
   it('dispatches a COMMIT_MAP_EDIT when the draw is completed', () => {
     const dispatch = jest.fn();
-    tool.onDrawEnd({}, dispatch);
+    tool.onMouseRelease({}, {}, dispatch);
 
     expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({
       type: COMMIT_MAP_EDIT,

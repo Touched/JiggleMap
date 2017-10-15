@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createDrawingTool reducer sets the intial state 1`] = `
+exports[`createMouseTool reducer sets the intial state 1`] = `
 Object {
-  "drawing": Object {
+  "mouse": Object {
     "clientOffset": null,
     "currentBlock": 0,
     "currentPosition": null,
@@ -15,9 +15,9 @@ Object {
 }
 `;
 
-exports[`createDrawingTool reducer sets the intial state 2`] = `
+exports[`createMouseTool reducer sets the intial state 2`] = `
 Object {
-  "drawing": Object {
+  "mouse": Object {
     "clientOffset": null,
     "currentBlock": 0,
     "currentPosition": null,
