@@ -8,6 +8,7 @@ import RedoIcon from 'mdi-react/RedoIcon';
 import lineTool from './lineTool';
 import autoBlockTool from './autoBlockTool';
 import dragConnectionTool from './dragConnectionTool';
+import pointerTool from './pointerTool';
 
 const undoTool = {
   id: 'undo-tool',
@@ -30,6 +31,7 @@ const redoTool = {
 };
 
 export default [
+  pointerTool,
   dragConnectionTool,
   lineTool,
   autoBlockTool,

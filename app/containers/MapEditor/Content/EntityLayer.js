@@ -5,7 +5,6 @@ import { Group } from 'components/Renderer';
 import connectTab from 'containers/EditorTabs/connectTab';
 import { makeSelectMainMapEntities } from '../selectors/mapSelectors';
 import { makeSelectActiveLayer } from '../selectors/editingSelectors';
-import { moveEntity, commitEntityMove } from '../actions';
 
 import Entity from './Entity';
 import type { EntityType } from './Entity';
@@ -13,8 +12,6 @@ import type { EntityType } from './Entity';
 export class EntityLayer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   props: {
     entities: Array<EntityType>;
-    moveEntity: Function;
-    commitEntityMove: Function;
     activeLayer: string;
   };
 
@@ -25,8 +22,6 @@ export class EntityLayer extends React.PureComponent { // eslint-disable-line re
           <Entity
             key={entity.id}
             entity={entity}
-            onDrag={(start, end) => this.props.moveEntity(entity.id, end.x - start.x, end.y - start.y)}
-            onDragEnd={() => this.props.commitEntityMove(entity.id)}
           />
         ))}
       </Group>
@@ -39,15 +34,4 @@ const mapTabStateToProps = createStructuredSelector({
   activeLayer: makeSelectActiveLayer(),
 });
 
-function mapTabDispatchToProps(tabDispatch) {
-  return {
-    moveEntity(id, x, y) {
-      tabDispatch(moveEntity(id, x, y));
-    },
-    commitEntityMove(id) {
-      tabDispatch(commitEntityMove(id));
-    },
-  };
-}
-
-export default connectTab(null, mapTabStateToProps, null, mapTabDispatchToProps)(EntityLayer);
+export default connectTab(null, mapTabStateToProps, null, null)(EntityLayer);

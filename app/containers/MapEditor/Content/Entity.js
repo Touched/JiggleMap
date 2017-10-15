@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Group, Icon, svgPathToMesh } from 'components/Renderer';
 
+import ToolHitBox from './ToolHitBox';
+
 /* eslint-disable react/no-unused-prop-types */
 export type EntityData = {
   type: string;
@@ -54,6 +56,14 @@ export default class Entity extends React.PureComponent { // eslint-disable-line
           height={16}
           color={color}
           mesh={mesh}
+        />
+        <ToolHitBox
+          objectType="entity"
+          x={entity.x * 16}
+          y={entity.y * 16}
+          width={16}
+          height={16}
+          object={entity}
         />
       </Group>
     );

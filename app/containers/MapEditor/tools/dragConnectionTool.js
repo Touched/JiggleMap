@@ -16,10 +16,10 @@ export default createDraggingTool({
     return type === 'connected-map';
   },
   onDrag(object, { x: startX, y: startY }, { x: endX, y: endY }, state, tabDispatch) {
-    tabDispatch(moveConnection(object.id, endX - startX, endY - startY));
+    tabDispatch(moveConnection(object.data.id, endX - startX, endY - startY));
   },
   onDragEnd(object, tabDispatch) {
-    tabDispatch(commitConnectionMove(object.id));
+    tabDispatch(commitConnectionMove(object.data.id));
   },
 });
 

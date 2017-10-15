@@ -283,9 +283,9 @@ export default createDrawingTool({
     }
 
     return drawRectangle(start, end, (x, y, nw, se) => {
-      const rectangleWidth = object.dimensions[0];
+      const rectangleWidth = object.data.dimensions[0];
       const index = (y * rectangleWidth) + x;
-      const oldBlock = object.block[index];
+      const oldBlock = object.data.block[index];
 
       const suggestedRole = getRoleForPoint(x, y, nw, se);
       const currentRole = getRoleForBlock(oldBlock, autoBlockConfig);

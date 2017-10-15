@@ -29,7 +29,7 @@ export class ToolHitBox extends React.PureComponent {
 
     const object = {
       type: objectType,
-      ...objectData,
+      data: objectData,
     };
 
     const style = {
