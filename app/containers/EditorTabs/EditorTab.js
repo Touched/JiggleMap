@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import CloseIcon from 'mdi-react/CloseIcon';
-import AsteriskIcon from 'mdi-react/AsteriskIcon';
+import { Button, Classes } from '@blueprintjs/core';
 
 import nop from 'utils/nop';
 
@@ -53,9 +52,7 @@ export default class EditorTab extends React.PureComponent<*, *> {
         ref={tabRef}
       >
         <div className="EditorTabsBar__tab__label">{title}</div>
-        <button onClick={this.handleClose} className="EditorTabsBar__tab__close">
-          {dirty ? <AsteriskIcon /> : <CloseIcon />}
-        </button>
+        <Button onClick={this.handleClose} iconName={dirty ? 'asterisk' : 'cross'} className={Classes.MINIMAL} />
       </div>
     );
   }

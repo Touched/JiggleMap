@@ -11,9 +11,16 @@ module.exports = {
     // your custom plugins
   ],
   module: {
-    rules: [
-      // add your custom rules.
-    ],
+    rules: [{
+      test: /\.css$/,
+      loaders: ['style-loader', 'css-loader'],
+    }, {
+      test: /\.scss$/,
+      loaders: ['style-loader', 'css-loader', 'sass-loader'],
+    }, {
+      test: /\.(eot|svg|ttf|woff|woff2)$/,
+      loader: 'file-loader',
+    }],
   },
   resolve: {
     modules: ['app', 'node_modules'],

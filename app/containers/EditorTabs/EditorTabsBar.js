@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { createStructuredSelector } from 'reselect';
 import classNames from 'classnames';
-import TabPlusIcon from 'mdi-react/TabPlusIcon';
+import { Button, Classes } from '@blueprintjs/core';
 
 import { newTab, closeTab, switchTab, reorderTabs } from './actions';
 import makeSelectEditorTabs, { makeSelectEditorTabsActiveIndex } from './selectors';
@@ -202,6 +202,7 @@ export class EditorTabsBar extends React.PureComponent<*, *> {
         onMouseUp={this.handleDragEnd}
         onMouseMove={this.handleDragMove}
         ref={(ref) => { this.ref = ref; }}
+        className="EditorTabsBar__container"
       >
         <CSSTransitionGroup
           transitionName="EditorTabsBar__tab-"
@@ -238,9 +239,11 @@ export class EditorTabsBar extends React.PureComponent<*, *> {
               />
             );
           })}
-          <button onClick={onNewTab} className="EditorTabsBar__add">
-            <TabPlusIcon />
-          </button>
+          <Button
+            onClick={onNewTab}
+            iconName={'add'}
+            className={classNames(Classes.MINIMAL, 'EditorTabsBar__add')}
+          />
         </CSSTransitionGroup>
       </div>
     );
