@@ -18,10 +18,10 @@ export class EntityLayer extends React.PureComponent { // eslint-disable-line re
   render() {
     return (
       <Group>
-        {this.props.activeLayer === 'entities' && this.props.entities.map((entity) => (
+        {this.props.activeLayer === 'entities' && this.props.entities.map((entity, index) => (
           <Entity
             key={entity.id}
-            entity={entity}
+            entity={{ ...entity, index }}
           />
         ))}
       </Group>

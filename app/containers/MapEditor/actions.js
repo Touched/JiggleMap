@@ -16,6 +16,7 @@ import {
   MAP_LOADED,
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
+  MODIFY_ENTIY_PROPS,
   SET_ACTIVE_LAYER,
   SET_ACTIVE_TOOL,
 } from './constants';
@@ -102,6 +103,14 @@ export function commitEntityMove(id) {
   return {
     type: COMMIT_ENTITY_MOVE,
     id,
+  };
+}
+
+export function modifyEntityProps(index, props) {
+  return {
+    type: MODIFY_ENTIY_PROPS,
+    index,
+    props,
   };
 }
 

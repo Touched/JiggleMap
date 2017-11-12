@@ -23,6 +23,7 @@ import {
   MAP_LOADED,
   MOVE_ENTITY,
   COMMIT_ENTITY_MOVE,
+  MODIFY_ENTIY_PROPS,
   SET_ACTIVE_LAYER,
   SET_ACTIVE_TOOL,
 } from './constants';
@@ -248,6 +249,17 @@ export function mapDataReducer(state = initialDataState, action) {
       }
 
       return state;
+    }
+    case MODIFY_ENTIY_PROPS: {
+      const lens = R.lensPath(['entities', action.index]);
+      const state2 = R.over(lens, R.merge(R.__, action.props), state); // eslint-disable-line no-underscore-dangle
+
+      const { x, y } = action.props;
+
+      const lens2 = R.lensPath(['canonicalEntityCoordinates', action.index]);
+      const finalState = R.over(lens2, R.merge(R.__, { x, y }), state2); // eslint-disable-line no-underscore-dangle
+
+      return finalState;
     }
     default:
       return state;

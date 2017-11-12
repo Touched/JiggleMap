@@ -1,21 +1,24 @@
 import React from 'react';
 import CursorDefaultOutlineIcon from 'mdi-react/CursorDefaultOutlineIcon';
 import invariant from 'invariant';
+import { Field, reduxForm } from 'redux-form';
+
+import { modifyEntityProps } from '../actions';
 
 import createMouseTool from './createMouseTool';
 
-function ObjectEntityForm({ id, x, y }: { id: string, x: number, y: number }) {
+function ObjectEntityForm({ handleSubmit }: { handleSubmit: Function }) {
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div>
         Identifier
-        <input value={id} />
+        <Field name="id" component="input" type="text" />
       </div>
       <div>
         x
-        <input value={x} type="number" />
+        <Field name="x" component="input" type="number" min={0} />
         y
-        <input value={y} type="number" />
+        <Field name="y" component="input" type="number" min={0} />
       </div>
     </form>
   );
@@ -26,10 +29,10 @@ function NoForm() {
 }
 
 const entityForms = {
-  object: ObjectEntityForm,
+  object: reduxForm({ form: 'object-entity' })(ObjectEntityForm),
   warp: NoForm,
   interactable: NoForm,
-  tirgger: NoForm,
+  trigger: NoForm,
 };
 
 export default createMouseTool({
@@ -38,16 +41,31 @@ export default createMouseTool({
   description: 'Edit the properties of maps, connections and entities',
   layers: ['map', 'entities'],
   icon: <CursorDefaultOutlineIcon />,
-  component: ({ state }: { state: Object }) => {
+  component: ({ state, tabDispatch }: { state: Object, tabDispatch: Function }) => {
     const { object } = state.mouse;
+
     if (object) {
       if (object.type === 'entity') {
         const Form = entityForms[object.data.type];
 
         invariant(Form, `There is no form configured that can handle an entity of type ${object.data.type}`);
 
-        const { id, x, y, z } = object.data;
-        return React.createElement(Form, { data: object.data.data, x, y, z, id });
+        const { index, id, x, y, z } = object.data;
+        const data = { data: object.data.data, x, y, z, id };
+
+        return React.createElement(Form, {
+          initialValues: data,
+          onChange: (values, dispatch, { submit }) => submit(),
+
+          // Use the entity index as an identifier so that the 'id' property can
+          // still be edited without breaking the updating. If the entities are
+          // to be reordered, there can be a separate 'order' property.
+          onSubmit: (values) => {
+            // FIXME: Convert entity props to correct types (instead of all strings)
+            tabDispatch(modifyEntityProps(index, values));
+          },
+          key: index,
+        });
       }
     }
 

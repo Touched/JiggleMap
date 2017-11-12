@@ -4,6 +4,7 @@
  */
 
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import projectReducer from 'containers/App/reducer';
@@ -18,6 +19,7 @@ export default function createReducer(asyncReducers) {
     editorTabs: combineTabReducers(buildTabReducers()),
     project: projectReducer,
     language: languageProviderReducer,
+    form: formReducer,
     ...asyncReducers,
   });
 }
