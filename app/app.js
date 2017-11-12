@@ -14,6 +14,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 import 'sanitize.css/sanitize.css';
+import '@blueprintjs/core/dist/blueprint.css';
 
 // Import root app
 import App from 'containers/App';

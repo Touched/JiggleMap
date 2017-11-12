@@ -1,12 +1,15 @@
-$sidebarItemSize: 42px;
-$sidebarSize: 64px;
+@import "~@blueprintjs/core/dist/variables";
+
+$sidebarItemSize: 50px;
+$sidebarSize: 55px;
 
 .Sidebar {
-  background: #eee;
   display: flex;
 
   .Sidebar__bar {
-    background: #ccc;
+    background: $dark-gray4;
+    color: $gray3;
+
     width: $sidebarSize;
     display: flex;
     flex-direction: column;
@@ -17,15 +20,95 @@ $sidebarSize: 64px;
   }
 
   .Sidebar__item {
-    padding: ($sidebarSize - $sidebarItemSize) / 2;
+    width: $sidebarItemSize;
+    height: $sidebarItemSize;
 
-    .mdi-icon {
-      width: $sidebarItemSize;
-      height: $sidebarItemSize;
+    &.Sidebar__item--primary {
+      color: $white;
     }
 
-    .Sidebar__item--active {
-
+    &:focus {
+      outline: none;
     }
+
+    &:hover {
+      color: $gray5;
+    }
+
+    &:active {
+      color: $gray1;
+    }
+
+    &.Sidebar__item--active {
+      color: $pt-intent-primary !important;
+      background: $dark-gray3;
+    }
+  }
+}
+
+.SidebarDrawer {
+  position: relative;
+  background: $light-gray4;
+
+  .SidebarDrawer__shadow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+
+    box-shadow: inset -2px 0 0 -1px rgba($black, $pt-border-shadow-opacity),
+                inset -4px 0 6px -3px rgba($black, $pt-drop-shadow-opacity);
+  }
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100vh;
+
+  .SidebarDrawer__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
+
+    &::-webkit-scrollbar {
+      width: 14px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $gray4;
+      border-radius: 7px;
+      border: 3px solid $light-gray4;
+    }
+
+    &::-webkit-scrollbar-track-piece {
+      background-color: $light-gray3;
+      border-radius: 7px;
+      border: 3px solid $light-gray4;
+    }
+  }
+
+  .SidebarDrawer__list__item {
+    padding: 10px;
+    border-bottom: 1px solid $light-gray1;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background: $light-gray5;
+    }
+  }
+
+  .SidebarDrawer__footer {
+    padding: 10px;
+    border-top: 1px solid $light-gray1;
+  }
+
+  .SidebarDrawer__header {
+    padding: 10px;
+    border-bottom: 1px solid $light-gray1;
   }
 }

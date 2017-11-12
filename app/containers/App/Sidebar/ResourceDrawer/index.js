@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+
+import { Drawer } from 'components/Sidebar';
 import { loadTab } from 'containers/EditorTabs/actions';
 
 import { makeSelectResources } from 'containers/App/selectors';
@@ -54,15 +56,35 @@ export class ResourceDrawer extends React.PureComponent { // eslint-disable-line
   };
 
   render() {
-    return (
-      <ul>
-        {this.props.resources.map((resource) => (
-          <li key={resource.id}>
-            <ResourceLink resource={resource} onClick={this.props.openResource} />
-          </li>
-        ))}
-      </ul>
+    // return (
+    //   <ul>
+    //     {this.props.resources.map((resource) => (
+    //       <li key={resource.id}>
+    //         <ResourceLink resource={resource} onClick={this.props.openResource} />
+    //       </li>
+    //     ))}
+    //   </ul>
+    // );
+
+    const header = (
+      <div className="pt-input-group">
+        <span className="pt-icon pt-icon-search"></span>
+        <input className="pt-input" type="search" placeholder="Search&hellip;" dir="auto" />
+      </div>
     );
+
+    const footer = (
+      <div className="pt-button-group">
+        <div className="pt-button pt-intent-success pt-icon-plus">New</div>
+      </div>
+    );
+
+    const onClick = (id) => {
+      const resource = this.props.resources.find((r) => r.id === id);
+      this.props.openResource(resource);
+    };
+
+    return <Drawer header={header} footer={footer} items={this.props.resources} onItemClick={onClick} />;
   }
 }
 

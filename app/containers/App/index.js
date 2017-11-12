@@ -14,8 +14,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import CircleIcon from 'mdi-react/CircleIcon';
-import MapIcon from 'mdi-react/MapIcon';
 
 import { setSidebarItem } from 'containers/App/actions';
 import { makeSelectSidebarItem } from 'containers/App/selectors';
@@ -28,11 +26,12 @@ import './styles.scss';
 
 const sidebarItems = [{
   id: 'main',
-  icon: <CircleIcon />,
+  icon: 'ring',
   component: <MainDrawer />,
+  primary: true,
 }, {
   id: 'maps',
-  icon: <MapIcon />,
+  icon: 'send-to-map',
   component: <ResourceDrawer type="map" />,
 }];
 
@@ -54,14 +53,16 @@ export class App extends React.Component { // eslint-disable-line react/prefer-s
 
     return (
       <div className="HomePage">
-        <EditorTabsBar />
         <div className="HomePage__container">
           <Sidebar
             items={sidebarItems}
             active={sidebarItem}
             setActiveItem={setActiveItem}
           />
-          <EditorTabs routes={tabRoutes} />
+          <div className="HomePage__content">
+            <EditorTabsBar />
+            <EditorTabs routes={tabRoutes} />
+          </div>
         </div>
       </div>
     );
