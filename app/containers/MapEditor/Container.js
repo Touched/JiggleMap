@@ -202,7 +202,7 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
               onToggleLayer={this.props.setActiveLayer}
               onRecenterClick={this.recenterMap}
               activeLayer={this.props.activeLayer}
-              onZoomChanged={({ target }) => this.props.setCameraPosition(camera.x, camera.y, target.value)}
+              onZoomChanged={(v) => this.props.setCameraPosition(camera.x, camera.y, v)}
             />
           </div>
           <div // eslint-disable-line jsx-a11y/no-static-element-interactions

@@ -1,7 +1,6 @@
 /* @flow */
 
 import React from 'react';
-import VectorLineIcon from 'mdi-react/VectorLineIcon';
 import invariant from 'invariant';
 
 import messages from './messages';
@@ -77,7 +76,7 @@ export default {
   name: messages.lineToolName,
   description: messages.lineToolDescription,
   layers: ['map'],
-  icon: <VectorLineIcon />,
+  icon: 'dot',
   component: ({ tabDispatch }: { tabDispatch: Dispatch }) => (
     <BlockPicker onChange={(block) => tabDispatch(setBlock(block))} />
   ),

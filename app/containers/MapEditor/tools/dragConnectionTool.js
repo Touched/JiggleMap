@@ -1,16 +1,12 @@
-import React from 'react';
-import CursorMoveIcon from 'mdi-react/CursorMoveIcon';
-
 import createDraggingTool from './createDraggingTool';
 import { moveConnection, commitConnectionMove } from '../actions';
-
 
 export default createDraggingTool({
   id: 'drag-connection-tool',
   name: 'Drag',
   description: '',
   layers: ['map'],
-  icon: <CursorMoveIcon />,
+  icon: 'hand',
   component: null,
   handlesType(type) {
     return type === 'connected-map';

@@ -1,5 +1,4 @@
 import React from 'react';
-import CursorDefaultOutlineIcon from 'mdi-react/CursorDefaultOutlineIcon';
 import invariant from 'invariant';
 import { Field, reduxForm } from 'redux-form';
 
@@ -40,7 +39,7 @@ export default createMouseTool({
   name: 'Pointer',
   description: 'Edit the properties of maps, connections and entities',
   layers: ['map', 'entities'],
-  icon: <CursorDefaultOutlineIcon />,
+  icon: 'hand-up',
   component: ({ state, tabDispatch }: { state: Object, tabDispatch: Function }) => {
     const { object } = state.mouse;
 

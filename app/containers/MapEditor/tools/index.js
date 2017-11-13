@@ -1,9 +1,6 @@
 /* @flow */
 
-import React from 'react';
 import { ActionCreators } from 'redux-undo';
-import UndoIcon from 'mdi-react/UndoIcon';
-import RedoIcon from 'mdi-react/RedoIcon';
 
 import lineTool from './lineTool';
 import autoBlockTool from './autoBlockTool';
@@ -16,7 +13,7 @@ const undoTool = {
   name: 'Undo',
   description: '',
   layers: ['map', 'collision', 'height', 'entities'],
-  icon: <UndoIcon />,
+  icon: 'undo',
   action: ActionCreators.undo,
 };
 
@@ -26,7 +23,7 @@ const redoTool = {
   name: 'Redo',
   description: '',
   layers: ['map', 'collision', 'height', 'entities'],
-  icon: <RedoIcon />,
+  icon: 'redo',
   action: ActionCreators.redo,
 };
 

@@ -1,10 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
-import MapIcon from 'mdi-react/MapIcon';
-import ImageFilterHdrIcon from 'mdi-react/ImageFilterHdrIcon';
-import ArrowCompressIcon from 'mdi-react/ArrowCompressIcon';
-import NaturePeopleIcon from 'mdi-react/NaturePeopleIcon';
-import ImageFilterCenterFocusIcon from 'mdi-react/ImageFilterCenterFocusIcon';
+import { Button, Tooltip, Intent, Position } from '@blueprintjs/core';
 
 type Props = {
   onToggleLayer: (string) => void,
@@ -18,16 +13,20 @@ type Props = {
 
 const LAYERS = [{
   id: 'map',
-  icon: <MapIcon />,
+  icon: 'path-search',
+  name: 'Map',
 }, {
   id: 'height',
-  icon: <ImageFilterHdrIcon />,
+  icon: 'trending-up',
+  name: 'Height',
 }, {
   id: 'collision',
-  icon: <ArrowCompressIcon />,
+  icon: 'walk',
+  name: 'Collision',
 }, {
   id: 'entities',
-  icon: <NaturePeopleIcon />,
+  icon: 'lightbulb',
+  name: 'Entities',
 }];
 
 export default function MapControls(props: Props) {
@@ -35,19 +34,47 @@ export default function MapControls(props: Props) {
 
   return (
     <div className="MapEditor__OverlayBox MapControls">
-      <div className="MapControls__LayerControls">
+      <div className="MapControls__LayerControls pt-button-group">
         {LAYERS.map((layer) => (
-          <button
-            className={classNames({ active: activeLayer === layer.id })}
-            onClick={() => onToggleLayer(layer.id)}
-          >
-            {layer.icon}
-          </button>
+          <Tooltip key={layer.id} content={layer.name} position={Position.TOP}>
+            <Button
+              intent={activeLayer === layer.id ? Intent.PRIMARY : Intent.NONE}
+              onClick={() => onToggleLayer(layer.id)}
+              iconName={layer.icon}
+            />
+          </Tooltip>
         ))}
       </div>
-      <div className="MapControls__CameraControls">
-        <input type="range" onChange={onZoomChanged} min={zoomMin} max={zoomMax} value={zoom} step={0.01} />
-        <button onClick={onRecenterClick}><ImageFilterCenterFocusIcon /></button>
+      <div className="MapControls__box">
+        <div className="MapControls__CameraControls">
+          <div className="pt-button-group pt-vertical">
+            <Tooltip content={'Recenter'} position={Position.LEFT}>
+              <Button
+                onClick={onRecenterClick}
+                iconName="locate"
+              />
+            </Tooltip>
+            <Tooltip content={'Reset Zoom'} position={Position.LEFT}>
+              <Button
+                onClick={() => onZoomChanged(1)}
+                iconName="zoom-to-fit"
+              />
+            </Tooltip>
+            <Tooltip content={'Zoom Out'} position={Position.LEFT}>
+              <Button
+                onClick={() => onZoomChanged(Math.max(zoomMin, zoom - 0.1))}
+                iconName="zoom-out"
+              />
+            </Tooltip>
+            <Tooltip content={'Zoom In'} position={Position.LEFT}>
+              <Button
+                onClick={() => onZoomChanged(Math.min(zoomMax, zoom + 0.1))}
+                iconName="zoom-in"
+              />
+            </Tooltip>
+          </div>
+        </div>
+        <div className="MapControls__MiniMap" />
       </div>
     </div>
   );

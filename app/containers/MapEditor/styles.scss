@@ -1,4 +1,4 @@
-$overlayPadding: 10px;
+$overlayPadding: 15px;
 $iconHeight: 42px;
 
 .MapEditor {
@@ -34,70 +34,46 @@ $iconHeight: 42px;
 
   .MapEditor__OverlayBox {
     pointer-events: all;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
-    background: white;
-    border-radius: 3px;
-    padding: 0.5em;
-
-    button {
-      width: $iconHeight;
-      height: $iconHeight;
-      border-radius: 100%;
-      margin: 3px;
-      transition: 0.25s background ease-in;
-
-      &.active, &.active:hover, &.active:active {
-        background: #009788;
-      }
-
-      &:hover {
-        background: #ccc;
-      }
-
-      &:focus {
-        outline: none;
-      }
-
-      &:active {
-        background: #aaa;
-      }
-    }
   }
 
   .ToolBox {
     margin: 0 auto auto auto;
-
-    .ToolBox__separator {
-      width: 1px;
-      height: $iconHeight;
-      display: inline-block;
-      vertical-align: middle;
-      margin: 0 5px;
-      background: #ccc;
-    }
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
   }
+}
 
-  .ToolControls {
-    background: #ccc;
+.MapControls {
+  display: inline-flex;
+  margin-left: auto;
+  align-self: flex-end;
+
+  .MapControls__box {
     display: flex;
-    width: 200px;
+    flex-direction: column;
+    align-items: flex-end;
   }
 
-  .MapControls {
-    margin-left: auto;
+  .MapControls__LayerControls {
+    display: inline;
+    justify-content: center;
+    margin-right: 15px;
     align-self: flex-end;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+  }
 
-    input[type="range"] {
-      line-height: $iconHeight;
-      vertical-align: middle;
-      margin: 0.5em;
-    }
+  .MapControls__MiniMap {
+    width: 200px;
+    height: 125px;
+    background: #333;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+  }
 
-    .MapControls__LayerControls {
-      display: flex;
-      justify-content: center;
-    }
-
-    .MapControls__CameraControls {}
+  .MapControls__CameraControls {
+    margin-bottom: 15px;
+    display: inline;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
   }
 }

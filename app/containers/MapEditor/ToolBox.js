@@ -1,6 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
 import R from 'ramda';
+import { Button, Classes, Intent, Tooltip, Position } from '@blueprintjs/core';
 
 import allTools from './tools';
 import { setActiveTool } from './actions';
@@ -63,15 +63,27 @@ export default function ToolBox(props: Props) {
   const activeToolId = props.selectedTool && props.selectedTool.id;
 
   return (
-    <div className="MapEditor__OverlayBox ToolBox">
-      {allowedTools.map((tool) => tool.type === 'separator' ? <div className="ToolBox__separator" /> : (
-        <button
-          className={classNames({ active: activeToolId === tool.id })}
-          onClick={() => handleToolClick(tool, tabDispatch)}
-        >
-          {tool.icon}
-        </button>
-      ))}
+    <div className="MapEditor__OverlayBox ToolBox pt-button-group">
+      {allowedTools.map((tool) => {
+        const tooltip = (
+          <div>
+            <strong>{tool.name}</strong>
+            <div>{tool.description}</div>
+          </div>
+        );
+
+        return tool.type === 'separator' ? <div className="ToolBox__separator" /> : (
+          <Tooltip key={tool.id} content={tooltip} position={Position.BOTTOM}>
+            <Button
+              iconName={tool.icon}
+              className={Classes.LARGE}
+              intent={activeToolId === tool.id ? Intent.PRIMARY : Intent.NONE}
+              onClick={() => handleToolClick(tool, tabDispatch)}
+            />
+          </Tooltip>
+        );
+      })}
     </div>
   );
 }
+

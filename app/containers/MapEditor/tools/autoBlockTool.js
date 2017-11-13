@@ -1,5 +1,4 @@
 import React from 'react';
-import EyeIcon from 'mdi-react/EyeIcon';
 import createDrawingTool from './createDrawingTool';
 import AutoBlockCreator from './AutoBlockCreator';
 
@@ -263,7 +262,7 @@ export default createDrawingTool({
   name: '',
   description: '',
   layers: ['map'],
-  icon: <EyeIcon />,
+  icon: 'predictive-analysis',
   cursor: 'pointer',
   component: ({ tabDispatch, state }: { tabDispatch: Dispatch, state: { tool: Object } }) => ( // eslint-disable-line react/no-unused-prop-types
     <AutoBlockCreator
