@@ -1,0 +1,128 @@
+@import "~@blueprintjs/core/dist/variables";
+
+@mixin divider {
+  border-bottom: 1px solid $light-gray2;
+}
+
+// TODO: Move into separate file
+@mixin scrollbar($background-color, $thumb-color, $track-color) {
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb-color;
+    border-radius: 7px;
+    border: 3px solid $background-color;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background-color: $track-color;
+    border-radius: 7px;
+    border: 3px solid $background-color;
+  }
+}
+
+.sidebar {
+  box-shadow: $pt-elevation-shadow-0;
+  background: $light-gray5;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; // FIXME
+}
+
+.header {
+  @include divider;
+
+  padding: 0 10px;
+  line-height: 50px;
+  min-height: 50px;
+  flex-grow: 1;
+
+  color: $gray1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.headerTitle {
+  flex-grow: 1;
+}
+
+.headerButton {
+  height: 30px;
+  margin: 10px 0;
+}
+
+.content {
+  padding: 0 10px 5px 10px;
+  flex-grow: 1;
+  overflow-y: auto;
+
+  :global(.pt-popover-target) {
+    display: initial;
+  }
+
+  @include scrollbar($light-gray5, $gray5, $light-gray3);
+}
+
+.selectionButton {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  div {
+    text-align: left;
+    flex-grow: 1;
+  }
+}
+
+.sectionHeading {
+  color: $gray1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 12px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.section:not(:last-child)::after {
+  display: block;
+  content: '';
+
+  @include divider;
+  margin-bottom: 10px;
+}
+
+// Numeric
+:global(.pt-icon-x-variable)::before {
+  content: "\1d465";
+}
+
+:global(.pt-icon-y-variable)::before {
+  content: "\1d466";
+}
+
+:global(.pt-icon-z-variable)::before {
+  content: "\1d467";
+}
+
+.inlineControl {
+  margin: 0 5px;
+  flex-grow: 1;
+}
+
+.image {
+  margin-bottom: 5px;
+}
+
+:global(.pt-select-popover) :global(.pt-menu) {
+  max-width: 400px;
+  max-height: 300px;
+  overflow: auto;
+}
