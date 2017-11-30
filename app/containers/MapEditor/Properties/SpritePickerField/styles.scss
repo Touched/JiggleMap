@@ -1,0 +1,59 @@
+@import "~@blueprintjs/core/dist/variables";
+@import "styles/mixins.scss";
+
+.spritePicker {
+  display: inline-block;
+  width: 48px * 6 + 10px * 2 + $scrollbar-width;
+}
+
+.categories {
+  padding: 0 10px;
+  border-bottom: 1px solid $light-gray2;
+}
+
+.search {
+  padding: 5px;
+}
+
+.list {
+  @include scrollbar($white, $gray5, $light-gray3);
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  padding: 0 10px;
+  padding-bottom: 10px;
+  max-height: 270px;
+}
+
+.heading {
+  background: $white;
+  color: $gray1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 12px;
+  padding: 5px 0;
+  width: 100%;
+  position: sticky;
+  top: 0;
+}
+
+.footer {
+  border-top: 1px solid $light-gray2;
+  padding: 10px;
+  display: flex;
+}
+
+.footerDetails {
+  flex-grow: 1;
+  padding-left: 10px;
+}
+
+.footerLabel {
+  font-weight: 600;
+}
+
+.footerId {
+  float: right;
+  font-size: 12px;
+}

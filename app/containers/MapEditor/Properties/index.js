@@ -115,6 +115,7 @@ function SectionComponent({ name, children }: { name: string, children: React.El
 export const Section = pure(SectionComponent);
 
 export { default as Row } from './Row';
+export { default as SpritePickerField } from './SpritePickerField';
 export { Field } from 'redux-form';
 
 export class Panel extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function

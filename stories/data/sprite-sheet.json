@@ -1,0 +1,1654 @@
+[
+  {
+    "category": "people",
+    "id": "norman",
+    "name": "Norman",
+    "description": "The player's father and the Gym Leader of Petalburg City's Gym",
+    "x": "0",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "liza",
+    "x": "128",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "running-triathlete-m",
+    "x": "256",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "man-4",
+    "x": "384",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "gentleman",
+    "x": "512",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "boy-5",
+    "x": "640",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-3",
+    "x": "768",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "cycling-triathlete-m",
+    "x": "896",
+    "y": "0",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "maxie",
+    "x": "1024",
+    "y": "0",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "quinty-plump",
+    "x": "0",
+    "y": "128",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "beauty",
+    "x": "128",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "brawly",
+    "x": "256",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "girl-2",
+    "x": "384",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "old-woman-1",
+    "x": "512",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "reporter-m",
+    "x": "640",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "reporter-f",
+    "x": "768",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "boy-4",
+    "x": "896",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "rooftop-sale-woman",
+    "x": "1024",
+    "y": "128",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "little-boy-1",
+    "x": "0",
+    "y": "256",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "people",
+    "id": "picnicker",
+    "x": "128",
+    "y": "256",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "girl-3",
+    "x": "256",
+    "y": "256",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-1",
+    "x": "384",
+    "y": "256",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "cameraman",
+    "x": "512",
+    "y": "256",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "tuber-m",
+    "x": "640",
+    "y": "256",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "people",
+    "id": "man-3",
+    "x": "768",
+    "y": "256",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "camper",
+    "x": "896",
+    "y": "256",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-4",
+    "x": "1024",
+    "y": "256",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "lass",
+    "x": "0",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-5",
+    "x": "128",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "glacia",
+    "x": "256",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "wally",
+    "x": "384",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "wallace",
+    "x": "512",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "scientist-2",
+    "x": "640",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "bug-catcher",
+    "x": "768",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "man-6",
+    "x": "896",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "contest-judge",
+    "x": "1024",
+    "y": "384",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "tuber-m-swimming",
+    "x": "0",
+    "y": "512",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "people",
+    "id": "magma-member-f",
+    "x": "128",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "old-woman-2",
+    "x": "256",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "scientist-1",
+    "x": "384",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "teala",
+    "x": "512",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-6",
+    "x": "640",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "roxanne",
+    "x": "768",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "youngster",
+    "x": "896",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "aqua-member-m",
+    "x": "1024",
+    "y": "512",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "boy-2",
+    "x": "0",
+    "y": "640",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "phoebe",
+    "x": "128",
+    "y": "640",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "maniac",
+    "x": "256",
+    "y": "640",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "man-5",
+    "x": "384",
+    "y": "640",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "little-girl-2",
+    "x": "512",
+    "y": "640",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "people",
+    "id": "drake",
+    "x": "640",
+    "y": "640",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "little-boy-2",
+    "x": "768",
+    "y": "640",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "people",
+    "id": "psychic-m",
+    "x": "896",
+    "y": "640",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "girl-1",
+    "x": "1024",
+    "y": "640",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "hiker",
+    "x": "0",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "aqua-member-f",
+    "x": "128",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "hex-maniac",
+    "x": "256",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "wattson",
+    "x": "384",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "mart-employee",
+    "x": "512",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "school-kid-m",
+    "x": "640",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "running-triathlete-f",
+    "x": "768",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-8",
+    "x": "896",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-2",
+    "x": "1024",
+    "y": "768",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "flannery",
+    "x": "0",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "old-man-1",
+    "x": "128",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "cook",
+    "x": "256",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "magma-member-m",
+    "x": "384",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "black-belt",
+    "x": "512",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "tate",
+    "x": "640",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "prof-birch",
+    "x": "768",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "winona",
+    "x": "896",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "hot-springs-old-woman",
+    "x": "1024",
+    "y": "896",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "mauville-old-man-1",
+    "x": "0",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "mauville-old-man-2",
+    "x": "128",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "boy-3",
+    "x": "256",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "fat-man",
+    "x": "384",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "boy-1",
+    "x": "512",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "nurse",
+    "x": "640",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "sidney",
+    "x": "768",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "woman-7",
+    "x": "896",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "man-2",
+    "x": "1024",
+    "y": "1024",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "man-1",
+    "x": "0",
+    "y": "1152",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "old-man-2",
+    "x": "128",
+    "y": "1152",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "sailor",
+    "x": "256",
+    "y": "1152",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "little-boy-3",
+    "x": "384",
+    "y": "1152",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "people",
+    "id": "mom",
+    "x": "512",
+    "y": "1152",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "little-girl-1",
+    "x": "640",
+    "y": "1152",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "cycling-triathlete-f",
+    "x": "768",
+    "y": "1152",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "man-7",
+    "x": "896",
+    "y": "1152",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "swimmer-m",
+    "x": "1024",
+    "y": "1152",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "fisherman",
+    "x": "0",
+    "y": "1280",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "steven",
+    "x": "128",
+    "y": "1280",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "artist",
+    "x": "256",
+    "y": "1280",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "tuber-f",
+    "x": "384",
+    "y": "1280",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "people",
+    "id": "archie",
+    "x": "512",
+    "y": "1280",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "people",
+    "id": "swimmer-f",
+    "x": "640",
+    "y": "1280",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "cushions",
+    "id": "water-cushion",
+    "x": "768",
+    "y": "1280",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "ball-cushion",
+    "x": "896",
+    "y": "1280",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "zigzag-cushion",
+    "x": "1024",
+    "y": "1280",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "pika-cushion",
+    "x": "0",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "diamond-cushion",
+    "x": "128",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "spin-cushion",
+    "x": "256",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "grass-cushion",
+    "x": "384",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "round-cushion",
+    "x": "512",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "kiss-cushion",
+    "x": "640",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "cushions",
+    "id": "fire-cushion",
+    "x": "768",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "berry-trees",
+    "id": "wepear",
+    "x": "896",
+    "y": "1408",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "dirt-pile",
+    "x": "1024",
+    "y": "1408",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "berry-trees",
+    "id": "pamtre",
+    "x": "0",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "hondew",
+    "x": "128",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "kelpsy",
+    "x": "256",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "lansat",
+    "x": "384",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "rabuta",
+    "x": "512",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "mago",
+    "x": "640",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "nomel",
+    "x": "768",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "cornn",
+    "x": "896",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "razz",
+    "x": "1024",
+    "y": "1536",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "sprout",
+    "x": "0",
+    "y": "1664",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "berry-trees",
+    "id": "liechi",
+    "x": "128",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "persim",
+    "x": "256",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "wiki",
+    "x": "384",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "lum",
+    "x": "512",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "iapapa",
+    "x": "640",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "rawst",
+    "x": "768",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "tamato",
+    "x": "896",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "figy",
+    "x": "1024",
+    "y": "1664",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "chesto",
+    "x": "0",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "durin",
+    "x": "128",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "cheri",
+    "x": "256",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "pecha",
+    "x": "384",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "aguav",
+    "x": "512",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "sitrus",
+    "x": "640",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "leppa",
+    "x": "768",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "aspear",
+    "x": "896",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "grepa",
+    "x": "1024",
+    "y": "1792",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "spelon",
+    "x": "0",
+    "y": "1920",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "oran",
+    "x": "128",
+    "y": "1920",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "berry-trees",
+    "id": "pomeg",
+    "x": "256",
+    "y": "1920",
+    "width": "16",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "poochyena",
+    "x": "384",
+    "y": "1920",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "kecleon",
+    "x": "512",
+    "y": "1920",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "pokemon",
+    "id": "groudon",
+    "x": "640",
+    "y": "1920",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "kyogre",
+    "x": "768",
+    "y": "1920",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "pikachu",
+    "x": "896",
+    "y": "1920",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "pokemon",
+    "id": "wingull",
+    "x": "1024",
+    "y": "1920",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "pokemon",
+    "id": "machoke-carrying-box",
+    "x": "0",
+    "y": "2048",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "azumarill",
+    "x": "128",
+    "y": "2048",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "pokemon",
+    "id": "machoke-facing-away",
+    "x": "256",
+    "y": "2048",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "rayquaza",
+    "x": "384",
+    "y": "2048",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "latias-latios",
+    "x": "512",
+    "y": "2048",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "zigzagoon",
+    "x": "640",
+    "y": "2048",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "pokemon",
+    "id": "azurill",
+    "x": "768",
+    "y": "2048",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "pokemon",
+    "id": "regi",
+    "x": "896",
+    "y": "2048",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "pokemon",
+    "id": "skitty",
+    "x": "1024",
+    "y": "2048",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "lotad-doll",
+    "x": "0",
+    "y": "2176",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-lapras-doll",
+    "x": "128",
+    "y": "2176",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "big-venusaur-doll",
+    "x": "256",
+    "y": "2176",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "smoochum-doll",
+    "x": "384",
+    "y": "2176",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "unused-squirtle-doll",
+    "x": "512",
+    "y": "2176",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "mudkip-doll",
+    "x": "640",
+    "y": "2176",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "azurill-doll",
+    "x": "768",
+    "y": "2176",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "wynaut-doll",
+    "x": "896",
+    "y": "2176",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "pichu-doll",
+    "x": "1024",
+    "y": "2176",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "unused-pikachu-doll",
+    "x": "0",
+    "y": "2304",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-rhydon-doll",
+    "x": "128",
+    "y": "2304",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "totodile-doll",
+    "x": "256",
+    "y": "2304",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-charizard-doll",
+    "x": "384",
+    "y": "2304",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "gulpin-doll",
+    "x": "512",
+    "y": "2304",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "duskull-doll",
+    "x": "640",
+    "y": "2304",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "togepi-doll",
+    "x": "768",
+    "y": "2304",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "unused-porygon2-doll",
+    "x": "896",
+    "y": "2304",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "unused-natu-doll",
+    "x": "1024",
+    "y": "2304",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "swablu-doll",
+    "x": "0",
+    "y": "2432",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-registeel-doll",
+    "x": "128",
+    "y": "2432",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "unused-wooper-doll",
+    "x": "256",
+    "y": "2432",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "skitty-doll",
+    "x": "384",
+    "y": "2432",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "kecleon-doll",
+    "x": "512",
+    "y": "2432",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-regice-doll",
+    "x": "640",
+    "y": "2432",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "big-wailmer-doll",
+    "x": "768",
+    "y": "2432",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "unused-magnemite-doll",
+    "x": "896",
+    "y": "2432",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "torchic-doll",
+    "x": "1024",
+    "y": "2432",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "cyndaquil-doll",
+    "x": "0",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "pikachu-doll",
+    "x": "128",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "seedot-doll",
+    "x": "256",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "treecko-doll",
+    "x": "384",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-snorlax-doll",
+    "x": "512",
+    "y": "2560",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "baltoy-doll",
+    "x": "640",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "chikorita-doll",
+    "x": "768",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "meowth-doll",
+    "x": "896",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "ditto-doll",
+    "x": "1024",
+    "y": "2560",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "jigglypuff-doll",
+    "x": "0",
+    "y": "2688",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-regirock-doll",
+    "x": "128",
+    "y": "2688",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "clefairy-doll",
+    "x": "256",
+    "y": "2688",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "dolls",
+    "id": "big-blastoise-doll",
+    "x": "384",
+    "y": "2688",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "dolls",
+    "id": "marill-doll",
+    "x": "512",
+    "y": "2688",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "misc",
+    "id": "submarine-shadow",
+    "x": "640",
+    "y": "2688",
+    "width": "88",
+    "height": "32"
+  },
+  {
+    "category": "misc",
+    "id": "cable-car",
+    "x": "768",
+    "y": "2688",
+    "width": "64",
+    "height": "64"
+  },
+  {
+    "category": "misc",
+    "id": "truck",
+    "x": "896",
+    "y": "2688",
+    "width": "48",
+    "height": "48"
+  },
+  {
+    "category": "misc",
+    "id": "pushable-boulder",
+    "x": "1024",
+    "y": "2688",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "misc",
+    "id": "item-ball",
+    "x": "0",
+    "y": "2816",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "misc",
+    "id": "fossil",
+    "x": "128",
+    "y": "2816",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "misc",
+    "id": "mr-brineys-boat",
+    "x": "256",
+    "y": "2816",
+    "width": "32",
+    "height": "32"
+  },
+  {
+    "category": "misc",
+    "id": "cuttable-tree",
+    "x": "384",
+    "y": "2816",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "misc",
+    "id": "moving-box",
+    "x": "512",
+    "y": "2816",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "misc",
+    "id": "ss-tidal",
+    "name": "S.S. Tidal",
+    "description": "A ferry of the Hoenn region. It is captained by Mr. Briney.",
+    "x": "640",
+    "y": "2816",
+    "width": "96",
+    "height": "40"
+  },
+  {
+    "category": "misc",
+    "id": "breakable-rock",
+    "x": "768",
+    "y": "2816",
+    "width": "16",
+    "height": "16"
+  },
+  {
+    "category": "misc",
+    "id": "birchs-bag",
+    "x": "896",
+    "y": "2816",
+    "width": "16",
+    "height": "16"
+  }
+]

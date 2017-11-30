@@ -16,7 +16,8 @@ import buildPropertiesEditor, {
   SelectConstantField,
   Field,
 } from 'containers/MapEditor/Properties';
-import 'containers/MapEditor/styles.scss';
+
+import { SpritePickerField, SpritePicker } from 'containers/MapEditor/Properties/SpritePickerField';
 
 import { reducer as formReducer } from 'redux-form';
 import { Provider } from 'react-redux';
@@ -24,6 +25,10 @@ import { createStore, combineReducers } from 'redux';
 
 import 'sanitize.css/sanitize.css';
 import '@blueprintjs/core/dist/blueprint.css';
+import 'containers/MapEditor/styles.scss';
+
+import overworldSpriteList from './data/sprite-sheet.json';
+import overworldSpriteSheet from './data/sprite-sheet.png';
 
 const MarginDecorator = (storyFn) => (
   <div style={{ margin: 10 }}>
@@ -198,3 +203,48 @@ storiesOf('MapEditor Properties', module)
     <EntityProperties onSubmit={action('update')} initialValues={entity} />
   ));
 
+const categories = [
+  {
+    id: 'people',
+    name: 'People',
+  },
+  {
+    id: 'pokemon',
+    name: 'Pokémon',
+  },
+  {
+    id: 'berry-trees',
+    name: 'Berry Trees',
+  },
+  {
+    id: 'dolls',
+    name: 'Dolls',
+  },
+  {
+    id: 'misc',
+    name: 'Miscellaneous',
+  },
+  {
+    id: 'cushions',
+    name: 'Cushions',
+  },
+];
+
+storiesOf('MapEditor SpritePicker', module)
+  .addDecorator(MarginDecorator)
+  .add('inline', () => (
+    <SpritePicker
+      sheet={overworldSpriteSheet}
+      sprites={overworldSpriteList}
+      categories={categories}
+      onChange={action('pick')}
+    />
+  ))
+  .add('field', () => (
+    <SpritePickerField
+      sheet={overworldSpriteSheet}
+      sprites={overworldSpriteList}
+      categories={categories}
+      onChange={action('pick')}
+    />
+  ));
