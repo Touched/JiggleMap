@@ -1,6 +1,6 @@
 import * as React from 'react';
 import R from 'ramda';
-import { Button, Classes, NumericInput, MenuItem } from '@blueprintjs/core';
+import { Button, Classes, NumericInput, MenuItem, Tooltip } from '@blueprintjs/core';
 import { Select } from '@blueprintjs/labs';
 import { reduxForm, getFormValues } from 'redux-form';
 import fuzzy from 'fuzzy';
@@ -104,10 +104,31 @@ export const SwitchField = ({ input, label }: { input: object, label: string }) 
   </label>
 );
 
-function SectionComponent({ name, children }: { name: string, children: React.Element }) {
+type SectionComponentProps = {
+  name: string;
+  children: React.Element;
+  actionIconName: string;
+  onAction: Function;
+  actionTooltip: React.Element;
+};
+
+function SectionComponent({ name, children, actionIconName, onAction, actionTooltip }: SectionComponentProps) {
+  const button = onAction && (
+    <Tooltip content={actionTooltip} className={styles.sectionHeadingButton}>
+      <Button
+        iconName={actionIconName}
+        className={Classes.MINIMAL}
+        onClick={onAction}
+      />
+    </Tooltip>
+  );
+
   return (
     <div className={styles.section}>
-      <div className={styles.sectionHeading}>{name}</div>
+      <div className={styles.sectionHeading}>
+        <div className={styles.sectionHeadingText}>{name}</div>
+        {button}
+      </div>
       {children}
     </div>
   );

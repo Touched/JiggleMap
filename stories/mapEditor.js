@@ -166,7 +166,12 @@ const EntityProperties = buildPropertiesEditor('form', 'Entity')(({ values }) =>
       </Row>
     </Section>
 
-    <Section name="Script">
+    <Section
+      name="Script"
+      actionIconName="document-open"
+      onAction={action('script-click')}
+      actionTooltip="Open in external editor"
+    >
       <Row label="File">
         <Field
           name="data.script.path"

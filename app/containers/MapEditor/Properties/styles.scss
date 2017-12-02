@@ -77,8 +77,18 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 12px;
-  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.sectionHeadingText {
   margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.sectionHeadingButton {
+  margin-left: auto;
+  height: 30px;
 }
 
 .section:not(:last-child)::after {
@@ -86,7 +96,6 @@
   content: '';
 
   @include divider;
-  margin-bottom: 10px;
 }
 
 // Numeric
