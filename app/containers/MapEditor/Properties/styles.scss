@@ -53,6 +53,13 @@
   @include scrollbar($light-gray5, $gray5, $light-gray3);
 }
 
+.code {
+  padding: 5px 10px 5px 10px;
+  overflow-y: auto;
+
+  @include scrollbar($light-gray5, $gray5, $light-gray3);
+}
+
 .selectionButton {
   display: flex;
   justify-content: start;

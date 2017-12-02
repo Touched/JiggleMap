@@ -200,6 +200,7 @@
     "react-helmet": "3.2.2",
     "react-hot-loader": "next",
     "react-intl": "2.1.5",
+    "react-json-view": "^1.13.3",
     "react-measure": "^2.0.2",
     "react-redux": "4.4.6",
     "react-three-renderer": "^3.1.0",

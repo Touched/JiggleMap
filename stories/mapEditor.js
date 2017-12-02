@@ -5,7 +5,6 @@ import { action } from '@storybook/addon-actions';
 import ToolBox from 'containers/MapEditor/ToolBox';
 import MapControls from 'containers/MapEditor/MapControls';
 import buildPropertiesEditor, {
-  Panel,
   Section,
   Row,
   NumericField,
@@ -112,8 +111,8 @@ const symbolsList = [
 ];
 
 // TODO: Sprite, behavior, flag
-const EntityProperties = buildPropertiesEditor('form')(({ values }) => (
-  <Panel title="Object">
+const EntityProperties = buildPropertiesEditor('form', 'Entity')(({ values }) => (
+  <div>
     <Section name="General">
       <Row label="ID" help="A unique identifier for this object." documentation="test">
         <Field
@@ -192,7 +191,7 @@ const EntityProperties = buildPropertiesEditor('form')(({ values }) => (
         />
       </Row>
     </Section>
-  </Panel>
+  </div>
 ));
 
 storiesOf('MapEditor Properties', module)
