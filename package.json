@@ -267,7 +267,7 @@
     "html-webpack-plugin": "2.24.1",
     "image-webpack-loader": "2.0.0",
     "imports-loader": "0.6.5",
-    "jest-cli": "^20.0.3",
+    "jest-cli": "^21.2.1",
     "lint-staged": "3.2.1",
     "mock-fs": "^4.3.0",
     "ngrok": "2.2.4",
