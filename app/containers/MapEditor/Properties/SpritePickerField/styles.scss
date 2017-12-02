@@ -57,3 +57,13 @@
   float: right;
   font-size: 12px;
 }
+
+// Sprite Picker Field
+.spritePickerFieldButton {
+  display: flex;
+  align-items: center;
+}
+
+.spritePickerFieldButtonSprite {
+  padding: 8px 8px 8px 0;
+}

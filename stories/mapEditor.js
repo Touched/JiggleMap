@@ -246,5 +246,6 @@ storiesOf('MapEditor SpritePicker', module)
       sprites={overworldSpriteList}
       categories={categories}
       onChange={action('pick')}
+      value={overworldSpriteList.find(({ id }) => id === 'ss-tidal')}
     />
   ));

@@ -6,29 +6,10 @@ import classNames from 'classnames';
 import fuzzy from 'fuzzy';
 import invariant from 'invariant';
 
+import Sprite from './Sprite';
 import styles from './styles.scss';
 
-type SpriteProps = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  sheet: string,
-};
-
-function Sprite({ x, y, width, height, sheet }: SpriteProps) {
-  const style = {
-    background: `url(${sheet})`,
-    backgroundPositionX: -x,
-    backgroundPositionY: -y,
-    minWidth: width,
-    minHeight: height,
-  };
-
-  return (
-    <div style={style} />
-  );
-}
+import type { SpriteObject } from './Sprite';
 
 type SpriteButtonProps = {
   onMouseOver: Function;
@@ -58,6 +39,7 @@ export default class SpritePicker extends React.PureComponent { // eslint-disabl
       selectedSprite: null,
       query: '',
       items: this.updateSpriteList(props.sprites),
+      activeItem: props.value,
     };
   }
 
@@ -92,10 +74,26 @@ export default class SpritePicker extends React.PureComponent { // eslint-disabl
   };
 
   handleActiveItemChange = (value) => {
-    // TODO: Skip category labels
-    this.setState({
-      activeItem: value,
-    });
+    // Skip category labels
+    if (typeof value === 'string') {
+      const items = this.listPredicate(this.state.query, this.state.items);
+
+      // Find the first item with the given category
+      const categoryIndex = items.findIndex((item) => item === value);
+      const sourceIndex = items.findIndex((item) => item === this.state.activeItem);
+
+      const targetValue = categoryIndex > sourceIndex ? items[categoryIndex + 1] : items[categoryIndex - 1];
+
+      if (targetValue) {
+        this.setState({
+          activeItem: targetValue,
+        });
+      }
+    } else {
+      this.setState({
+        activeItem: value,
+      });
+    }
   };
 
   listPredicate(query, items) {
@@ -136,6 +134,9 @@ export default class SpritePicker extends React.PureComponent { // eslint-disabl
     sheet: string;
     onChange: Function;
     categories: Array<{id: string, name: string}>;
+    inputRef: Function;
+    queryListRef: Function;
+    value: SpriteObject;
   };
 
   handleHoverSprite = (id) => {
@@ -214,6 +215,7 @@ export default class SpritePicker extends React.PureComponent { // eslint-disabl
               dir="auto"
               value={query}
               onChange={this.handleQueryChange}
+              ref={this.props.inputRef}
             />
           </div>
         </div>
@@ -237,6 +239,7 @@ export default class SpritePicker extends React.PureComponent { // eslint-disabl
         query={this.state.query}
         itemListPredicate={this.listPredicate}
         activeItem={this.state.activeItem}
+        ref={this.props.queryListRef}
       />
     );
   }
