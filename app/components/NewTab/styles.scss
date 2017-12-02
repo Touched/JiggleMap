@@ -1,14 +1,14 @@
 $iconSize: 100px;
 
-.NewTab {
+.newTab {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   flex-grow: 1;
+}
 
-  .NewTab__icon {
-    width: $iconSize;
-    height: $iconSize;
-  }
+.icon {
+  width: $iconSize;
+  height: $iconSize;
 }

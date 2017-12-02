@@ -22,7 +22,7 @@ import EditorTabs, { EditorTabsBar } from 'containers/EditorTabs';
 import MainDrawer from 'containers/App/Sidebar/MainDrawer';
 import ResourceDrawer from 'containers/App/Sidebar/ResourceDrawer';
 import { buildTabRoutes } from '../../tabs';
-import './styles.scss';
+import styles from './styles.scss';
 
 const sidebarItems = [{
   id: 'main',
@@ -52,14 +52,14 @@ export class App extends React.Component { // eslint-disable-line react/prefer-s
     const { sidebarItem, setSidebarItem: setActiveItem } = this.props;
 
     return (
-      <div className="HomePage">
-        <div className="HomePage__container">
+      <div className={styles.app}>
+        <div className={styles.container}>
           <Sidebar
             items={sidebarItems}
             active={sidebarItem}
             setActiveItem={setActiveItem}
           />
-          <div className="HomePage__content">
+          <div className={styles.content}>
             <EditorTabsBar />
             <EditorTabs routes={tabRoutes} />
           </div>

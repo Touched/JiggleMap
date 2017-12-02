@@ -10,7 +10,7 @@ import React, { PropTypes } from 'react';
 import { Icon, Tooltip, Position } from '@blueprintjs/core';
 import classNames from 'classnames';
 
-import './styles.scss';
+import styles from './styles.scss';
 
 function SidebarButton({ onClick, active, icon, primary, tooltip }) {
   const classes = {
@@ -21,7 +21,7 @@ function SidebarButton({ onClick, active, icon, primary, tooltip }) {
   return (
     <li>
       <Tooltip content={tooltip} position={Position.RIGHT}>
-        <button className={classNames('Sidebar__item', classes)} onClick={onClick}>
+        <button className={classNames(styles.sidebarIcon, classes)} onClick={onClick}>
           <Icon iconSize={Icon.SIZE_LARGE} iconName={icon} />
         </button>
       </Tooltip>
@@ -46,11 +46,11 @@ SidebarButton.defaultProps = {
 
 export function Drawer({ header, footer, items, onItemClick }) {
   return (
-    <div className="SidebarDrawer">
-      <div className="SidebarDrawer__header">{header}</div>
-      <ul className="SidebarDrawer__list">
+    <div className={styles.drawer}>
+      <div className={styles.drawerHeader}>{header}</div>
+      <ul className={styles.drawerList}>
         {items.map((item) => (
-          <li key={item.id} className="SidebarDrawer__list__item" onClick={() => onItemClick(item.id)}>
+          <li key={item.id} className={styles.drawerListItem} onClick={() => onItemClick(item.id)}>
             <div style={{ flexGrow: 1 }}>
               {item.name}
               <div className="pt-text-muted">{item.description}</div>
@@ -59,8 +59,8 @@ export function Drawer({ header, footer, items, onItemClick }) {
           </li>
         ))}
       </ul>
-      <div className="SidebarDrawer__footer">{footer}</div>
-      <div className="SidebarDrawer__shadow" />
+      <div className={styles.drawerFooter}>{footer}</div>
+      <div className={styles.sidebarShadow} />
     </div>
   );
 }
@@ -80,8 +80,8 @@ class Sidebar extends React.Component { // eslint-disable-line react/prefer-stat
     const { active, setActiveItem, items } = this.props;
 
     return (
-      <div className="Sidebar">
-        <ul className="Sidebar__bar">
+      <div className={styles.sidebar}>
+        <ul className={styles.sidebarIcons}>
           {items.map(({ id, icon, primary, tooltip }) => (
             <SidebarButton
               key={id}

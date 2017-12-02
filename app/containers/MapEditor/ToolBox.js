@@ -1,9 +1,11 @@
 import React from 'react';
 import R from 'ramda';
 import { Button, Classes, Intent, Tooltip, Position } from '@blueprintjs/core';
+import classNames from 'classnames';
 
 import allTools from './tools';
 import { setActiveTool } from './actions';
+import styles from './styles.scss';
 
 type Props = {
   tabDispatch: ({ type: string }) => void;
@@ -63,7 +65,7 @@ export default function ToolBox(props: Props) {
   const activeToolId = props.selectedTool && props.selectedTool.id;
 
   return (
-    <div className="MapEditor__OverlayBox ToolBox pt-button-group">
+    <div className={classNames(styles.overlayBox, styles.toolBox, 'pt-button-group')}>
       {allowedTools.map((tool) => {
         const tooltip = (
           <div>
@@ -72,7 +74,7 @@ export default function ToolBox(props: Props) {
           </div>
         );
 
-        return tool.type === 'separator' ? <div className="ToolBox__separator" /> : (
+        return tool.type === 'separator' ? <div /> : (
           <Tooltip key={tool.id} content={tooltip} position={Position.BOTTOM}>
             <Button
               iconName={tool.icon}

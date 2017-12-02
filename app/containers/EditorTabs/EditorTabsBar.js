@@ -17,7 +17,7 @@ import { Button, Classes } from '@blueprintjs/core';
 import { newTab, closeTab, switchTab, reorderTabs } from './actions';
 import makeSelectEditorTabs, { makeSelectEditorTabsActiveIndex } from './selectors';
 import EditorTab from './EditorTab';
-import './styles.scss';
+import styles from './styles.scss';
 
 const TRANSITION_ENTER_TIMEOUT = 100;
 const TRANSITION_LEAVE_TIMEOUT = 100;
@@ -191,7 +191,7 @@ export class EditorTabsBar extends React.PureComponent<*, *> {
     const { tabs, onNewTab, activeTab, onSwitchTab } = this.props;
 
     const classes = {
-      'EditorTabsBar--dragging': this.state.dragging && this.state.dragging.moved,
+      [styles.dragging]: this.state.dragging && this.state.dragging.moved,
     };
 
     return (
@@ -202,28 +202,28 @@ export class EditorTabsBar extends React.PureComponent<*, *> {
         onMouseUp={this.handleDragEnd}
         onMouseMove={this.handleDragMove}
         ref={(ref) => { this.ref = ref; }}
-        className="EditorTabsBar__container"
+        className={styles.container}
       >
         <CSSTransitionGroup
           transitionName="EditorTabsBar__tab-"
           transitionEnterTimeout={TRANSITION_ENTER_TIMEOUT}
           transitionLeaveTimeout={TRANSITION_LEAVE_TIMEOUT}
           component="div"
-          className={classNames('EditorTabsBar', classes)}
+          className={classNames(styles.bar, classes)}
         >
           {tabs.map(({ id, ...props }) => {
             const { closing, dragging } = this.state;
-            const styles = {};
+            const tabStyles = {};
 
             if (closing) {
-              styles.maxWidth = `${closing.width}px`;
+              tabStyles.maxWidth = `${closing.width}px`;
             } else if (dragging && dragging.id === id) {
-              styles.transform = `translate(${dragging.translate}px)`;
+              tabStyles.transform = `translate(${dragging.translate}px)`;
             } else if (dragging) {
               const index = dragging.order.indexOf(id);
               const originalIndex = this.props.tabs.map(({ id: tabId }) => tabId).indexOf(id);
               const distance = index - originalIndex;
-              styles.transform = `translate(${distance * dragging.rect.width}px)`;
+              tabStyles.transform = `translate(${distance * dragging.rect.width}px)`;
             }
 
             return (
@@ -234,7 +234,7 @@ export class EditorTabsBar extends React.PureComponent<*, *> {
                 onSelect={() => onSwitchTab(id)}
                 onMouseDown={(event) => this.handleDragStart(event, id)}
                 onClose={(event) => this.handleClose(event, id)}
-                style={styles}
+                style={tabStyles}
                 {...props}
               />
             );
@@ -242,7 +242,7 @@ export class EditorTabsBar extends React.PureComponent<*, *> {
           <Button
             onClick={onNewTab}
             iconName={'add'}
-            className={classNames(Classes.MINIMAL, 'EditorTabsBar__add')}
+            className={classNames(Classes.MINIMAL, styles.newTab)}
           />
         </CSSTransitionGroup>
       </div>

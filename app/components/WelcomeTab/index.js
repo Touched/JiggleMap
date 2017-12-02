@@ -9,12 +9,12 @@ import { FormattedMessage } from 'react-intl';
 import EmoticonHappyIcon from 'mdi-react/EmoticonHappyIcon';
 
 import messages from './messages';
-import './styles.scss';
+import styles from './styles.scss';
 
 function WelcomeTab() {
   return (
-    <div className="WelcomeTab">
-      <EmoticonHappyIcon className="WelcomeTab__icon" />
+    <div className={styles.weclomeTab}>
+      <EmoticonHappyIcon className={styles.icon} />
       <h1>
         <FormattedMessage {...messages.header} />
       </h1>

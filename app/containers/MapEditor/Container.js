@@ -10,7 +10,7 @@ import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
 import MapControls from './MapControls';
 import ToolBox from './ToolBox';
-import './styles.scss';
+import styles from './styles.scss';
 import type { Tool, Dispatch } from './tools/types';
 
 import { makeSelectMainMapDimensions } from './selectors/mapSelectors';
@@ -187,9 +187,9 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
     const { camera, measureRef, contentRect } = this.props;
 
     return (
-      <div className="MapEditor">
-        <div className="MapEditor__Container" ref={measureRef} onWheel={this.handleWheel}>
-          <div className="MapEditor__Overlay">
+      <div className={styles.editor}>
+        <div className={styles.editorContainer} ref={measureRef} onWheel={this.handleWheel}>
+          <div className={styles.overlay}>
             <ToolBox
               tabDispatch={this.props.tabDispatch}
               selectedTool={this.props.activeTool}
@@ -219,13 +219,13 @@ export class Container extends React.PureComponent { // eslint-disable-line reac
               onMouseMove={this.handleMouseMove}
               onMouseUp={this.handleMouseUp}
               cameraRef={(ref) => { this.camera = ref; }}
-              className="MapEditor__MapViewport"
+              className={styles.viewport}
             >
               {React.Children.only(this.props.children)}
             </Renderer>
           </div>
         </div>
-        <div className="ToolControls">
+        <div>
           {this.props.activeTool && this.props.activeTool.component && (
           <this.props.activeTool.component
             tabDispatch={this.props.tabDispatch}

@@ -1,5 +1,8 @@
 import React from 'react';
 import { Button, Tooltip, Intent, Position } from '@blueprintjs/core';
+import classNames from 'classnames';
+
+import styles from './styles.scss';
 
 type Props = {
   onToggleLayer: (string) => void,
@@ -33,8 +36,8 @@ export default function MapControls(props: Props) {
   const { onToggleLayer, onRecenterClick, onZoomChanged, zoom, zoomMin, zoomMax, activeLayer } = props;
 
   return (
-    <div className="MapEditor__OverlayBox MapControls">
-      <div className="MapControls__LayerControls pt-button-group">
+    <div className={classNames(styles.overlayBox, styles.mapControls)}>
+      <div className={classNames(styles.mapLayerControls, 'pt-button-group')}>
         {LAYERS.map((layer) => (
           <Tooltip key={layer.id} content={layer.name} position={Position.TOP}>
             <Button
@@ -45,8 +48,8 @@ export default function MapControls(props: Props) {
           </Tooltip>
         ))}
       </div>
-      <div className="MapControls__box">
-        <div className="MapControls__CameraControls">
+      <div className={styles.box}>
+        <div className={styles.mapCameraControls}>
           <div className="pt-button-group pt-vertical">
             <Tooltip content={'Recenter'} position={Position.LEFT}>
               <Button
@@ -74,7 +77,7 @@ export default function MapControls(props: Props) {
             </Tooltip>
           </div>
         </div>
-        <div className="MapControls__MiniMap" />
+        <div className={styles.miniMap} />
       </div>
     </div>
   );

@@ -25,7 +25,6 @@ import { createStore, combineReducers } from 'redux';
 
 import 'sanitize.css/sanitize.css';
 import '@blueprintjs/core/dist/blueprint.css';
-import 'containers/MapEditor/styles.scss';
 
 import overworldSpriteList from './data/sprite-sheet.json';
 import overworldSpriteSheet from './data/sprite-sheet.png';

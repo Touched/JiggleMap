@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Button, Classes } from '@blueprintjs/core';
 
 import nop from 'utils/nop';
+import styles from './styles.scss';
 
 export default class EditorTab extends React.PureComponent<*, *> {
   static defaultProps = {
@@ -46,13 +47,14 @@ export default class EditorTab extends React.PureComponent<*, *> {
         tabIndex={0}
         onClick={onSelect}
         onMouseDown={this.handleMouseDown}
-        className={classNames('EditorTabsBar__tab', { 'EditorTabsBar__tab--active': active })}
+        className={classNames(styles.tab, { [styles.tabActive]: active })}
         role="tab"
         style={style}
         ref={tabRef}
       >
-        <div className="EditorTabsBar__tab__label">{title}</div>
+        <div className={styles.tabLabel}>{title}</div>
         <Button onClick={this.handleClose} iconName={dirty ? 'asterisk' : 'cross'} className={Classes.MINIMAL} />
+        <div className={styles.activeIndicator} />
       </div>
     );
   }

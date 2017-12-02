@@ -1,16 +1,16 @@
-.HomePage {
+.app {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
 
-  .HomePage__container {
-    display: flex;
-    flex-grow: 1;
-  }
+.container {
+  display: flex;
+  flex-grow: 1;
+}
 
-  .HomePage__content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
