@@ -13,6 +13,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
+import { FocusStyleManager } from '@blueprintjs/core';
+
 import 'sanitize.css/sanitize.css';
 import '@blueprintjs/core/dist/blueprint.css';
 import '@blueprintjs/labs/dist/blueprint-labs.css';
@@ -40,6 +42,8 @@ import './global-styles';
 
 const initialState = {};
 const store = configureStore(initialState);
+
+FocusStyleManager.onlyShowFocusOnTabs();
 
 const render = (messages) => {
   ReactDOM.render(
