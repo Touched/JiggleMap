@@ -5,11 +5,9 @@ import { Renderer, HTML3D } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 import connectTab from 'containers/EditorTabs/connectTab';
 
-import Map from '../Content/Map';
+import Map from 'components/Map';
 import {
-  makeSelectMainMapPalette,
-  makeSelectMainMapTileset,
-  makeSelectMainMapTilemapsForBlocks,
+  makeSelectMainMapBlocksets,
 } from '../selectors/mapSelectors';
 
 const BLOCK_SIZE = 16;
@@ -46,7 +44,7 @@ export class AutoBlockPicker extends React.PureComponent<Props, State> { // esli
   };
 
   render() {
-    const { tileset, palette, tilemaps, zoom, autoBlocks } = this.props;
+    const { blocksets, zoom, autoBlocks } = this.props;
 
     const width = 3;
     const height = autoBlocks.length * 4;
@@ -80,14 +78,13 @@ export class AutoBlockPicker extends React.PureComponent<Props, State> { // esli
         zoomMin={0.25}
         zoomMax={2}
       >
-        {tilemaps.map((tilemap, i) => (
+        {autoBlocks.map((autoBlock, i) => (
           <Map
             width={3}
             height={3}
             y={(3 * i) + i}
-            tileset={tileset}
-            tilemaps={tilemap}
-            palette={palette}
+            blocksets={blocksets}
+            map={buildAutoBlock(autoBlock)}
           />
         ))}
         <HTML3D width={containerWidth} height={containerHeight}>
@@ -110,13 +107,7 @@ function buildAutoBlock(autoBlock) {
 }
 
 const mapTabStateToProps = createStructuredSelector({
-  palette: makeSelectMainMapPalette(),
-  tileset: makeSelectMainMapTileset(),
-  tilemaps: (state, ownProps) => ownProps.autoBlocks.map((autoBlock) => makeSelectMainMapTilemapsForBlocks(
-    buildAutoBlock(autoBlock),
-    3,
-    3,
-  )(state, ownProps)),
+  blocksets: makeSelectMainMapBlocksets(),
 });
 
 export default connectTab(null, mapTabStateToProps, null, null)(AutoBlockPicker);

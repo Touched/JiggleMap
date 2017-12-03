@@ -3,7 +3,6 @@
 import React from 'react';
 import invariant from 'invariant';
 
-import messages from './messages';
 import { drawLine } from './helpers';
 import { editMap, commitMapEdit } from '../actions';
 import BlockPicker from './BlockPicker';
@@ -73,8 +72,8 @@ function setBlock(block) {
 export default {
   id: 'line-tool',
   type: 'mouse',
-  name: messages.lineToolName,
-  description: messages.lineToolDescription,
+  name: 'messages.lineToolName',
+  description: 'messages.lineToolDescription',
   layers: ['map'],
   icon: 'dot',
   component: ({ tabDispatch }: { tabDispatch: Dispatch }) => (

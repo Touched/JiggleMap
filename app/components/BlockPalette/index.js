@@ -4,7 +4,7 @@ import invariant from 'invariant';
 import { Grid, Renderer, Box, HTML3D } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 
-import Map from '../Content/Map';
+import Map from 'components/Map';
 
 const BLOCK_SIZE = 16;
 
@@ -137,9 +137,8 @@ export default class BlockPalette extends React.Component {
   };
 
   props: {
-    palette: Uint8Array;
-    tileset: Uint8Array;
-    tilemaps: Array<Uint8Array>;
+    map: Object;
+    blocksets: Object;
     zoom: number;
     onChange: (value) => void;
     value: {
@@ -160,7 +159,7 @@ export default class BlockPalette extends React.Component {
   canvas: HtmlCanvasElement;
 
   render() {
-    const { tileset, palette, tilemaps, zoom, width, height, value } = this.props;
+    const { map, blocksets, zoom, width, height, value } = this.props;
 
     const objectWidth = width * BLOCK_SIZE;
     const objectHeight = height * BLOCK_SIZE;
@@ -192,9 +191,8 @@ export default class BlockPalette extends React.Component {
         <Map
           width={width}
           height={height}
-          tileset={tileset}
-          tilemaps={tilemaps}
-          palette={palette}
+          map={map}
+          blocksets={blocksets}
         />
         {(value || this.state.selecting) && <Box
           color="#ff0000"

@@ -5,20 +5,15 @@ import { createStructuredSelector } from 'reselect';
 
 import connectTab from 'containers/EditorTabs/connectTab';
 
-import BlockPalette from './BlockPalette';
+import BlockPalette from 'components/BlockPalette';
 import {
-  makeSelectMainMapPalette,
-  makeSelectMainMapTileset,
-  makeSelectMainMapTilemaps,
-  makeSelectMainMapBlockset,
+  makeSelectMainMapBlocksets,
 } from '../selectors/mapSelectors';
 
 type Props = {
   currentBlock: number;
   onChange: Function;
-  tileset: Uint8Array;
-  palette: Uint8Array;
-  blocks: Array<Uint8Array>;
+  blocksets: Object;
 };
 
 type State = {
@@ -61,16 +56,22 @@ export class BlockPicker extends React.PureComponent<*, Props, State> { // eslin
     const x = this.props.currentBlock % 8;
     const y = Math.floor(this.props.currentBlock / 8);
 
+    const { primary, secondary } = this.props.blocksets;
+    const blockCount = primary.blocks.length + secondary.blocks.length;
+
+    const map = {
+      block: [...new Array(blockCount)].map((_, index) => index),
+    };
+
     return (
       <div>
         <BlockPalette
           width={8}
-          height={this.props.blocks[0].length / 16 / 8}
+          height={blockCount / 8}
           value={{ x, y }}
           onChange={this.handleChange}
-          tileset={this.props.tileset}
-          palette={this.props.palette}
-          tilemaps={this.props.blocks}
+          blocksets={this.props.blocksets}
+          map={map}
         />
       </div>
     );
@@ -78,10 +79,7 @@ export class BlockPicker extends React.PureComponent<*, Props, State> { // eslin
 }
 
 const mapTabStateToProps = createStructuredSelector({
-  palette: makeSelectMainMapPalette(),
-  tileset: makeSelectMainMapTileset(),
-  tilemaps: makeSelectMainMapTilemaps(),
-  blocks: makeSelectMainMapBlockset(),
+  blocksets: makeSelectMainMapBlocksets(),
 });
 
 export default connectTab(null, mapTabStateToProps, null, null)(BlockPicker);

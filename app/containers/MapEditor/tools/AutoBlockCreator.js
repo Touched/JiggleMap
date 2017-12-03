@@ -7,13 +7,10 @@ import { Renderer } from 'components/Renderer';
 import { calculateBoundingRectangle } from 'components/Renderer/utils';
 import connectTab from 'containers/EditorTabs/connectTab';
 
-import BlockPalette from './BlockPalette';
-import Map from '../Content/Map';
+import BlockPalette from 'components/BlockPalette';
+import Map from 'components/Map';
 import {
-  makeSelectMainMapPalette,
-  makeSelectMainMapTileset,
-  makeSelectMainMapBlockset,
-  makeSelectMainMapTilemapsForBlocks,
+  makeSelectMainMapBlocksets,
 } from '../selectors/mapSelectors';
 
 import './styles.scss';
@@ -22,9 +19,8 @@ type MapPreviewProps = {
   width: number;
   height: number;
   zoom: number;
-  tileset: Uint8Array;
-  palette: Uint8Array;
-  tilemaps: Array<Uint8Array>;
+  blocksets: Object;
+  map: Object;
   children: React.Node;
 };
 
@@ -48,7 +44,7 @@ type AutoBlock = {
 };
 /* eslint-enable */
 
-function MapPreview({ width, height, zoom, tileset, tilemaps, palette, children }: MapPreviewProps) {
+function MapPreview({ width, height, zoom, blocksets, map, children }: MapPreviewProps) {
   const { left, top } = calculateBoundingRectangle(0, 0, 16 * width, 16 * height, 0, 0);
 
   return (
@@ -64,9 +60,8 @@ function MapPreview({ width, height, zoom, tileset, tilemaps, palette, children 
       <Map
         width={width}
         height={height}
-        tileset={tileset}
-        tilemaps={tilemaps}
-        palette={palette}
+        blocksets={blocksets}
+        map={map}
       />
       {children}
     </Renderer>
@@ -87,11 +82,7 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
   }
 
   props: {
-    tileset: Uint8Array;
-    palette: Uint8Array;
-    preview: Array<Uint8Array>;
-    editor: Array<Uint8Array>;
-    blocks: Array<Uint8Array>;
+    blocksets: Object;
     onChangeAutoBlock: (string, number) => void;
     autoBlock: AutoBlock;
   }
@@ -113,6 +104,20 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
   };
 
   render() {
+    const preview = {
+      block: buildAutoBlockPreview(this.props.autoBlock),
+    };
+
+    const configuration = {
+      block: buildAutoBlockEditor(this.props.autoBlock),
+    };
+
+    const { primary, secondary } = this.props.blocksets;
+    const blockCount = primary.blocks.length + secondary.blocks.length;
+    const palette = {
+      block: [...new Array(blockCount)].map((x, index) => index),
+    };
+
     return (
       <div style={{ display: 'flex', flexGrow: 1, flexDirection: 'column' }}>
         <div>Preview</div>
@@ -120,9 +125,8 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
           width={10}
           height={5}
           zoom={1}
-          tileset={this.props.tileset}
-          palette={this.props.palette}
-          tilemaps={this.props.preview}
+          blocksets={this.props.blocksets}
+          map={preview}
         >
         </MapPreview>
 
@@ -131,9 +135,8 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
           width={5}
           height={3}
           zoom={2}
-          tileset={this.props.tileset}
-          palette={this.props.palette}
-          tilemaps={this.props.editor}
+          blocksets={this.props.blocksets}
+          map={configuration}
           value={this.state.selectedPosition}
           onChange={(blockPosition) => this.handleAutoBlockModifyBlockPosition(blockPosition)}
         />
@@ -142,11 +145,10 @@ export class AutoBlockCreator extends React.PureComponent { // eslint-disable-li
         <BlockPalette
           width={8}
           className="BlockPalette"
-          height={this.props.blocks[0].length / 16 / 8}
+          height={blockCount / 8}
           onChange={(blockIndex) => this.handleAutoBlockModifyBlockIndex(blockIndex)}
-          tileset={this.props.tileset}
-          palette={this.props.palette}
-          tilemaps={this.props.blocks}
+          blocksets={this.props.blocksets}
+          map={palette}
           value={this.props.autoBlock[positionToAutoBlockPiece[this.state.selectedPosition]]}
         />
       </div>
@@ -179,20 +181,7 @@ function buildAutoBlockPreview({ n, s, e, w, ne, se, nw, sw, c, g, ise, isw, ine
 }
 
 const mapTabStateToProps = createStructuredSelector({
-  palette: makeSelectMainMapPalette(),
-  tileset: makeSelectMainMapTileset(),
-  editor: (state, ownProps) => makeSelectMainMapTilemapsForBlocks(
-    buildAutoBlockEditor(ownProps.autoBlock),
-    5,
-    3,
-  )(state, ownProps),
-  preview: (state, ownProps) => makeSelectMainMapTilemapsForBlocks(
-    buildAutoBlockPreview(ownProps.autoBlock),
-    10,
-    5,
-  )(state, ownProps),
-  blocks: makeSelectMainMapBlockset(),
+  blocksets: makeSelectMainMapBlocksets(),
 });
-
 
 export default connectTab(null, mapTabStateToProps, null, null)(AutoBlockCreator);

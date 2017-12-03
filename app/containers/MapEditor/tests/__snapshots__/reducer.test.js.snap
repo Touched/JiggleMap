@@ -63,9 +63,9 @@ Object {
   "activeLayer": "map",
   "activeTool": Object {
     "collision": undefined,
-    "entities": undefined,
+    "entities": "pointer-tool",
     "height": undefined,
-    "map": "drag-connection-tool",
+    "map": "pointer-tool",
   },
   "camera": Object {
     "x": 0,
@@ -75,7 +75,7 @@ Object {
   "linked": false,
   "loading": false,
   "toolState": Object {
-    "drag-connection-tool": Object {
+    "pointer-tool": Object {
       "mouse": Object {
         "clientOffset": null,
         "currentBlock": 0,

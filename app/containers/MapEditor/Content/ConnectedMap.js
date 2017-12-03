@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Group } from 'components/Renderer';
-import Map from './Map';
+import Map from 'components/Map';
 import ToolHitBox from './ToolHitBox';
 
 type Props = {
@@ -10,13 +10,12 @@ type Props = {
   x: number;
   y: number;
   z: number;
-  tileset: Uint8Array;
-  palette: Uint8Array;
-  tilemaps: Array<Uint8Array>;
-  heightMap: Uint8Array,
-  collisionMap: Uint8Array,
   darken: boolean;
-  object: Object,
+  object: Object;
+  showCollisionMap: bool;
+  showHeightMap: bool;
+  map: Object;
+  blocksets: Object;
 };
 
 export default function ConnectedMap(props: Props) {
@@ -26,12 +25,11 @@ export default function ConnectedMap(props: Props) {
     z,
     width,
     height,
-    tileset,
-    tilemaps,
-    palette,
+    map,
+    blocksets,
     darken,
-    heightMap,
-    collisionMap,
+    showHeightMap,
+    showCollisionMap,
     object,
   } = props;
 
@@ -43,11 +41,10 @@ export default function ConnectedMap(props: Props) {
         z={z}
         width={width}
         height={height}
-        tileset={tileset}
-        tilemaps={tilemaps}
-        palette={palette}
-        collisionMap={collisionMap}
-        heightMap={heightMap}
+        map={map}
+        blocksets={blocksets}
+        showCollisionMap={showCollisionMap}
+        showHeightMap={showHeightMap}
         darken={darken}
       />
       <ToolHitBox

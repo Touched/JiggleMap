@@ -38,19 +38,18 @@ export class ConnectedMapsLayer extends React.PureComponent { // eslint-disable-
 
     return (
       <Group>
-        {connections.map(({ dimensions, tilemaps, tileset, palette, position, heightMap, collisionMap }, i) => (
+        {connections.map(({ map, blocksets, position, showHeightMap, showCollisionMap }, i) => (
           <ConnectedMap
             key={i} // eslint-disable-line react/no-array-index-key
             x={position.x}
             y={position.y}
             z={0}
-            width={dimensions[0]}
-            height={dimensions[1]}
-            tileset={tileset}
-            tilemaps={tilemaps}
-            palette={palette}
-            heightMap={activeLayer === 'height' && heightMap}
-            collisionMap={activeLayer === 'collision' && collisionMap}
+            width={map.dimensions[0]}
+            height={map.dimensions[1]}
+            blocksets={blocksets}
+            map={map}
+            showHeightMap={activeLayer === 'height'}
+            showCollisionMap={activeLayer === 'collision'}
             onDrag={(start, end) => this.props.moveConnection(i, end.x - start.x, end.y - start.y)}
             onDragEnd={() => this.props.commitConnectionMove(i)}
             object={{ ...objects[i], id: i }}
